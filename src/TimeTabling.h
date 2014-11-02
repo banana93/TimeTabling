@@ -11,6 +11,7 @@ struct Perspective
   char subjectType;
   char *group;
   char *nameOfLecturer;
+  char *subjectCode;
 };
 
 void checkPerspective(Perspective *perspective1, Perspective *perspective2);
