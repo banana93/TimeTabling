@@ -38,7 +38,7 @@ void test_checkPerspective_given_perspective_that_did_clash_it_should_print_out_
                              .day = "Monday",
                              .subjectType = 'L',
                              .group = "RMB3",
-                             .nameOfLecturer = "Poh TV"};
+                             .nameOfLecturer = "Chan CK"};
   
   checkPerspective(&perspective1, &perspective2);
 }
