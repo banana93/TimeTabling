@@ -107,3 +107,53 @@ void test_checkPerspective_given_different_subjectCode_and_different_group_at_th
   
   checkPerspective(&perspective1, &perspective2);
 }
+
+
+void test_getCourseName_should_able_to_get_wat(){
+
+	Course newCourse[] = { {.courseCode = "MUET123",.courseName = "wat"}};
+
+	char *toCheckAnswer = getCourseName(newCourse[0]);
+	
+	TEST_ASSERT_EQUAL_STRING(newCourse[0].courseName, toCheckAnswer);
+
+}
+
+void test_getCourseName_should_able_to_get_lolno(){
+
+	Course newCourse[] = { {.courseCode = "MUET123", .courseName = "wat"},
+						   {.courseCode = "MATH", .courseName = "lolno"}
+						 };
+	
+
+	char *toCheckAnswer = getCourseName(newCourse[1]);
+	
+	TEST_ASSERT_EQUAL_STRING(newCourse[1].courseName, toCheckAnswer);
+
+}
+
+void test_getCourseCode_should_able_to_get_MUET123(){
+
+	Course newCourse[] = { {.courseCode = "MUET123", .courseName = "wat"},
+						   {.courseCode = "MATH", .courseName = "lolno"}
+						 };
+	
+
+	char *toCheckAnswer = getCourseCode(newCourse[0]);
+	
+	TEST_ASSERT_EQUAL_STRING(newCourse[0].courseCode, toCheckAnswer);
+
+}
+
+void test_getCourseCode_should_able_to_get_MATH(){
+
+	Course newCourse[] = { {.courseCode = "MUET123", .courseName = "wat"},
+						   {.courseCode = "MATH", .courseName = "lolno"}
+						 };
+	
+
+	char *toCheckAnswer = getCourseCode(newCourse[1]);
+	
+	TEST_ASSERT_EQUAL_STRING(newCourse[1].courseCode, toCheckAnswer);
+
+}

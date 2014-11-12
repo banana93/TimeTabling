@@ -28,3 +28,15 @@ void checkPerspective(Perspective *perspective1, Perspective *perspective2)
         
         }
 }
+
+char *getCourseName(Course newCourse){
+
+	if(newCourse.courseName != NULL)
+	return newCourse.courseName;
+}
+
+char *getCourseCode(Course newCourse){
+
+	if(newCourse.courseCode != NULL)
+	return newCourse.courseCode;
+}
