@@ -5,113 +5,11 @@ void setUp(void){}
 
 void tearDown(void){}
 
-void test_checkPerspective_given_perspective_that_did_not_clash_it_should_print_out_no_clash(void)
-{
-	Perspective perspective1 = {.time = 9,
-                             .venue = "D203",
-                             .day = "Monday",
-                             .subjectType = 'L',
-                             .group = "RMB2",
-                             .nameOfLecturer = "Poh TV"};
-  
-  Perspective perspective2 = {.time = 10,
-                             .venue = "D203",
-                             .day = "Monday",
-                             .subjectType = 'L',
-                             .group = "RMB3",
-                             .nameOfLecturer = "Chan CK"};
-  
-  checkPerspective(&perspective1, &perspective2);
-}
-
-void test_checkPerspective_given_perspective_that_did_clash_it_should_print_out_error_message(void)
-{
-	Perspective perspective1 = {.time = 9,
-                             .venue = "D203",
-                             .day = "Monday",
-                             .subjectType = 'L',
-                             .group = "RMB2",
-                             .nameOfLecturer = "Poh TV",
-                             .subjectCode = "AAMP2000"};
-  
-  Perspective perspective2 = {.time = 9,
-                             .venue = "D203",
-                             .day = "Monday",
-                             .subjectType = 'L',
-                             .group = "RMB3",
-                             .nameOfLecturer = "Chan CK",
-                             .subjectCode = "AAMP2000"};
-  
-  checkPerspective(&perspective1, &perspective2);
-}
-
-void test_checkPerspective_given_different_subjectType_at_the_same_time_clash_it_should_print_out_error_message(void)
-{
-	Perspective perspective1 = {.time = 9,
-                             .venue = "D203",
-                             .day = "Monday",
-                             .subjectType = 'L',
-                             .group = "RMB2",
-                             .nameOfLecturer = "Poh TV",
-                             .subjectCode = "AAMP2000"};
-  
-  Perspective perspective2 = {.time = 9,
-                             .venue = "D203",
-                             .day = "Monday",
-                             .subjectType = 'P',
-                             .group = "RMB3",
-                             .nameOfLecturer = "Poh TV",
-                             .subjectCode = "AAMP2000"};
-  
-  checkPerspective(&perspective1, &perspective2);
-}
-
-void test_checkPerspective_given_different_subjectCode_at_the_same_time_and_same_group_clash_it_should_print_out_error_message(void)
-{
-	Perspective perspective1 = {.time = 9,
-                             .venue = "D203",
-                             .day = "Monday",
-                             .subjectType = 'L',
-                             .group = "RMB2",
-                             .nameOfLecturer = "Poh TV",
-                             .subjectCode = "AAMP2000"};
-  
-  Perspective perspective2 = {.time = 9,
-                             .venue = "D203",
-                             .day = "Monday",
-                             .subjectType = 'L',
-                             .group = "RMB2",
-                             .nameOfLecturer = "Poh TV",
-                             .subjectCode = "AAMP2001"};
-  
-  checkPerspective(&perspective1, &perspective2);
-}
-
-void test_checkPerspective_given_different_subjectCode_and_different_group_at_the_same_time_clash_it_should_print_out_error_message(void)
-{
-	Perspective perspective1 = {.time = 9,
-                             .venue = "D203",
-                             .day = "Monday",
-                             .subjectType = 'L',
-                             .group = "RMB2",
-                             .nameOfLecturer = "Poh TV",
-                             .subjectCode = "AAMP2000"};
-  
-  Perspective perspective2 = {.time = 9,
-                             .venue = "D203",
-                             .day = "Monday",
-                             .subjectType = 'L',
-                             .group = "RMB3",
-                             .nameOfLecturer = "Poh TV",
-                             .subjectCode = "AAMP2001"};
-  
-  checkPerspective(&perspective1, &perspective2);
-}
-
-
 void test_getCourseName_should_able_to_get_wat(){
 
-	Course newCourse[] = { {.courseCode = "MUET123",.courseName = "wat"}};
+	Course newCourse[] = { {.courseCode = "MUET123",
+                          .courseName = "wat"}
+                       };
 
 	char *toCheckAnswer = getCourseName(newCourse[0]);
 	
@@ -121,39 +19,38 @@ void test_getCourseName_should_able_to_get_wat(){
 
 void test_getCourseName_should_able_to_get_lolno(){
 
-	Course newCourse[] = { {.courseCode = "MUET123", .courseName = "wat"},
-						   {.courseCode = "MATH", .courseName = "lolno"}
-						 };
+	Course newCourse[] = { {.courseCode = "MUET123", 
+                          .courseName = "wat"},
+                         {.courseCode = "MATH", 
+                          .courseName = "lolno"}
+                       };
 	
-
-	char *toCheckAnswer = getCourseName(newCourse[1]);
-	
+  char *toCheckAnswer = getCourseName(newCourse[1]);
 	TEST_ASSERT_EQUAL_STRING(newCourse[1].courseName, toCheckAnswer);
 
 }
 
 void test_getCourseCode_should_able_to_get_MUET123(){
 
-	Course newCourse[] = { {.courseCode = "MUET123", .courseName = "wat"},
-						   {.courseCode = "MATH", .courseName = "lolno"}
-						 };
+	Course newCourse[] = {{.courseCode = "MUET123",
+                         .courseName = "wat"},
+                        {.courseCode = "MATH", 
+                         .courseName = "lolno"}
+                       };
 	
-
-	char *toCheckAnswer = getCourseCode(newCourse[0]);
-	
+  char *toCheckAnswer = getCourseCode(newCourse[0]);
 	TEST_ASSERT_EQUAL_STRING(newCourse[0].courseCode, toCheckAnswer);
 
 }
 
 void test_getCourseCode_should_able_to_get_MATH(){
 
-	Course newCourse[] = { {.courseCode = "MUET123", .courseName = "wat"},
-						   {.courseCode = "MATH", .courseName = "lolno"}
-						 };
+	Course newCourse[] = {{.courseCode = "MUET123", 
+                         .courseName = "wat"},
+                        {.courseCode = "MATH", 
+                         .courseName = "lolno"}
+                       };
 	
-
-	char *toCheckAnswer = getCourseCode(newCourse[1]);
-	
+  char *toCheckAnswer = getCourseCode(newCourse[1]);
 	TEST_ASSERT_EQUAL_STRING(newCourse[1].courseCode, toCheckAnswer);
-
 }

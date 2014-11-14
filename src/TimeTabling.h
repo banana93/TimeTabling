@@ -1,37 +1,28 @@
 #ifndef TimeTabling_H
 #define TimeTabling_H
 
-typedef struct Perspective Perspective;
 
-struct Perspective
-{
-  int time;
-  char *venue;
-  char *day;
-  char subjectType;
-  char *group;
-  char *nameOfLecturer;
-  char *subjectCode;
-};
 
-void checkPerspective(Perspective *perspective1, Perspective *perspective2);
-
-// I think inside the perspective each of them is struct, right?
-//check whether correct or not, James
+typedef struct Class Class;
 typedef struct Course Course;
 typedef struct Lecturer Lecturer;
 typedef struct Group Group;
 typedef struct Programme Programme;
 
+
 struct Course
 {
 	char *courseCode;
 	char *courseName;
+  int hoursOfLecture;
+  int hoursOfTutorial;
+  int hoursOfPractical;
 };
 
 struct Lecturer
 {
 	char *lecturerName;
+  char *department;
 };
 
 struct Group
@@ -42,8 +33,12 @@ struct Group
 struct Programme
 {
 	int numberOfGroup;
+  char *groupName;
 };
-// the struct might still need to edit later on, because dr poh said pointer to pointer, which im abit confused
+
+struct Class 
+{
+}
 
 char *getCourseName(Course newCourse);
 char *getCourseCode(Course newCourse);
