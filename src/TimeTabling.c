@@ -13,8 +13,13 @@ char *getCourseCode(Course newCourse){
 }
 
 int getTotalStudentsInCourse(Class *newClass) {
-  if(group.groupSize != 0) 
-    return group.groupSize;
+  if(newClass->group->groupSize != 0)
+      return newClass->group->groupSize;  
+}
+
+int getVenueSize(Class *newClass) {
+  if(newClass->venue->sizeOfVenue != 0)
+    return newClass->venue->sizeOfVenue;
 }
 
 // constraints try

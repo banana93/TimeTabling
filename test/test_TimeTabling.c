@@ -65,83 +65,53 @@ void test_getCourseCode_should_able_to_get_MATH(){
 void test_getTotalStudentsInCourse_given_the_groupSize_should_return_the_number_of_students(void) {
   int numberOfStudents;
   Group group = {.groupName = "RMB2",
-                 .groupSize = 40
+                 .groupSize = 30
                 };
                
+  Class newClass = {.group = &group};
   
-  
-  numberOfStudents = getTotalStudentsInCourse(group);
+  numberOfStudents = getTotalStudentsInCourse(&newClass);
   TEST_ASSERT_EQUAL(group.groupSize, numberOfStudents);
 }
 
-/***********************************************************************************
- *  checkCourseHoursClash() 
- ***********************************************************************************/
-void test_checkCourseHoursClash_should_return_1_with_exceeding_hours_of_lecture(){
-	Class newClass;
-	Course courseA;
-	courseA.hoursOfLecture = 5;
-	courseA.hoursOfTutorial = 0;
-	courseA.hoursOfPractical = 0;
-	newClass.course = &courseA;
-	
-	int returnValue = 0;
-	returnValue = checkCourseHoursClash(&newClass);
-	TEST_ASSERT_EQUAL( 1 , returnValue);
- }
- 
-void test_checkCourseHoursClash_should_return_1_with_exceeding_hours_of_tutorial(){
-	Class newClass;
-	Course courseA;
-	courseA.hoursOfLecture = 0;
-	courseA.hoursOfTutorial = 3;
-	courseA.hoursOfPractical = 0;
-	newClass.course = &courseA;
-	
-	int returnValue = 0;
-	returnValue = checkCourseHoursClash(&newClass);
-	TEST_ASSERT_EQUAL( 1 , returnValue);
- }
- 
- void test_checkCourseHoursClash_should_return_1_with_more_than_1_type_of_class(){
-	Class newClass;
-	Course courseA;
-	courseA.hoursOfLecture = 0;
-	courseA.hoursOfTutorial = 1;
-	courseA.hoursOfPractical = 1;
-	newClass.course = &courseA;
-	
-	int returnValue = 0;
-	returnValue = checkCourseHoursClash(&newClass);
-	TEST_ASSERT_EQUAL( 1 , returnValue);
+void test_getVenueSize_given_the_size_of_venue_should_be_able_to_return_the_size_of_venue(void) {
+  int venueSize;
+  Venue venue = {.sizeOfVenue = 40};
+  Class newClass = {.venue = &venue};
+  
+  venueSize = getVenueSize(&newClass);
+  TEST_ASSERT_EQUAL(venue.sizeOfVenue, venueSize);
 }
+  
+  
+  
 
-void test_addDetailsIntoChromosome_given_a_set_of_Class_details_should_be_able_to_add_things_into_the_chromosome(void) {
-  Group group = {.groupName = "K2",
-                 .groupSize = 40};
+// void test_addDetailsIntoChromosome_given_a_set_of_Class_details_should_be_able_to_add_things_into_the_chromosome(void) {
+  // Group group = {.groupName = "K2",
+                 // .groupSize = 40};
                  
-  Programme programme = {.programmeName = "RMB2",
-                          &group};
+  // Programme programme = {.programmeName = "RMB2",
+                          // &group};
                         
-  Course course = {.courseCode = "AAMP2042",
-                   .courseName = "Test Driven Development",
-                   .hoursOfLecture = 2,
-                   .hoursOfTutorial = 1,
-                   .hoursOfPractical = 2,
-                   &programme,
-                   .sizeOfProgramme = 40};
+  // Course course = {.courseCode = "AAMP2042",
+                   // .courseName = "Test Driven Development",
+                   // .hoursOfLecture = 2,
+                   // .hoursOfTutorial = 1,
+                   // .hoursOfPractical = 2,
+                   // &programme,
+                   // .sizeOfProgramme = 40};
   
-  Lecturer lecturer = {.lecturerName = "Poh TV",
-                       .department = "FASC"};
+  // Lecturer lecturer = {.lecturerName = "Poh TV",
+                       // .department = "FASC"};
                       
-  Venue venue = {.nameOfVenue = "D203",
-                 .sizeOfVenue = 40};
+  // Venue venue = {.nameOfVenue = "D203",
+                 // .sizeOfVenue = 40};
   
-  Class class = {&programme,
-                 &course,
-                 &lecturer,
-                 &group,
-                 &venue};
+  // Class class = {&programme,
+                 // &course,
+                 // &lecturer,
+                 // &group,
+                 // &venue};
               
-  //Class Chromosome[2][7][8] = 
-}
+  // Class Chromosome[2][7][8] = 
+// }

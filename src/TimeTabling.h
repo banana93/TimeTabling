@@ -79,7 +79,7 @@ struct Class
 char *getCourseName(Course newCourse);
 char *getCourseCode(Course newCourse);
 int getTotalStudentsInCourse(Class *newClass);
-int getTotalStudentsInCourseofProgramme();
+int getVenueSize(Class *newClass);
 
 //constraints
 
