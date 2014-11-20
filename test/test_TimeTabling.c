@@ -112,4 +112,34 @@ void test_checkCourseHoursClash_should_return_1_with_exceeding_hours_of_tutorial
 	int returnValue = 0;
 	returnValue = checkCourseHoursClash(newClass.course);
 	TEST_ASSERT_EQUAL( 1 , returnValue);
- }
+}
+
+void test_addDetailsIntoChromosome_given_a_set_of_Class_details_should_be_able_to_add_things_into_the_chromosome(void) {
+  Group group = {.groupName = "K2",
+                 .groupSize = 40};
+                 
+  Programme programme = {.programmeName = "RMB2",
+                          &group};
+                        
+  Course course = {.courseCode = "AAMP2042",
+                   .courseName = "Test Driven Development",
+                   .hoursOfLecture = 2,
+                   .hoursOfTutorial = 1,
+                   .hoursOfPractical = 2,
+                   &programme,
+                   .sizeOfProgramme = 40};
+  
+  Lecturer lecturer = {.lecturerName = "Poh TV",
+                       .department = "FASC"};
+                      
+  Venue venue = {.nameOfVenue = "D203",
+                 .sizeOfVenue = 40};
+  
+  Class class = {&programme,
+                 &course,
+                 &lecturer,
+                 &group,
+                 &venue};
+              
+  
+}

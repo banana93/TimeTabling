@@ -71,9 +71,9 @@ struct Class
 {
   Programme *programme;
   Course *course;
-  Lecturer lecturer;
-  Group group;
-  Venue venue;
+  Lecturer *lecturer;
+  Group *group;
+  Venue *venue;
 };
 
 char *getCourseName(Course newCourse);
