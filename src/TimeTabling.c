@@ -64,7 +64,7 @@ int programmeSizeOverloadsVenue(Class *newClass){
 
 }
 
-void addDetailsIntoChromosome(Class (*chromosome)[][MAX_DAY][MAX_TIME_SLOTS]) {
+void addDetailsIntoChromosome(Class (*chromosome)[][MAX_DAY][MAX_TIME_SLOTS], Programme programme[]) {
   int venue, day, time;
   
   // for(venue = 0; venue < 2; venue++) {

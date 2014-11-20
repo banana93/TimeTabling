@@ -84,10 +84,11 @@ char *getCourseName(Course newCourse);
 char *getCourseCode(Course newCourse);
 int getTotalStudentsInCourse(Class *newClass);
 int getVenueSize(Class *newClass);
-void addDetailsIntoChromosome(Class (*chromosome)[][MAX_DAY][MAX_TIME_SLOTS]);
+void addDetailsIntoChromosome(Class (*chromosome)[][MAX_DAY][MAX_TIME_SLOTS], Programme programme[]);
 
 //constraints
 int checkCourseHoursClash( Class *newClass);
 int programmeSizeOverloadsVenue(Class *newClass);
+
 
 #endif // TimeTabling_H
