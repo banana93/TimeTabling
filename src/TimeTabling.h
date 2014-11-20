@@ -84,7 +84,8 @@ char *getCourseName(Course newCourse);
 char *getCourseCode(Course newCourse);
 int getTotalStudentsInCourse(Class *newClass);
 int getVenueSize(Class *newClass);
-void addDetailsIntoChromosome(Class (*chromosome)[][MAX_DAY][MAX_TIME_SLOTS], Programme programme[]);
+int addDetailsIntoChromosome(Programme (*programme)[], Group (*group)[], Course (*course)[], Lecturer (*lecturer)[], Venue (*venues)[]);
+int checkChromosomeIsEmpty(Class chromosome [1][MAX_DAY][MAX_TIME_SLOTS]);
 
 //constraints
 int checkCourseHoursClash( Class *newClass);

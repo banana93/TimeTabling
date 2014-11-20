@@ -64,16 +64,41 @@ int programmeSizeOverloadsVenue(Class *newClass){
 
 }
 
-void addDetailsIntoChromosome(Class (*chromosome)[][MAX_DAY][MAX_TIME_SLOTS], Programme programme[]) {
-  int venue, day, time;
+// int addDetailsIntoChromosome(Programme (*programme)[], Group (*group)[], Course (*course)[], Lecturer (*lecturer)[], Venue (*venues)[]) {
+  // int venue = 0, day = 0, time = 0;
+  // Class (*chromosome)[venue][day][time];
   
-  // for(venue = 0; venue < 2; venue++) {
-    // for(day = 0; day < 5; day++) {
-      // for(time = 0; time < 8; time ++) {
-        //  newClass[venue][day][time];
+  // for(venue = 0; venue < 1; venue++) {
+    // for(day = 0; day < 1; day++) {
+      // for(time = 0; time < 1; time ++) {
+      
+        // if(chromosome[venue][day][time] == NULL) {
+        
+          // (*chromosome)[venue][day][time] = {  &programme,
+                                               // &course,
+                                               // &lecturer,
+                                               // &group,
+                                               // &venues
+                                            // };
+         // printf("asd\n");
+        // } else 
+            // return 0;
       // }
     // }
   // }
+// }
+
+int checkChromosomeIsEmpty(Class chromosome [1][MAX_DAY][MAX_TIME_SLOTS]) {
+  int venue = 0, day = 0, time = 0;
   
-   printf("programme name: %d\n", (*chromosome)[0][0][0].group->groupSize);
+  for(venue; venue < 4; venue++) {
+    for(day; day < MAX_DAY; day++) {
+      for(time; time < MAX_TIME_SLOTS; time++) {
+        if(chromosome[venue][day][time] == NULL)
+          return 1;
+        else 
+          return 0;
+      }
+    }
+  }
 }

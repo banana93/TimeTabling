@@ -168,11 +168,10 @@ void tearDown(void){}
   // TEST_ASSERT_EQUAL(venue.sizeOfVenue, venueSize);
 // }
   
-void test_addDetailsIntoChromosome_given_a_set_of_Class_details_should_be_able_to_add_things_into_the_chromosome(void) {
-  // Programme programme;
-  // Class chromosome;
- // addDetailsIntoChromosome(&chromosome, &programme[0]);
-  printf("programme: %s\n", programme[0].programmeName);
+void test_checkChromosomeIsEmpty_given_an_empty_chromosome_should_return_1(void) {
+  Class chromosome[][MAX_DAY][MAX_TIME_SLOTS];
+  int result;
   
- // printf("programme name: %s\n", chromosome[0][0][0].programme->programmeName);
+  result = checkChromosomeIsEmpty(&chromosome);
+  TEST_ASSERT_EQUAL(1, result);
 }
