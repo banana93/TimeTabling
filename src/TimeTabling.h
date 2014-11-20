@@ -84,5 +84,6 @@ int getVenueSize(Class *newClass);
 //constraints
 
 int checkCourseHoursClash( Class *newClass);
+int programmeSizeOverloadsVenue(Class *newClass);
 
 #endif // TimeTabling_H

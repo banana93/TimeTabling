@@ -57,3 +57,9 @@ else if((newClass->course->hoursOfLecture + newClass->course->hoursOfTutorial + 
 	return 1;
 	
 }
+
+int programmeSizeOverloadsVenue(Class *newClass){
+
+
+
+}
