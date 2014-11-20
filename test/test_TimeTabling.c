@@ -84,7 +84,7 @@ void test_checkCourseHoursClash_should_return_1_with_exceeding_hours_of_lecture(
 	newClass.course = &courseA;
 	
 	int returnValue = 0;
-	returnValue = checkCourseHoursClash(newClass.course);
+	returnValue = checkCourseHoursClash(&newClass);
 	TEST_ASSERT_EQUAL( 1 , returnValue);
  }
  
@@ -97,7 +97,7 @@ void test_checkCourseHoursClash_should_return_1_with_exceeding_hours_of_tutorial
 	newClass.course = &courseA;
 	
 	int returnValue = 0;
-	returnValue = checkCourseHoursClash(newClass.course);
+	returnValue = checkCourseHoursClash(&newClass);
 	TEST_ASSERT_EQUAL( 1 , returnValue);
  }
  
@@ -110,6 +110,6 @@ void test_checkCourseHoursClash_should_return_1_with_exceeding_hours_of_tutorial
 	newClass.course = &courseA;
 	
 	int returnValue = 0;
-	returnValue = checkCourseHoursClash(newClass.course);
+	returnValue = checkCourseHoursClash(&newClass);
 	TEST_ASSERT_EQUAL( 1 , returnValue);
  }
