@@ -32,22 +32,22 @@ int getTotalStudentsInCourse(Class *newClass) {
 *	- Tutorial cannot more than 2 hours
 *
 */
-int checkCourseHoursClash( Course *course){
-if( course->hoursOfLecture != 0 && (course->hoursOfTutorial + course->hoursOfPractical) == 0){
-	if( course->hoursOfLecture >= 0 && course->hoursOfLecture <= 4)
+int checkCourseHoursClash( Class *newClass){
+if( newClass->course->hoursOfLecture != 0 && (newClass->course->hoursOfTutorial + newClass->course->hoursOfPractical) == 0){
+	if( newClass->course->hoursOfLecture >= 0 && newClass->course->hoursOfLecture <= 4)
 		return 0;
 	else
 		return 1;
 }
-else if( course->hoursOfTutorial != 0 && (course->hoursOfLecture + course->hoursOfPractical) == 0){
-	if( course->hoursOfTutorial >= 0 && course->hoursOfTutorial <=2 )
+else if( newClass->course->hoursOfTutorial != 0 && (newClass->course->hoursOfLecture + newClass->course->hoursOfPractical) == 0){
+	if( newClass->course->hoursOfTutorial >= 0 && newClass->course->hoursOfTutorial <=2 )
 		return 0;
 	else
 		return 1;
 }
-else if( course->hoursOfPractical != 0 && (course->hoursOfLecture + course->hoursOfTutorial) == 0)
+else if( newClass->course->hoursOfPractical != 0 && (newClass->course->hoursOfLecture + newClass->course->hoursOfTutorial) == 0)
 		return 0;
-else if((course->hoursOfLecture + course->hoursOfTutorial + course->hoursOfPractical) == 0)
+else if((newClass->course->hoursOfLecture + newClass->course->hoursOfTutorial + newClass->course->hoursOfPractical) == 0)
 		return 0;
 	return 1;
 	

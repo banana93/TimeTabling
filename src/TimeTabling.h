@@ -82,6 +82,7 @@ int getTotalStudentsInCourse(Class *newClass);
 int getTotalStudentsInCourseofProgramme();
 
 //constraints
-int checkCourseHoursClash(Course *course);
+
+int checkCourseHoursClash( Class *newClass);
 
 #endif // TimeTabling_H
