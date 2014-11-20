@@ -1,6 +1,10 @@
 #ifndef TimeTabling_H
 #define TimeTabling_H
 #include <stdio.h>
+
+#define MAX_DAY 5
+#define MAX_TIME_SLOTS 8
+
 typedef enum
 {
   SUNDAY,
@@ -53,7 +57,7 @@ struct Group
 struct Programme
 {
   char *programmeName;
-  Group group;
+  Group *group;
 };
 
 struct Course
@@ -63,7 +67,7 @@ struct Course
   int hoursOfLecture;
   int hoursOfTutorial;
   int hoursOfPractical;
-  Programme programme;
+  Programme *programme;
   int sizeOfProgramme;
 };
 
@@ -80,9 +84,9 @@ char *getCourseName(Course newCourse);
 char *getCourseCode(Course newCourse);
 int getTotalStudentsInCourse(Class *newClass);
 int getVenueSize(Class *newClass);
+void addDetailsIntoChromosome(Class (*chromosome)[][MAX_DAY][MAX_TIME_SLOTS]);
 
 //constraints
-
 int checkCourseHoursClash( Class *newClass);
 int programmeSizeOverloadsVenue(Class *newClass);
 

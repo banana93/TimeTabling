@@ -37,7 +37,7 @@ int getVenueSize(Class *newClass) {
 *	- Tutorial cannot more than 2 hours
 *
 */
-int checkCourseHoursClash( Class *newClass){
+int checkCourseHoursClash(Class *newClass){
 if( newClass->course->hoursOfLecture != 0 && (newClass->course->hoursOfTutorial + newClass->course->hoursOfPractical) == 0){
 	if( newClass->course->hoursOfLecture >= 0 && newClass->course->hoursOfLecture <= 4)
 		return 0;
@@ -62,4 +62,18 @@ int programmeSizeOverloadsVenue(Class *newClass){
 
 
 
+}
+
+void addDetailsIntoChromosome(Class (*chromosome)[][MAX_DAY][MAX_TIME_SLOTS]) {
+  int venue, day, time;
+  
+  // for(venue = 0; venue < 2; venue++) {
+    // for(day = 0; day < 5; day++) {
+      // for(time = 0; time < 8; time ++) {
+        //  newClass[venue][day][time];
+      // }
+    // }
+  // }
+  
+   printf("programme name: %d\n", (*chromosome)[0][0][0].group->groupSize);
 }
