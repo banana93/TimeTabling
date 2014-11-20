@@ -78,9 +78,10 @@ struct Class
 
 char *getCourseName(Course newCourse);
 char *getCourseCode(Course newCourse);
-int getTotalStudentsInCourse(Group group);
+int getTotalStudentsInCourse(Class *newClass);
 int getTotalStudentsInCourseofProgramme();
 
 //constraints
-int checkCourseHoursClash( Course *course);
+int checkCourseHoursClash(Course *course);
+
 #endif // TimeTabling_H

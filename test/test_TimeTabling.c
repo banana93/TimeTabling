@@ -67,6 +67,8 @@ void test_getTotalStudentsInCourse_given_the_groupSize_should_return_the_number_
   Group group = {.groupName = "RMB2",
                  .groupSize = 40
                 };
+               
+  
   
   numberOfStudents = getTotalStudentsInCourse(group);
   TEST_ASSERT_EQUAL(group.groupSize, numberOfStudents);
@@ -141,5 +143,5 @@ void test_addDetailsIntoChromosome_given_a_set_of_Class_details_should_be_able_t
                  &group,
                  &venue};
               
-  
+  //Class Chromosome[2][7][8] = 
 }

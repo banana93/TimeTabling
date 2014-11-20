@@ -12,7 +12,7 @@ char *getCourseCode(Course newCourse){
     return newCourse.courseCode;
 }
 
-int getTotalStudentsInCourse(Group group) {
+int getTotalStudentsInCourse(Class *newClass) {
   if(group.groupSize != 0) 
     return group.groupSize;
 }
