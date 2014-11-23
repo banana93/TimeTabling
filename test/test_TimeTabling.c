@@ -169,7 +169,7 @@ void tearDown(void){}
 // }
   
 void test_checkChromosomeIsEmpty_given_an_empty_chromosome_should_return_1(void) {
-  Class chromosome[][MAX_DAY][MAX_TIME_SLOTS];
+  Class chromosome[4][MAX_DAY][MAX_TIME_SLOTS];
   int result;
   
   result = checkChromosomeIsEmpty(&chromosome);

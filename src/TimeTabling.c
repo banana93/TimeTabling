@@ -88,13 +88,14 @@ int programmeSizeOverloadsVenue(Class *newClass){
   // }
 // }
 
-int checkChromosomeIsEmpty(Class chromosome [1][MAX_DAY][MAX_TIME_SLOTS]) {
-  int venue = 0, day = 0, time = 0;
+int checkChromosomeIsEmpty(Class chromosome[4][MAX_DAY][MAX_TIME_SLOTS]) {
+  int venue = 0;
+  int day = 0, time = 0;
   
   for(venue; venue < 4; venue++) {
     for(day; day < MAX_DAY; day++) {
       for(time; time < MAX_TIME_SLOTS; time++) {
-        if(chromosome[venue][day][time] == NULL)
+        if(chromosome[venue][day][time] == )
           return 1;
         else 
           return 0;
