@@ -46,6 +46,7 @@ struct Lecturer
 {
 	char *lecturerName;
   char *department;
+  char *courseCodeInCharge[5];
 };
 
 struct Group
@@ -89,7 +90,8 @@ int checkChromosomeIsEmpty(Class chromosome [4][MAX_DAY][MAX_TIME_SLOTS]);
 
 //constraints
 int checkCourseHoursClash( Class *newClass);
-int programmeSizeOverloadsVenue(Class *newClass);
+int checkLecturerNotInchargeOfCourse(Class *newClass);
+// int programmeSizeOverloadsVenue(Class *newClass);
 
 
 #endif // TimeTabling_H
