@@ -25,12 +25,14 @@ int getVenueSize(Class *newClass) {
 // constraints try
 /**
 *	Name:	checkCourseHoursClash()
+*	Input: Class struct pointer
+*	Output: return 1 if there is clash/violation, else 0
 *	
 *	Descriptions:
 *	This function is to check the clashes and maximum hours of the class.
 *	In the chromosome, only one Course, and type of class available at times.
 *	Besides that, each type of class have a limit of hours
-
+*
 *	Constraints included for each Chromosome's slot
 *	- Only can have one in each array slot. Tutorial, Practical, Lecture
 *	- Lecture cannot more than 4 hours
@@ -58,11 +60,25 @@ else if((newClass->course->hoursOfLecture + newClass->course->hoursOfTutorial + 
 	
 }
 
-int programmeSizeOverloadsVenue(Class *newClass){
+/**
+*	Name:	checkLecturerNotInchargeOfCourse()
+*	Input: 	Class struct pointer, Course *course[]
+*	Output: return 1 if there is violation, else 0
+*	
+*	Descriptions:
+*	To check the course on the time slot incharge by the lecturer
+*
+*/
+int checkLecturerNotInchargeOfCourse(Class *newClass){
 
-
-
+	int i,j;
+	for(j=0 ; newClass->lecturer->courseCodeInCharge[j] != NULL ; j++){
+		if(newClass->lecturer->courseCodeInCharge[j] == newClass->course->courseCode)
+			return 0;
+	}
+	return 1;
 }
+//constraints function ends here
 
 // int addDetailsIntoChromosome(Programme (*programme)[], Group (*group)[], Course (*course)[], Lecturer (*lecturer)[], Venue (*venues)[]) {
   // int venue = 0, day = 0, time = 0;
