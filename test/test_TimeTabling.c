@@ -83,7 +83,7 @@
                        .hoursOfLecture = 2,
                        .hoursOfTutorial = 1,
                        .hoursOfPractical = 0,
-                       &programme[3],
+                       &programme[4],
                        .sizeOfProgramme = 30}
                     };
                     

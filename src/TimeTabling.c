@@ -12,15 +12,15 @@ char *getCourseCode(Course newCourse){
     return newCourse.courseCode;
 }
 
-int getTotalStudentsInCourse(Class *newClass) {
-  if(newClass->group->groupSize != 0)
-      return newClass->group->groupSize;  
-}
+// int getTotalStudentsInCourse(Class *newClass) {
+  // if(newClass->group->groupSize != 0)
+      // return newClass->group->groupSize;  
+// }
 
-int getVenueSize(Class *newClass) {
-  if(newClass->venue->sizeOfVenue != 0)
-    return newClass->venue->sizeOfVenue;
-}
+// int getVenueSize(Class *newClass) {
+  // if(newClass->venue->sizeOfVenue != 0)
+    // return newClass->venue->sizeOfVenue;
+// }
 
 // constraints try
 /**
@@ -111,10 +111,12 @@ int checkChromosomeIsEmpty(Class chromosome[4][MAX_DAY][MAX_TIME_SLOTS]) {
   for(venue; venue < 4; venue++) {
     for(day; day < MAX_DAY; day++) {
       for(time; time < MAX_TIME_SLOTS; time++) {
-        if(chromosome[venue][day][time] == )
+        if(chromosome[venue][day][time].course == NULL && chromosome[venue][day][time].lecturer == NULL)
           return 1;
-        else 
-          return 0;
+        else if(chromosome[venue][day][time].lecturer != NULL)
+          printf("asd\n");
+          
+          // return 0;
       }
     }
   }
