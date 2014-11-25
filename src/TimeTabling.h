@@ -29,12 +29,12 @@ typedef enum
   _4_to_5
 } TotalTimeSlot;
        
-typedef struct Class Class;
 typedef struct Course Course;
 typedef struct Lecturer Lecturer;
 typedef struct Group Group;
 typedef struct Programme Programme;
 typedef struct Venue Venue;
+typedef struct Class Class;
 
 struct Venue
 {
@@ -83,7 +83,7 @@ char *getCourseCode(Course newCourse);
 int getTotalStudentsInCourse(Class *newClass);
 int getVenueSize(Class *newClass);
 int addDetailsIntoChromosome(Programme (*programme)[], Group (*group)[], Course (*course)[], Lecturer (*lecturer)[], Venue (*venues)[]);
-int checkChromosomeIsEmpty(Class chromosome [4][MAX_DAY][MAX_TIME_SLOTS]);
+int checkChromosomeIsEmpty(Class class[4][MAX_DAY][MAX_TIME_SLOTS]);
 
 //constraints
 int checkCourseHoursClash( Class *newClass);

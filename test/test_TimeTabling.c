@@ -169,9 +169,18 @@ void tearDown(void){}
 // }
   
 void test_checkChromosomeIsEmpty_given_an_empty_chromosome_should_return_1(void) {
-  Class chromosome[4][MAX_DAY][MAX_TIME_SLOTS];
+  Class class[4][MAX_DAY][MAX_TIME_SLOTS] = {NULL, NULL};
   int result;
   
-  result = checkChromosomeIsEmpty(&chromosome);
+  result = checkChromosomeIsEmpty(class);
   TEST_ASSERT_EQUAL(1, result);
+}
+
+void test_checkChromosomeIsEmpty_given_a_chromosome_that_is_not_empty_should_return_0(void) {
+  Class class[4][MAX_DAY][MAX_TIME_SLOTS] = {&course[0], 
+                                             &lecturer[0]};
+  int result;
+  
+  result = checkChromosomeIsEmpty(class);
+  TEST_ASSERT_EQUAL(0, result);
 }

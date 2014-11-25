@@ -104,19 +104,17 @@ int checkLecturerNotInchargeOfCourse(Class *newClass){
   // }
 // }
 
-int checkChromosomeIsEmpty(Class chromosome[4][MAX_DAY][MAX_TIME_SLOTS]) {
+int checkChromosomeIsEmpty(Class class[4][MAX_DAY][MAX_TIME_SLOTS]) {
   int venue = 0;
   int day = 0, time = 0;
   
   for(venue; venue < 4; venue++) {
     for(day; day < MAX_DAY; day++) {
       for(time; time < MAX_TIME_SLOTS; time++) {
-        if(chromosome[venue][day][time].course == NULL && chromosome[venue][day][time].lecturer == NULL)
+        if(class[venue][day][time].course == NULL && class[venue][day][time].lecturer == NULL)
           return 1;
-        else if(chromosome[venue][day][time].lecturer != NULL)
-          printf("asd\n");
-          
-          // return 0;
+        else
+          return 0;
       }
     }
   }
