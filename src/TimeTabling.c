@@ -80,30 +80,6 @@ int checkLecturerNotInchargeOfCourse(Class *newClass){
 }
 //constraints function ends here
 
-// int addDetailsIntoChromosome(Programme (*programme)[], Group (*group)[], Course (*course)[], Lecturer (*lecturer)[], Venue (*venues)[]) {
-  // int venue = 0, day = 0, time = 0;
-  // Class (*chromosome)[venue][day][time];
-  
-  // for(venue = 0; venue < 1; venue++) {
-    // for(day = 0; day < 1; day++) {
-      // for(time = 0; time < 1; time ++) {
-      
-        // if(chromosome[venue][day][time] == NULL) {
-        
-          // (*chromosome)[venue][day][time] = {  &programme,
-                                               // &course,
-                                               // &lecturer,
-                                               // &group,
-                                               // &venues
-                                            // };
-         // printf("asd\n");
-        // } else 
-            // return 0;
-      // }
-    // }
-  // }
-// }
-
 int checkChromosomeIsEmpty(Class class[4][MAX_DAY][MAX_TIME_SLOTS]) {
   int venue = 0;
   int day = 0, time = 0;
@@ -118,4 +94,9 @@ int checkChromosomeIsEmpty(Class class[4][MAX_DAY][MAX_TIME_SLOTS]) {
       }
     }
   }
+}
+
+void addDetailsIntoChromosome(Class class[4][MAX_DAY][MAX_TIME_SLOTS], Programme programme[], Group group[], Course course[], Lecturer lecturer[], Venue venues[]) {
+  if(checkChromosomeIsEmpty(class))
+    printf("asd\n");
 }
