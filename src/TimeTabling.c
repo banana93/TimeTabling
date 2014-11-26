@@ -80,7 +80,7 @@ int checkLecturerNotInchargeOfCourse(Class *newClass){
 }
 //constraints function ends here
 
-int checkChromosomeIsEmpty(Class class[4][MAX_DAY][MAX_TIME_SLOTS]) {
+Class *checkChromosomeIsEmpty(Class class[4][MAX_DAY][MAX_TIME_SLOTS]) {
   int venue = 0;
   int day = 0, time = 0;
   
@@ -88,9 +88,7 @@ int checkChromosomeIsEmpty(Class class[4][MAX_DAY][MAX_TIME_SLOTS]) {
     for(day; day < MAX_DAY; day++) {
       for(time; time < MAX_TIME_SLOTS; time++) {
         if(class[venue][day][time].course == NULL && class[venue][day][time].lecturer == NULL)
-          return 1;
-        else
-          return 0;
+          return &class[venue][day][time];
       }
     }
   }

@@ -168,37 +168,50 @@ void tearDown(void){}
   // TEST_ASSERT_EQUAL(venue.sizeOfVenue, venueSize);
 // }
   
-void test_checkChromosomeIsEmpty_given_an_empty_chromosome_should_return_1(void) {
+void test_checkChromosomeIsEmpty_given_an_empty_chromosome_should_return_class000(void) {
   Class class[4][MAX_DAY][MAX_TIME_SLOTS] = {NULL, NULL};
-  int result;
   
+  Class *result;
+
   result = checkChromosomeIsEmpty(class);
-  TEST_ASSERT_EQUAL(1, result);
+  TEST_ASSERT_EQUAL_PTR(&class[0][0][0],result);
 }
 
-void test_checkChromosomeIsEmpty_given_a_chromosome_that_is_not_empty_should_return_0(void) {
+void test_checkChromosomeIsEmpty_given_a_chromosome_that_is_not_empty_should_return_class001(void) {
   Class class[4][MAX_DAY][MAX_TIME_SLOTS] = {&course[0], 
                                              &lecturer[0]};
-  int result;
-  
+  Class *result;
+
   result = checkChromosomeIsEmpty(class);
-  TEST_ASSERT_EQUAL(0, result);
+  TEST_ASSERT_EQUAL_PTR(&class[0][0][1],result);
 }
 
-void test_addDetailsIntoChromosome_given_the_details_should_be_able_to_add_into_the_chromosome(void) {
-  Class class[4][MAX_DAY][MAX_TIME_SLOTS];
-                                            
-  addDetailsIntoChromosome(class, &programme[0], &group[0], &course[0], &lecturer[0], &venue[0]);
-  
-  TEST_ASSERT_EQUAL_STRING("AAMP2041", class[0][0][0].course[0].courseCode);
-  TEST_ASSERT_EQUAL_STRING("Mathematics", class[0][0][0].course[0].courseName);
-  TEST_ASSERT_EQUAL(2, class[0][0][0].course[0].hoursOfLecture);
-  TEST_ASSERT_EQUAL(2, class[0][0][0].course[0].hoursOfPractical);
-  TEST_ASSERT_EQUAL(1, class[0][0][0].course[0].hoursOfTutorial);
-  TEST_ASSERT_EQUAL_STRING("RMB2", class[0][0][0].course[0].programme[0].programmeName);
-  TEST_ASSERT_EQUAL_STRING("A2", class[0][0][0].course[0].programme[0].group[0].groupName);
-  TEST_ASSERT_EQUAL(10, class[0][0][0].course[0].programme[0].group[0].groupSize);
-  TEST_ASSERT_EQUAL(20, class[0][0][0].course[0].sizeOfProgramme);
-  TEST_ASSERT_EQUAL_STRING("Poh TV", class[0][0][0].lecturer[0].lecturerName);
-  TEST_ASSERT_EQUAL_STRING("FASC", class[0][0][0].lecturer[0].department);
+void test_checkChromosomeIsEmpty_given_a_chromosome_that_is_not_empty_should_return_class002(void) {
+  Class class[4][MAX_DAY][MAX_TIME_SLOTS] = {&course[0], &lecturer[0]};
+
+  //help help directly declare top, i did, but dont know why cannot, lol
+	class[0][0][1].course = &course[1];
+	class[0][0][1].lecturer = &lecturer[1];
+	
+  Class *result;
+  result = checkChromosomeIsEmpty(class);
+  TEST_ASSERT_EQUAL_PTR(&class[0][0][2],result);
 }
+
+// void test_addDetailsIntoChromosome_given_the_details_should_be_able_to_add_into_the_chromosome(void) {
+  // Class class[4][MAX_DAY][MAX_TIME_SLOTS];
+                                            
+  // addDetailsIntoChromosome(class, &programme[0], &group[0], &course[0], &lecturer[0], &venue[0]);
+  
+  // TEST_ASSERT_EQUAL_STRING("AAMP2041", class[0][0][0].course[0].courseCode);
+  // TEST_ASSERT_EQUAL_STRING("Mathematics", class[0][0][0].course[0].courseName);
+  // TEST_ASSERT_EQUAL(2, class[0][0][0].course[0].hoursOfLecture);
+  // TEST_ASSERT_EQUAL(2, class[0][0][0].course[0].hoursOfPractical);
+  // TEST_ASSERT_EQUAL(1, class[0][0][0].course[0].hoursOfTutorial);
+  // TEST_ASSERT_EQUAL_STRING("RMB2", class[0][0][0].course[0].programme[0].programmeName);
+  // TEST_ASSERT_EQUAL_STRING("A2", class[0][0][0].course[0].programme[0].group[0].groupName);
+  // TEST_ASSERT_EQUAL(10, class[0][0][0].course[0].programme[0].group[0].groupSize);
+  // TEST_ASSERT_EQUAL(20, class[0][0][0].course[0].sizeOfProgramme);
+  // TEST_ASSERT_EQUAL_STRING("Poh TV", class[0][0][0].lecturer[0].lecturerName);
+  // TEST_ASSERT_EQUAL_STRING("FASC", class[0][0][0].lecturer[0].department);
+// }
