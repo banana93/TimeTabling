@@ -95,6 +95,7 @@ Class *checkChromosomeIsEmpty(Class class[4][MAX_DAY][MAX_TIME_SLOTS]) {
 }
 
 void addDetailsIntoChromosome(Class class[4][MAX_DAY][MAX_TIME_SLOTS], Programme programme[], Group group[], Course course[], Lecturer lecturer[], Venue venues[]) {
-  if(checkChromosomeIsEmpty(class))
-    printf("asd\n");
+	Class *newClass = checkChromosomeIsEmpty(class);
+	newClass->lecturer = lecturer;
+	newClass->course = course;
 }
