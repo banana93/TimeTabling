@@ -211,13 +211,82 @@ void test_checkCourseHoursClash_should_return_1_with_exceeding_hours_of_tutorial
 }
 
 /***********************************************************************************
- *  checkIfLecturesOverloaded() 
+ *  checkIfTutionOverloadedInSingleDay() 
  ***********************************************************************************/
- void test_checkIfLecturesOverloaded_(){
+ void test_checkIfTutionOverloadedInSingleDay_shoud_return_0_for_not_exceeding_lecture_hours(){
 		
 	addDetailsIntoChromosome(class, &course[0], &lecturer[0], 'l');
 	addDetailsIntoChromosome(class, &course[1], &lecturer[1], 'l');
 	addDetailsIntoChromosome(class, &course[1], &lecturer[1], 'l');
 
-	TEST_ASSERT_EQUAL(0, checkIfLecturesOverloaded(class));
+
+	TEST_ASSERT_EQUAL(0, checkIfTutionOverloadedInSingleDay(class, 0, 0));
+ }
+
+void test_checkIfTutionOverloadedInSingleDay_shoud_return_1_for_exceeding_lecture_hours(){
+		
+	addDetailsIntoChromosome(class, &course[0], &lecturer[0], 'l');
+	addDetailsIntoChromosome(class, &course[1], &lecturer[1], 'l');
+	addDetailsIntoChromosome(class, &course[1], &lecturer[1], 'l');
+	addDetailsIntoChromosome(class, &course[1], &lecturer[1], 'l');
+
+
+	TEST_ASSERT_EQUAL(1, checkIfTutionOverloadedInSingleDay(class, 0, 0));
+ }
+ 
+ void test_checkIfTutionOverloadedInSingleDay_shoud_return_0_for_not_exceeding_lecture_hours2(){
+		
+	addDetailsIntoChromosome(class, &course[0], &lecturer[0], 'l');
+	addDetailsIntoChromosome(class, &course[0], &lecturer[0], 'l');
+	addDetailsIntoChromosome(class, &course[1], &lecturer[1], 'l');
+	addDetailsIntoChromosome(class, &course[1], &lecturer[1], 'l');
+	addDetailsIntoChromosome(class, &course[2], &lecturer[2], 'l');
+	addDetailsIntoChromosome(class, &course[2], &lecturer[2], 'l');
+	addDetailsIntoChromosome(class, &course[3], &lecturer[3], 'l');
+	addDetailsIntoChromosome(class, &course[3], &lecturer[3], 'l'); //This is another day
+	addDetailsIntoChromosome(class, &course[3], &lecturer[3], 'l');
+
+
+	TEST_ASSERT_EQUAL(0, checkIfTutionOverloadedInSingleDay(class, 0, 0));
+ }
+ 
+void test_checkIfTutionOverloadedInSingleDay_shoud_return_0_for_not_exceeding_tutorial_hours(){
+		
+	addDetailsIntoChromosome(class, &course[0], &lecturer[0], 't');
+	addDetailsIntoChromosome(class, &course[1], &lecturer[1], 't');
+	addDetailsIntoChromosome(class, &course[2], &lecturer[2], 't');
+	addDetailsIntoChromosome(class, &course[3], &lecturer[3], 't');
+
+
+	TEST_ASSERT_EQUAL(0, checkIfTutionOverloadedInSingleDay(class, 0, 0));
+ }
+ 
+void test_checkIfTutionOverloadedInSingleDay_shoud_return_1_for_exceeding_tutorial_hours(){
+		
+	addDetailsIntoChromosome(class, &course[0], &lecturer[0], 't');
+	addDetailsIntoChromosome(class, &course[1], &lecturer[1], 't');
+	addDetailsIntoChromosome(class, &course[2], &lecturer[2], 't');
+	addDetailsIntoChromosome(class, &course[3], &lecturer[3], 't');
+	addDetailsIntoChromosome(class, &course[3], &lecturer[3], 't');
+
+
+	TEST_ASSERT_EQUAL(1, checkIfTutionOverloadedInSingleDay(class, 0, 0));
+ }
+ 
+ void test_checkIfTutionOverloadedInSingleDay_shoud_return_0_for_not_exceeding_practical_hours(){
+		
+	addDetailsIntoChromosome(class, &course[0], &lecturer[0], 'p');
+	addDetailsIntoChromosome(class, &course[0], &lecturer[0], 'p');
+
+
+	TEST_ASSERT_EQUAL(0, checkIfTutionOverloadedInSingleDay(class, 0, 0));
+ }
+ 
+void test_checkIfTutionOverloadedInSingleDay_shoud_return_1_for_exceeding_practical_hours(){
+		
+	addDetailsIntoChromosome(class, &course[0], &lecturer[0], 'p');
+	addDetailsIntoChromosome(class, &course[1], &lecturer[1], 'p');
+
+
+	TEST_ASSERT_EQUAL(1, checkIfTutionOverloadedInSingleDay(class, 0, 0));
  }

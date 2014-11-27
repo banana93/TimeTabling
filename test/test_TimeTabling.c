@@ -231,7 +231,7 @@ void test_addDetailsIntoChromosome_given_the_details_should_be_able_to_add_into_
   TEST_ASSERT_EQUAL('l', class[0][0][0].typeOfClass);
 }
 
-void xtest_addDetailsIntoChromosome_given_the_details_should_be_able_to_add_into_the_class001(void) {
+void test_addDetailsIntoChromosome_given_the_details_should_be_able_to_add_into_the_class001(void) {
 
                                             
   addDetailsIntoChromosome(class, &course[0], &lecturer[0], 'l');

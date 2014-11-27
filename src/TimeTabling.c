@@ -79,27 +79,35 @@ int checkLecturerNotInchargeOfCourse(Class *newClass){
 	return 1;
 }
 
-int checkIfLecturesOverloaded(Class newClass[4][MAX_DAY][MAX_TIME_SLOTS]){
+int checkIfTutionOverloadedInSingleDay(Class newClass[4][MAX_DAY][MAX_TIME_SLOTS], int venue, int day){
 
-	int venue = 0, day = 0, time, i, j;
+	int time, i, j;
 	int counter[MAX_TIME_SLOTS] = {0,0,0,0,0,0,0,0};
 	
-	// for(time = 0 ; time < MAX_TIME_SLOTS && newClass[venue][day][time].course ; time++){
-		// for(i = 0; i < MAX_TIME_SLOTS; i++){
-				// if(newClass[venue][day][time].course == newClass[venue][day][i].course
-					// && newClass[venue][day][time].typeOfClass == newClass[venue][day][i].typeOfClass)
-					// counter[time]++;
-		// }
-	// }
+	// Add up hours of lecture
+	for(time = 0 ; time < MAX_TIME_SLOTS && newClass[venue][day][time].course ; time++){
+		for(i = 0; i < MAX_TIME_SLOTS; i++){
+				if(newClass[venue][day][time].course == newClass[venue][day][i].course
+					&& newClass[venue][day][time].typeOfClass == newClass[venue][day][i].typeOfClass)
+					counter[time]++;
+		}
+	}
 
-	if(newClass[venue][day][2].course)
-	printf("hi\n");
-	// for(j = 0 ; j < MAX_TIME_SLOTS && newClass[venue][day][j].course; j++){
-		// printf("%d\n",counter[j]);
-		// if(counter[j] > newClass[venue][day][j].course->hoursOfLecture)
-			// return 1;
-		// return 0;
-	// }
+	for(j = 0 ; j < MAX_TIME_SLOTS && newClass[venue][day][j].course; j++){
+		if(newClass[venue][day][j].typeOfClass == 'l'){
+			if(counter[j] > newClass[venue][day][j].course->hoursOfLecture)
+				return 1;
+		}
+		else if(newClass[venue][day][j].typeOfClass == 't'){
+			if(counter[j] > newClass[venue][day][j].course->hoursOfTutorial)
+				return 1;
+		}
+		else if(newClass[venue][day][j].typeOfClass == 'p'){
+			if(counter[j] > newClass[venue][day][j].course->hoursOfPractical)
+				return 1;
+		}
+	}
+		return 0;
 
 }
 //constraints function ends here
