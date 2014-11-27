@@ -90,6 +90,7 @@ Class *checkChromosomeIsEmpty(Class newClass[4][MAX_DAY][MAX_TIME_SLOTS]);
 int checkCourseHoursClash( Class *newClass);
 int checkLecturerNotInchargeOfCourse(Class *newClass);
 int checkIfTutionOverloadedInSingleDay(Class newClass[4][MAX_DAY][MAX_TIME_SLOTS], int venue, int day);
+int checkIfLecturerAppearInTwoVenue(Class *newClass, int day, int time);
 
 
 #endif // TimeTabling_H

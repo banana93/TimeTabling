@@ -110,6 +110,11 @@ int checkIfTutionOverloadedInSingleDay(Class newClass[4][MAX_DAY][MAX_TIME_SLOTS
 		return 0;
 
 }
+
+int checkIfLecturerAppearInTwoVenue(Class *newClass, int day, int time){
+
+
+}
 //constraints function ends here
 
 Class *checkChromosomeIsEmpty(Class newClass[4][MAX_DAY][MAX_TIME_SLOTS]) {

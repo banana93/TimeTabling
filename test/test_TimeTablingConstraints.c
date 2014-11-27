@@ -290,3 +290,7 @@ void test_checkIfTutionOverloadedInSingleDay_shoud_return_1_for_exceeding_practi
 
 	TEST_ASSERT_EQUAL(1, checkIfTutionOverloadedInSingleDay(class, 0, 0));
  }
+ 
+ /***********************************************************************************
+ *  checkIfLecturerAppearInTwoVenue() 
+ ***********************************************************************************/
