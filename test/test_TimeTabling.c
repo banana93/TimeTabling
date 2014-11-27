@@ -168,37 +168,74 @@ void tearDown(void){}
   // TEST_ASSERT_EQUAL(venue.sizeOfVenue, venueSize);
 // }
   
-void test_checkChromosomeIsEmpty_given_an_empty_chromosome_should_return_1(void) {
+void test_checkChromosomeIsEmpty_given_an_empty_chromosome_should_return_class000(void) {
   Class class[4][MAX_DAY][MAX_TIME_SLOTS] = {NULL, NULL};
-  int result;
   
+  Class *result;
+
   result = checkChromosomeIsEmpty(class);
-  TEST_ASSERT_EQUAL(1, result);
+  TEST_ASSERT_EQUAL_PTR(&class[0][0][0],result);
 }
 
-void test_checkChromosomeIsEmpty_given_a_chromosome_that_is_not_empty_should_return_0(void) {
+void test_checkChromosomeIsEmpty_given_a_chromosome_that_is_not_empty_should_return_class001(void) {
   Class class[4][MAX_DAY][MAX_TIME_SLOTS] = {&course[0], 
                                              &lecturer[0]};
-  int result;
-  
+  Class *result;
+
   result = checkChromosomeIsEmpty(class);
-  TEST_ASSERT_EQUAL(0, result);
+  TEST_ASSERT_EQUAL_PTR(&class[0][0][1],result);
 }
 
-void test_addDetailsIntoChromosome_given_the_details_should_be_able_to_add_into_the_chromosome(void) {
+void test_checkChromosomeIsEmpty_given_a_chromosome_that_is_not_empty_should_return_class002(void) {
+  Class class[4][MAX_DAY][MAX_TIME_SLOTS] = {&course[0], &lecturer[0]};
+
+  //help help directly declare top, i did, but dont know why cannot, lol
+	class[0][0][1].course = &course[1];
+	class[0][0][1].lecturer = &lecturer[1];
+	
+  Class *result;
+  result = checkChromosomeIsEmpty(class);
+  TEST_ASSERT_EQUAL_PTR(&class[0][0][2],result);
+}
+
+void test_addDetailsIntoChromosome_given_the_details_should_be_able_to_add_into_the_class000(void) {
   Class class[4][MAX_DAY][MAX_TIME_SLOTS];
+	class[0][0][0].course = NULL;
+	class[0][0][0].lecturer = NULL;
+	class[0][0][1].course = NULL;
+	class[0][0][1].lecturer = NULL;
+	class[0][0][2].course = NULL;
+	class[0][0][2].lecturer = NULL;
                                             
   addDetailsIntoChromosome(class, &programme[0], &group[0], &course[0], &lecturer[0], &venue[0]);
   
-  TEST_ASSERT_EQUAL_STRING("AAMP2041", class[0][0][0].course[0].courseCode);
-  TEST_ASSERT_EQUAL_STRING("Mathematics", class[0][0][0].course[0].courseName);
-  TEST_ASSERT_EQUAL(2, class[0][0][0].course[0].hoursOfLecture);
-  TEST_ASSERT_EQUAL(2, class[0][0][0].course[0].hoursOfPractical);
-  TEST_ASSERT_EQUAL(1, class[0][0][0].course[0].hoursOfTutorial);
-  TEST_ASSERT_EQUAL_STRING("RMB2", class[0][0][0].course[0].programme[0].programmeName);
-  TEST_ASSERT_EQUAL_STRING("A2", class[0][0][0].course[0].programme[0].group[0].groupName);
-  TEST_ASSERT_EQUAL(10, class[0][0][0].course[0].programme[0].group[0].groupSize);
-  TEST_ASSERT_EQUAL(20, class[0][0][0].course[0].sizeOfProgramme);
-  TEST_ASSERT_EQUAL_STRING("Poh TV", class[0][0][0].lecturer[0].lecturerName);
-  TEST_ASSERT_EQUAL_STRING("FASC", class[0][0][0].lecturer[0].department);
+  TEST_ASSERT_EQUAL_STRING("AAMP2041", class[0][0][0].course->courseCode);
+  TEST_ASSERT_EQUAL_STRING("Mathematics", class[0][0][0].course->courseName);
+  TEST_ASSERT_EQUAL_STRING("RMB2", class[0][0][0].course->programme->programmeName);
+  TEST_ASSERT_EQUAL_STRING("A2", class[0][0][0].course->programme->group->groupName);
+  TEST_ASSERT_EQUAL(2, class[0][0][0].course->hoursOfLecture);
+  TEST_ASSERT_EQUAL(2, class[0][0][0].course->hoursOfPractical);
+  TEST_ASSERT_EQUAL(1, class[0][0][0].course->hoursOfTutorial);
+  TEST_ASSERT_EQUAL(10, class[0][0][0].course->programme->group->groupSize);
+  TEST_ASSERT_EQUAL(20, class[0][0][0].course->sizeOfProgramme);
+  TEST_ASSERT_EQUAL_STRING("Poh TV", class[0][0][0].lecturer->lecturerName);
+  TEST_ASSERT_EQUAL_STRING("FASC", class[0][0][0].lecturer->department);
+}
+
+void test_addDetailsIntoChromosome_given_the_details_should_be_able_to_add_into_the_class001(void) {
+  Class class[4][MAX_DAY][MAX_TIME_SLOTS];
+                                            
+  addDetailsIntoChromosome(class, &programme[1], &group[1], &course[1], &lecturer[1], &venue[1]);
+  
+  TEST_ASSERT_EQUAL_STRING("AAMB2034", class[0][0][1].course->courseCode);
+  TEST_ASSERT_EQUAL_STRING("English", class[0][0][1].course->courseName);
+  TEST_ASSERT_EQUAL_STRING("RMB3", class[0][0][1].course->programme->programmeName);
+  TEST_ASSERT_EQUAL_STRING("A3", class[0][0][1].course->programme->group->groupName);
+  TEST_ASSERT_EQUAL(2, class[0][0][1].course->hoursOfLecture);
+  TEST_ASSERT_EQUAL(1, class[0][0][1].course->hoursOfTutorial);
+  TEST_ASSERT_EQUAL(0, class[0][0][1].course->hoursOfPractical);
+  TEST_ASSERT_EQUAL(13, class[0][0][1].course->programme->group->groupSize);
+  TEST_ASSERT_EQUAL(30, class[0][0][1].course->sizeOfProgramme);
+  TEST_ASSERT_EQUAL_STRING("Chan CK", class[0][0][1].lecturer->lecturerName);
+  TEST_ASSERT_EQUAL_STRING("FASC", class[0][0][1].lecturer->department);
 }
