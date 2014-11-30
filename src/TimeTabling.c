@@ -78,24 +78,62 @@ int checkLecturerNotInchargeOfCourse(Class *newClass){
 	}
 	return 1;
 }
+
+int checkIfTutionOverloadedInSingleDay(Class newClass[4][MAX_DAY][MAX_TIME_SLOTS], int venue, int day){
+
+	int time, i, j;
+	int counter[MAX_TIME_SLOTS] = {0,0,0,0,0,0,0,0};
+	
+	// Add up hours of lecture
+	for(time = 0 ; time < MAX_TIME_SLOTS && newClass[venue][day][time].course ; time++){
+		for(i = 0; i < MAX_TIME_SLOTS; i++){
+				if(newClass[venue][day][time].course == newClass[venue][day][i].course
+					&& newClass[venue][day][time].typeOfClass == newClass[venue][day][i].typeOfClass)
+					counter[time]++;
+		}
+	}
+
+	for(j = 0 ; j < MAX_TIME_SLOTS && newClass[venue][day][j].course; j++){
+		if(newClass[venue][day][j].typeOfClass == 'l'){
+			if(counter[j] > newClass[venue][day][j].course->hoursOfLecture)
+				return 1;
+		}
+		else if(newClass[venue][day][j].typeOfClass == 't'){
+			if(counter[j] > newClass[venue][day][j].course->hoursOfTutorial)
+				return 1;
+		}
+		else if(newClass[venue][day][j].typeOfClass == 'p'){
+			if(counter[j] > newClass[venue][day][j].course->hoursOfPractical)
+				return 1;
+		}
+	}
+		return 0;
+
+}
+
+int checkIfLecturerAppearInTwoVenue(Class *newClass, int day, int time){
+
+
+}
 //constraints function ends here
 
-Class *checkChromosomeIsEmpty(Class class[4][MAX_DAY][MAX_TIME_SLOTS]) {
+Class *checkChromosomeIsEmpty(Class newClass[4][MAX_DAY][MAX_TIME_SLOTS]) {
   int venue = 0;
   int day = 0, time = 0;
   
   for(venue; venue < 4; venue++) {
     for(day; day < MAX_DAY; day++) {
       for(time; time < MAX_TIME_SLOTS; time++) {
-        if(class[venue][day][time].course == NULL && class[venue][day][time].lecturer == NULL)
-          return &class[venue][day][time];
+        if(newClass[venue][day][time].course == NULL && newClass[venue][day][time].lecturer == NULL)
+          return &newClass[venue][day][time];
       }
     }
   }
 }
 
-void addDetailsIntoChromosome(Class class[4][MAX_DAY][MAX_TIME_SLOTS], Programme programme[], Group group[], Course course[], Lecturer lecturer[], Venue venues[]) {
-	Class *newClass = checkChromosomeIsEmpty(class);
-	newClass->lecturer = lecturer;
-	newClass->course = course;
+void addDetailsIntoChromosome(Class newClass[4][MAX_DAY][MAX_TIME_SLOTS], Course course[], Lecturer lecturer[], char typeOfClass){
+	Class *addIntoClass = checkChromosomeIsEmpty(newClass);
+	addIntoClass->lecturer = lecturer;
+	addIntoClass->course = course;
+	addIntoClass->typeOfClass = typeOfClass;
 }
