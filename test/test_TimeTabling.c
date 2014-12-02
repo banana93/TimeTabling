@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include "TimeTabling.h"
 
+  Class class[4][MAX_DAY][MAX_TIME_SLOTS];
   Group group[] = { {.groupName = "A2",
                      .groupSize = 10},
                      
@@ -87,7 +88,20 @@
                        .sizeOfProgramme = 30}
                     };
                     
-void setUp(void){}
+void setUp(void){
+	int venue = 0;
+  int day = 0, time = 0;
+  
+  for(venue; venue < 4; venue++) {
+    for(day; day < MAX_DAY; day++) {
+      for(time; time < MAX_TIME_SLOTS; time++) {
+				class[venue][day][time].lecturer = NULL;
+				class[venue][day][time].course = NULL;
+				class[venue][day][time].typeOfClass = 0;
+			}
+		}
+	}
+}
 
 void tearDown(void){}
 
@@ -169,7 +183,8 @@ void tearDown(void){}
 // }
   
 void test_checkChromosomeIsEmpty_given_an_empty_chromosome_should_return_class000(void) {
-  Class class[4][MAX_DAY][MAX_TIME_SLOTS] = {NULL, NULL};
+ class[0][0][0].course = NULL;
+ class[0][0][0].lecturer = NULL;
   
   Class *result;
 
@@ -178,8 +193,9 @@ void test_checkChromosomeIsEmpty_given_an_empty_chromosome_should_return_class00
 }
 
 void test_checkChromosomeIsEmpty_given_a_chromosome_that_is_not_empty_should_return_class001(void) {
-  Class class[4][MAX_DAY][MAX_TIME_SLOTS] = {&course[0], 
-                                             &lecturer[0]};
+ class[0][0][0].course = &course[0];
+ class[0][0][0].lecturer = &lecturer[0];
+
   Class *result;
 
   result = checkChromosomeIsEmpty(class);
@@ -187,9 +203,8 @@ void test_checkChromosomeIsEmpty_given_a_chromosome_that_is_not_empty_should_ret
 }
 
 void test_checkChromosomeIsEmpty_given_a_chromosome_that_is_not_empty_should_return_class002(void) {
-  Class class[4][MAX_DAY][MAX_TIME_SLOTS] = {&course[0], &lecturer[0]};
-
-  //help help directly declare top, i did, but dont know why cannot, lol
+	class[0][0][0].course = &course[0];
+	class[0][0][0].lecturer = &lecturer[0];
 	class[0][0][1].course = &course[1];
 	class[0][0][1].lecturer = &lecturer[1];
 	
@@ -199,15 +214,8 @@ void test_checkChromosomeIsEmpty_given_a_chromosome_that_is_not_empty_should_ret
 }
 
 void test_addDetailsIntoChromosome_given_the_details_should_be_able_to_add_into_the_class000(void) {
-  Class class[4][MAX_DAY][MAX_TIME_SLOTS];
-	class[0][0][0].course = NULL;
-	class[0][0][0].lecturer = NULL;
-	class[0][0][1].course = NULL;
-	class[0][0][1].lecturer = NULL;
-	class[0][0][2].course = NULL;
-	class[0][0][2].lecturer = NULL;
                                             
-  addDetailsIntoChromosome(class, &programme[0], &group[0], &course[0], &lecturer[0], &venue[0]);
+  addDetailsIntoChromosome(class, &course[0], &lecturer[0], 'l');
   
   TEST_ASSERT_EQUAL_STRING("AAMP2041", class[0][0][0].course->courseCode);
   TEST_ASSERT_EQUAL_STRING("Mathematics", class[0][0][0].course->courseName);
@@ -220,12 +228,27 @@ void test_addDetailsIntoChromosome_given_the_details_should_be_able_to_add_into_
   TEST_ASSERT_EQUAL(20, class[0][0][0].course->sizeOfProgramme);
   TEST_ASSERT_EQUAL_STRING("Poh TV", class[0][0][0].lecturer->lecturerName);
   TEST_ASSERT_EQUAL_STRING("FASC", class[0][0][0].lecturer->department);
+  TEST_ASSERT_EQUAL('l', class[0][0][0].typeOfClass);
 }
 
 void test_addDetailsIntoChromosome_given_the_details_should_be_able_to_add_into_the_class001(void) {
-  Class class[4][MAX_DAY][MAX_TIME_SLOTS];
+
                                             
-  addDetailsIntoChromosome(class, &programme[1], &group[1], &course[1], &lecturer[1], &venue[1]);
+  addDetailsIntoChromosome(class, &course[0], &lecturer[0], 'l');
+  addDetailsIntoChromosome(class, &course[1], &lecturer[1], 't');
+  
+  TEST_ASSERT_EQUAL_STRING("AAMP2041", class[0][0][0].course->courseCode);
+  TEST_ASSERT_EQUAL_STRING("Mathematics", class[0][0][0].course->courseName);
+  TEST_ASSERT_EQUAL_STRING("RMB2", class[0][0][0].course->programme->programmeName);
+  TEST_ASSERT_EQUAL_STRING("A2", class[0][0][0].course->programme->group->groupName);
+  TEST_ASSERT_EQUAL(2, class[0][0][0].course->hoursOfLecture);
+  TEST_ASSERT_EQUAL(2, class[0][0][0].course->hoursOfPractical);
+  TEST_ASSERT_EQUAL(1, class[0][0][0].course->hoursOfTutorial);
+  TEST_ASSERT_EQUAL(10, class[0][0][0].course->programme->group->groupSize);
+  TEST_ASSERT_EQUAL(20, class[0][0][0].course->sizeOfProgramme);
+  TEST_ASSERT_EQUAL_STRING("Poh TV", class[0][0][0].lecturer->lecturerName);
+  TEST_ASSERT_EQUAL_STRING("FASC", class[0][0][0].lecturer->department);
+	TEST_ASSERT_EQUAL('l', class[0][0][0].typeOfClass);
   
   TEST_ASSERT_EQUAL_STRING("AAMB2034", class[0][0][1].course->courseCode);
   TEST_ASSERT_EQUAL_STRING("English", class[0][0][1].course->courseName);
@@ -238,4 +261,5 @@ void test_addDetailsIntoChromosome_given_the_details_should_be_able_to_add_into_
   TEST_ASSERT_EQUAL(30, class[0][0][1].course->sizeOfProgramme);
   TEST_ASSERT_EQUAL_STRING("Chan CK", class[0][0][1].lecturer->lecturerName);
   TEST_ASSERT_EQUAL_STRING("FASC", class[0][0][1].lecturer->department);
+	TEST_ASSERT_EQUAL('t', class[0][0][1].typeOfClass);
 }

@@ -76,19 +76,21 @@ struct Class
 {
   Course *course;
   Lecturer *lecturer;
+	char typeOfClass;
 };
 
 char *getCourseName(Course newCourse);
 char *getCourseCode(Course newCourse);
 int getTotalStudentsInCourse(Class *newClass);
 int getVenueSize(Class *newClass);
-void addDetailsIntoChromosome(Class class[4][MAX_DAY][MAX_TIME_SLOTS], Programme programme[], Group group[], Course course[], Lecturer lecturer[], Venue venues[]);
-Class *checkChromosomeIsEmpty(Class class[4][MAX_DAY][MAX_TIME_SLOTS]);
+void addDetailsIntoChromosome(Class newClass[4][MAX_DAY][MAX_TIME_SLOTS], Course course[], Lecturer lecturer[], char typeOfClass);
+Class *checkChromosomeIsEmpty(Class newClass[4][MAX_DAY][MAX_TIME_SLOTS]);
 
 //constraints
 int checkCourseHoursClash( Class *newClass);
 int checkLecturerNotInchargeOfCourse(Class *newClass);
-// int programmeSizeOverloadsVenue(Class *newClass);
+int checkIfTutionOverloadedInSingleDay(Class newClass[4][MAX_DAY][MAX_TIME_SLOTS], int venue, int day);
+int checkIfLecturerAppearInTwoVenue(Class *newClass, int day, int time);
 
 
 #endif // TimeTabling_H
