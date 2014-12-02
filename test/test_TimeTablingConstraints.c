@@ -110,3 +110,7 @@ void test_checkCourseHoursClash_should_return_1_with_exceeding_hours_of_tutorial
 	
 	TEST_ASSERT_EQUAL(1,checkLecturerNotInchargeOfCourse(&newClass));
 }
+
+void test_checkLecturerAtDifferentVenue_should_return_1_if_the_lecturer_is_at_different_venue_at_the_same_time(void) {
+
+}
