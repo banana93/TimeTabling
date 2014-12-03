@@ -308,3 +308,45 @@ void test_checkStudentAndVenueSize_should_return_0_if_the_group_size_is_smaller_
   
   TEST_ASSERT_EQUAL(0, result);
 }
+
+/***********************************************************************************
+ *  checkIfTutionOverloadedInSingleDay() 
+ ***********************************************************************************/
+void test_checkIfLecturerAppearInTwoVenue_shoud_return_0(){
+		
+	class[0][0][0].lecturer = &lecturer[0];
+	class[1][0][0].lecturer = &lecturer[1];
+	class[2][0][0].lecturer = &lecturer[2];
+
+	TEST_ASSERT_EQUAL(0,checkIfLecturerAppearInTwoVenue(class,0,0));
+}
+ 
+void test_checkIfLecturerAppearInTwoVenue_shoud_return_0_with_no_same_lecturer(){
+		
+	class[0][1][1].lecturer = &lecturer[3];
+	class[1][1][1].lecturer = &lecturer[2];
+	class[2][1][1].lecturer = &lecturer[1];
+	class[3][1][1].lecturer = &lecturer[0];
+
+	TEST_ASSERT_EQUAL(0,checkIfLecturerAppearInTwoVenue(class,1,1));
+}
+ 
+void test_checkIfLecturerAppearInTwoVenue_shoud_return_1_with_same_lecturer(){
+		
+	class[0][1][1].lecturer = &lecturer[0];
+	class[1][1][1].lecturer = &lecturer[0];
+	class[2][1][1].lecturer = &lecturer[0];
+	class[3][1][1].lecturer = &lecturer[0];
+
+	TEST_ASSERT_EQUAL(1,checkIfLecturerAppearInTwoVenue(class,1,1));
+}
+
+void test_checkIfLecturerAppearInTwoVenue_shoud_return_1_with_same_lecturer2(){
+		
+	class[0][1][1].lecturer = &lecturer[0];
+	class[1][1][1].lecturer = &lecturer[2];
+	class[2][1][1].lecturer = &lecturer[1];
+	class[3][1][1].lecturer = &lecturer[0];
+
+	TEST_ASSERT_EQUAL(1,checkIfLecturerAppearInTwoVenue(class,1,1));
+}

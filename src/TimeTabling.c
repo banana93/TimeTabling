@@ -85,7 +85,7 @@ int checkIfTutionOverloadedInSingleDay(Class newClass[4][MAX_DAY][MAX_TIME_SLOTS
 	int counter[MAX_TIME_SLOTS] = {0,0,0,0,0,0,0,0};
 	
 	// Add up hours of lecture
-	for(time = 0 ; time < MAX_TIME_SLOTS && newClass[venue][day][time].course ; time++){
+	for(time = 0 ; time < MAX_TIME_SLOTS ; time++){
 		for(i = 0; i < MAX_TIME_SLOTS; i++){
 				if(newClass[venue][day][time].course == newClass[venue][day][i].course
 					&& newClass[venue][day][time].typeOfClass == newClass[venue][day][i].typeOfClass)
@@ -126,6 +126,19 @@ int checkStudentAndVenueSize(Class newClass[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS],
   }
 }
 
+int checkIfLecturerAppearInTwoVenue(Class newClass[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS], int day, int time){
+	int venue, i;
+	
+	for(venue = 0 ; venue < MAX_VENUE ; venue++){
+		for(i = 0; i < MAX_VENUE; i++){
+			if(venue != i){
+				if(newClass[venue][day][time].lecturer == newClass[i][day][time].lecturer)
+					return 1;
+			}
+		}
+	}
+	return 0;
+}
 
 //constraints function ends here
 
