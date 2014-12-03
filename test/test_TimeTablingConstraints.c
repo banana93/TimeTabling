@@ -12,7 +12,7 @@
                      .groupSize = 20},
                      
                     {.groupName = "K3",
-                     .groupSize = 19}
+                     .groupSize = 50}
                   };
                  
   Venue venue[] = { {.nameOfVenue = "D203",
@@ -291,6 +291,20 @@ void test_checkIfTutionOverloadedInSingleDay_shoud_return_1_for_exceeding_practi
 	TEST_ASSERT_EQUAL(1, checkIfTutionOverloadedInSingleDay(class, 0, 0));
  }
  
-void test_checkLecturerAtDifferentVenue_should_return_1_if_the_lecturer_is_at_different_venue_at_the_same_time(void) {
+void test_checkStudentAndVenueSize_should_return_1_if_the_group_size_is_larger_than_the_venue_size(void) {
+  int result;
+  
+  addDetailsIntoChromosome(class, &course[3], &lecturer[3], 'p');
+  result = checkStudentAndVenueSize(class, &venue[0]);
+  
+  TEST_ASSERT_EQUAL(1, result);
+}
 
+void test_checkStudentAndVenueSize_should_return_0_if_the_group_size_is_smaller_than_the_venue_size(void) {
+  int result;
+  
+  addDetailsIntoChromosome(class, &course[0], &lecturer[0], 't');
+  result = checkStudentAndVenueSize(class, &venue[0]);
+  
+  TEST_ASSERT_EQUAL(0, result);
 }

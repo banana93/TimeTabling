@@ -111,10 +111,22 @@ int checkIfTutionOverloadedInSingleDay(Class newClass[4][MAX_DAY][MAX_TIME_SLOTS
 
 }
 
-int checkIfLecturerAppearInTwoVenue(Class *newClass, int day, int time){
-
-
+int checkStudentAndVenueSize(Class newClass[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS], Venue usedVenue[]) {
+  int venue = 0, day = 0, time = 0;
+  
+  for(venue; venue < MAX_VENUE; venue++) {
+    for(day; day < MAX_DAY; day++) {
+      for(time; time < MAX_TIME_SLOTS; time++) {
+        if(usedVenue[venue].sizeOfVenue < newClass[venue][day][time].course->programme->group->groupSize)
+          return 1;
+        else 
+          return 0;
+      }
+    }
+  }
 }
+
+
 //constraints function ends here
 
 Class *checkChromosomeIsEmpty(Class newClass[4][MAX_DAY][MAX_TIME_SLOTS]) {
@@ -137,3 +149,4 @@ void addDetailsIntoChromosome(Class newClass[4][MAX_DAY][MAX_TIME_SLOTS], Course
 	addIntoClass->course = course;
 	addIntoClass->typeOfClass = typeOfClass;
 }
+

@@ -4,6 +4,7 @@
 
 #define MAX_DAY 5
 #define MAX_TIME_SLOTS 8
+#define MAX_VENUE 4
 
 typedef enum
 {
@@ -83,14 +84,15 @@ char *getCourseName(Course newCourse);
 char *getCourseCode(Course newCourse);
 int getTotalStudentsInCourse(Class *newClass);
 int getVenueSize(Class *newClass);
-void addDetailsIntoChromosome(Class newClass[4][MAX_DAY][MAX_TIME_SLOTS], Course course[], Lecturer lecturer[], char typeOfClass);
-Class *checkChromosomeIsEmpty(Class newClass[4][MAX_DAY][MAX_TIME_SLOTS]);
+void addDetailsIntoChromosome(Class newClass[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS], Course course[], Lecturer lecturer[], char typeOfClass);
+Class *checkChromosomeIsEmpty(Class newClass[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS]);
+
 
 //constraints
 int checkCourseHoursClash( Class *newClass);
 int checkLecturerNotInchargeOfCourse(Class *newClass);
-int checkIfTutionOverloadedInSingleDay(Class newClass[4][MAX_DAY][MAX_TIME_SLOTS], int venue, int day);
+int checkIfTutionOverloadedInSingleDay(Class newClass[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS], int venue, int day);
 int checkIfLecturerAppearInTwoVenue(Class *newClass, int day, int time);
-
+int checkStudentAndVenueSize(Class newClass[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS], Venue usedVenue[]);
 
 #endif // TimeTabling_H
