@@ -80,6 +80,14 @@ struct Class
 	char typeOfClass;
 };
 
+extern	Class class[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS];
+extern	Group group[4];
+extern	Venue venue[4];
+extern	Lecturer lecturer[4];
+extern	Programme programme[4];
+extern	Course course[4];
+
+
 char *getCourseName(Course newCourse);
 char *getCourseCode(Course newCourse);
 int getTotalStudentsInCourse(Class *newClass);
