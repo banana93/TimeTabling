@@ -101,7 +101,7 @@ int checkCourseHoursClash( Class *newClass);
 int checkLecturerNotInchargeOfCourse(Class *newClass);
 int checkIfTutionOverloadedInSingleDay(Class newClass[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS], int venue, int day);
 int checkIfLecturerAppearInTwoVenue(Class newClass[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS], int day, int time);
-int checkStudentAndVenueSize(Class newClass[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS], Venue usedVenue[]);
+int determineNumberOfViolationForCourseVenueSize(Class newClass[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS], Venue venueUsed[]);
 int checkStudentViolation(Class newClass[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS], int day, int time);
 int getNumberOfClash(Class newClass[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS]);
 

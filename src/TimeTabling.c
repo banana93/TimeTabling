@@ -84,7 +84,7 @@ Course course[] = { {.courseCode = "AAMP2041",
                        .hoursOfLecture = 2,
                        .hoursOfTutorial = 1,
                        .hoursOfPractical = 0,
-                       &programme[4],
+                       &programme[3],
                        .sizeOfProgramme = 30}
                     };
 										
@@ -206,15 +206,16 @@ int checkIfTutionOverloadedInSingleDay(Class newClass[4][MAX_DAY][MAX_TIME_SLOTS
  *  return 1 (the size of student in the class exceeded)
  *  return 0 (the size did not exceed)
  */
-int checkStudentAndVenueSize(Class newClass[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS], Venue usedVenue[]) {
+int determineNumberOfViolationForCourseVenueSize(Class newClass[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS], Venue venueUsed[]) {
   int venue = 0, day = 0, time = 0;
+  int numberOfClashes = 0;
   
   for(venue; venue < MAX_VENUE; venue++) {
     for(day; day < MAX_DAY; day++) {
       for(time; time < MAX_TIME_SLOTS; time++) {
-        if(usedVenue[venue].sizeOfVenue < newClass[venue][day][time].course->programme->group->groupSize)
+        if(venueUsed[venue].sizeOfVenue < newClass[venue][day][time].course->programme->group->groupSize) 
           return 1;
-        else 
+        else
           return 0;
       }
     }
@@ -264,18 +265,23 @@ int checkStudentViolation(Class newClass[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS], in
 }
 
 int getNumberOfClash(Class newClass[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS]) {
-  int numberOfClashes = 0, venue = 0, day = 0, time = 0;
+  // int numberOfClashes = 0, venue = 0, day = 0, time = 0;
+  // Venue usedVenue[MAX_VENUE];
   
-  for(venue; venue < MAX_VENUE; venue++) {
-    for(day; day < MAX_DAY; day++) {
-      for(time; time < MAX_TIME_SLOTS; time++) {
-        if(checkIfLecturerAppearInTwoVenue(newClass, 1, 1))
-          numberOfClashes = numberOfClashes + 1;
-      }
-    }
-  }
+  // addDetailsIntoChromosome(newClass, &course[0], &lecturer[0], 'l');
   
-  return numberOfClashes;
+  // for(venue; venue < MAX_VENUE; venue++) {
+    // for(day; day < MAX_DAY; day++) {
+      // for(time; time < MAX_TIME_SLOTS; time++) {
+        // if(checkStudentAndVenueSize(newClass, usedVenue[venue])){
+          // numberOfClashes++;
+          // printf("asd\n");
+        // }
+      // }
+    // }
+  // }
+  
+  // return numberOfClashes;
 }
 
 //constraints function ends here
