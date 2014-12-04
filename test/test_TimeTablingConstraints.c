@@ -52,61 +52,19 @@ void setUp(void){
 void tearDown(void){}
 
 /***********************************************************************************
- *  checkCourseHoursClash() 
- ***********************************************************************************/
-void test_checkCourseHoursClash_should_return_1_with_exceeding_hours_of_lecture(){
-	Class newClass;
-	Course courseA;
-	courseA.hoursOfLecture = 5;
-	courseA.hoursOfTutorial = 0;
-	courseA.hoursOfPractical = 0;
-	newClass.course = &courseA;
-	
-	int returnValue = 0;
-	returnValue = checkCourseHoursClash(&newClass);
-	TEST_ASSERT_EQUAL( 1 , returnValue);
- }
- 
-void test_checkCourseHoursClash_should_return_1_with_exceeding_hours_of_tutorial(){
-	Class newClass;
-	Course courseA;
-	courseA.hoursOfLecture = 0;
-	courseA.hoursOfTutorial = 3;
-	courseA.hoursOfPractical = 0;
-	newClass.course = &courseA;
-	
-	int returnValue = 0;
-	returnValue = checkCourseHoursClash(&newClass);
-	TEST_ASSERT_EQUAL( 1 , returnValue);
- }
- 
- void test_checkCourseHoursClash_should_return_1_with_more_than_1_type_of_class(){
-	Class newClass;
-	Course courseA;
-	courseA.hoursOfLecture = 0;
-	courseA.hoursOfTutorial = 1;
-	courseA.hoursOfPractical = 1;
-	newClass.course = &courseA;
-	
-	int returnValue = 0;
-	returnValue = checkCourseHoursClash(&newClass);
-	TEST_ASSERT_EQUAL( 1 , returnValue);
-}
-/***********************************************************************************
  *  checkLecturerNotInchargeOfCourse() 
  ***********************************************************************************/
  void test_checkLecturerNotInchargeOfCourse_should_return_0_when_course_incharge(){
-	Class newClass;
 	Lecturer newLecturer;
 	newLecturer.lecturerName = "Albert";
 	newLecturer.courseCodeInCharge[0] = "MPU223";
 	newLecturer.courseCodeInCharge[1] = "AAMP2041";
 	newLecturer.courseCodeInCharge[2] = NULL;
-	newClass.lecturer = &newLecturer;
+	class[0][0][0].lecturer = &newLecturer;
 	//courseB declared on top
-	newClass.course = &courseB[0]; // course code = "AAMP2041"
+	class[0][0][0].course = &courseB[0]; // course code = "AAMP2041"
 	
-	TEST_ASSERT_EQUAL(0,checkLecturerNotInchargeOfCourse(&newClass));
+	TEST_ASSERT_EQUAL(0,checkLecturerNotInchargeOfCourse(class,0,0,0));
 }
 
  void test_checkLecturerNotInchargeOfCourse_should_return_1_when_course_not_incharge(){
@@ -118,52 +76,47 @@ void test_checkCourseHoursClash_should_return_1_with_exceeding_hours_of_tutorial
 	newLecturer.courseCodeInCharge[1] = "ABNC1045";
 	newLecturer.courseCodeInCharge[1] = "ABXC1045";
 	newLecturer.courseCodeInCharge[2] = NULL;
-	newClass.lecturer = &newLecturer;
+	class[0][0][0].lecturer = &newLecturer;
 	//courseB declared on top
-	newClass.course = &courseB[0];// course code = "AAMP2041"
+	class[0][0][0].course = &courseB[0];// course code = "AAMP2041"
 	
-	TEST_ASSERT_EQUAL(1,checkLecturerNotInchargeOfCourse(&newClass));
+	TEST_ASSERT_EQUAL(1,checkLecturerNotInchargeOfCourse(class,0,0,0));
 }
 
 /***********************************************************************************
  *  checkIfTutionOverloadedInSingleDay() 
  ***********************************************************************************/
- void test_checkIfTutionOverloadedInSingleDay_shoud_return_0_for_not_exceeding_lecture_hours(){
+ void test_checkIfTutionOverloadedInSingleDay_shoud_return_0_for_empty_class(){
 		
-	addDetailsIntoChromosome(class, &course[0], &lecturer[0], 'l');
-	addDetailsIntoChromosome(class, &course[1], &lecturer[1], 'l');
-	addDetailsIntoChromosome(class, &course[1], &lecturer[1], 'l');
-
-
-	TEST_ASSERT_EQUAL(0, checkIfTutionOverloadedInSingleDay(class, 0, 0));
+	TEST_ASSERT_EQUAL(0, checkIfTutionOverloadedInSingleDay(class, 0));
  }
 
-void test_checkIfTutionOverloadedInSingleDay_shoud_return_1_for_exceeding_lecture_hours(){
+void test_checkIfTutionOverloadedInSingleDay_shoud_return_1_for_exceeding_lecture_on_same_venue(){
 		
-	addDetailsIntoChromosome(class, &course[0], &lecturer[0], 'l');
 	addDetailsIntoChromosome(class, &course[1], &lecturer[1], 'l');
 	addDetailsIntoChromosome(class, &course[1], &lecturer[1], 'l');
 	addDetailsIntoChromosome(class, &course[1], &lecturer[1], 'l');
 
 
-	TEST_ASSERT_EQUAL(1, checkIfTutionOverloadedInSingleDay(class, 0, 0));
+	TEST_ASSERT_EQUAL(1, checkIfTutionOverloadedInSingleDay(class, 0));
  }
  
- void test_checkIfTutionOverloadedInSingleDay_shoud_return_0_for_not_exceeding_lecture_hours2(){
+void test_checkIfTutionOverloadedInSingleDay_shoud_return_2_for_exceeding_lecture_in_different_venue(){
 		
 	addDetailsIntoChromosome(class, &course[0], &lecturer[0], 'l');
 	addDetailsIntoChromosome(class, &course[0], &lecturer[0], 'l');
-	addDetailsIntoChromosome(class, &course[1], &lecturer[1], 'l');
-	addDetailsIntoChromosome(class, &course[1], &lecturer[1], 'l');
-	addDetailsIntoChromosome(class, &course[2], &lecturer[2], 'l');
-	addDetailsIntoChromosome(class, &course[2], &lecturer[2], 'l');
-	addDetailsIntoChromosome(class, &course[3], &lecturer[3], 'l');
-	addDetailsIntoChromosome(class, &course[3], &lecturer[3], 'l'); //This is another day
-	addDetailsIntoChromosome(class, &course[3], &lecturer[3], 'l');
+	
+	//manually insert because wanted to skip in between slots for test purpose
+	class[1][0][0].course = &course[0];
+	class[1][0][0].lecturer = &lecturer[0];
+	class[1][0][0].typeOfClass = 'l';	
+	class[1][0][1].course = &course[0];
+	class[1][0][1].lecturer = &lecturer[0];
+	class[1][0][1].typeOfClass = 'l';
 
 
-	TEST_ASSERT_EQUAL(0, checkIfTutionOverloadedInSingleDay(class, 0, 0));
- }
+	TEST_ASSERT_EQUAL(2, checkIfTutionOverloadedInSingleDay(class, 0));
+}
  
 void test_checkIfTutionOverloadedInSingleDay_shoud_return_0_for_not_exceeding_tutorial_hours(){
 		
@@ -173,19 +126,18 @@ void test_checkIfTutionOverloadedInSingleDay_shoud_return_0_for_not_exceeding_tu
 	addDetailsIntoChromosome(class, &course[3], &lecturer[3], 't');
 
 
-	TEST_ASSERT_EQUAL(0, checkIfTutionOverloadedInSingleDay(class, 0, 0));
+	TEST_ASSERT_EQUAL(0, checkIfTutionOverloadedInSingleDay(class, 0));
  }
  
-void test_checkIfTutionOverloadedInSingleDay_shoud_return_1_for_exceeding_tutorial_hours(){
+void test_checkIfTutionOverloadedInSingleDay_shoud_return_1_for_exceeding_tutorial_hours_different_venue(){
 		
 	addDetailsIntoChromosome(class, &course[0], &lecturer[0], 't');
-	addDetailsIntoChromosome(class, &course[1], &lecturer[1], 't');
-	addDetailsIntoChromosome(class, &course[2], &lecturer[2], 't');
-	addDetailsIntoChromosome(class, &course[3], &lecturer[3], 't');
-	addDetailsIntoChromosome(class, &course[3], &lecturer[3], 't');
+	
+	class[1][0][0].course = &course[0];
+	class[1][0][0].lecturer = &lecturer[0];
+	class[1][0][0].typeOfClass = 't';	
 
-
-	TEST_ASSERT_EQUAL(1, checkIfTutionOverloadedInSingleDay(class, 0, 0));
+	TEST_ASSERT_EQUAL(1, checkIfTutionOverloadedInSingleDay(class, 0));
  }
  
  void test_checkIfTutionOverloadedInSingleDay_shoud_return_0_for_not_exceeding_practical_hours(){
@@ -194,16 +146,23 @@ void test_checkIfTutionOverloadedInSingleDay_shoud_return_1_for_exceeding_tutori
 	addDetailsIntoChromosome(class, &course[0], &lecturer[0], 'p');
 
 
-	TEST_ASSERT_EQUAL(0, checkIfTutionOverloadedInSingleDay(class, 0, 0));
+	TEST_ASSERT_EQUAL(0, checkIfTutionOverloadedInSingleDay(class, 0));
  }
  
-void test_checkIfTutionOverloadedInSingleDay_shoud_return_1_for_exceeding_practical_hours(){
+void test_checkIfTutionOverloadedInSingleDay_shoud_return_2_for_exceeding_practical_hours(){
 		
 	addDetailsIntoChromosome(class, &course[0], &lecturer[0], 'p');
-	addDetailsIntoChromosome(class, &course[1], &lecturer[1], 'p');
+	addDetailsIntoChromosome(class, &course[0], &lecturer[0], 'p');
+	
+	class[1][0][0].course = &course[0];
+	class[1][0][0].lecturer = &lecturer[0];
+	class[1][0][0].typeOfClass = 'p';	
+	class[1][0][1].course = &course[0];
+	class[1][0][1].lecturer = &lecturer[0];
+	class[1][0][1].typeOfClass = 'p';
 
 
-	TEST_ASSERT_EQUAL(1, checkIfTutionOverloadedInSingleDay(class, 0, 0));
+	TEST_ASSERT_EQUAL(2, checkIfTutionOverloadedInSingleDay(class, 0));
  }
  
 void test_checkStudentAndVenueSize_should_return_1_if_the_group_size_is_larger_than_the_venue_size(void) {
