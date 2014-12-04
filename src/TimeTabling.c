@@ -1,6 +1,94 @@
 #include <stdio.h>
 #include "TimeTabling.h"
 
+Class class[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS];
+	
+Group group[] = { {.groupName = "A2",
+                     .groupSize = 10},
+                     
+                    {.groupName = "A3",
+                     .groupSize = 13},
+                     
+                    {.groupName = "K2",
+                     .groupSize = 20},
+                     
+                    {.groupName = "K3",
+                     .groupSize = 50}
+                  };
+                 
+Venue venue[] = { {.nameOfVenue = "D203",
+                     .sizeOfVenue = 40},
+                     
+                    {.nameOfVenue = "D300",
+                     .sizeOfVenue = 25},
+                     
+                    {.nameOfVenue = "D204",
+                     .sizeOfVenue = 30},
+                     
+                    {.nameOfVenue = "D301",
+                     .sizeOfVenue = 25}
+                  };
+                  
+Lecturer lecturer[] = { {.lecturerName = "Poh TV",
+                           .department = "FASC"},
+                           
+                          {.lecturerName = "Chan CK",
+                           .department = "FASC"},
+                          
+                          {.lecturerName = "Chiu VT",
+                           .department = "TR"},
+                           
+                          {.lecturerName = "Jackson Teh",
+                           .department = "HSSchool"}
+                        };
+                        
+Programme programme[] = { {.programmeName = "RMB2",
+                             &group[0]},
+                            
+                            {.programmeName = "RMB3",
+                             &group[1]},
+                             
+                            {.programmeName = "RMM2",
+                             &group[2]},
+                             
+                            {.programmeName = "RMM3",
+                             &group[3]}
+                          };
+                      
+Course course[] = { {.courseCode = "AAMP2041",
+                       .courseName = "Mathematics",
+                       .hoursOfLecture = 2,
+                       .hoursOfTutorial = 1,
+                       .hoursOfPractical = 2,
+                       &programme[0],
+                       .sizeOfProgramme = 20},
+                       
+                      {.courseCode = "AAMB2034",
+                       .courseName = "English",
+                       .hoursOfLecture = 2,
+                       .hoursOfTutorial = 1,
+                       .hoursOfPractical = 0,
+                       &programme[1],
+                       .sizeOfProgramme = 30},
+                       
+                      {.courseCode = "ABMC1045",
+                       .courseName = "History",
+                       .hoursOfLecture = 2,
+                       .hoursOfTutorial = 1,
+                       .hoursOfPractical = 0,
+                       &programme[2],
+                       .sizeOfProgramme = 15},
+                      
+                      {.courseCode = "ABCD1234",
+                       .courseName = "Add Maths",
+                       .hoursOfLecture = 2,
+                       .hoursOfTutorial = 1,
+                       .hoursOfPractical = 0,
+                       &programme[4],
+                       .sizeOfProgramme = 30}
+                    };
+										
+									
 char *getCourseName(Course newCourse){
 	if(newCourse.courseName != NULL)
     return newCourse.courseName;
