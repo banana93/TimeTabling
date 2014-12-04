@@ -111,6 +111,13 @@ int checkIfTutionOverloadedInSingleDay(Class newClass[4][MAX_DAY][MAX_TIME_SLOTS
 
 }
 
+/**
+ *  The purpose of this function is to check whether the number of 
+ *  students in the class exceed the venue size or not
+ *  
+ *  return 1 (the size of student in the class exceeded)
+ *  return 0 (the size did not exceed)
+ */
 int checkStudentAndVenueSize(Class newClass[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS], Venue usedVenue[]) {
   int venue = 0, day = 0, time = 0;
   
@@ -126,6 +133,13 @@ int checkStudentAndVenueSize(Class newClass[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS],
   }
 }
 
+/**
+ *  This function is to check whether the same lecturer appear at 
+ *  different venue or not
+ *  
+ *  return 1 (got violation)
+ *  return 0 (no violation)
+ */
 int checkIfLecturerAppearInTwoVenue(Class newClass[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS], int day, int time){
 	int venue, i;
 	
@@ -140,6 +154,13 @@ int checkIfLecturerAppearInTwoVenue(Class newClass[MAX_VENUE][MAX_DAY][MAX_TIME_
 	return 0;
 }
 
+/**
+ *  This function is to check whether the same programme and same group 
+ *  appears at different venue or not
+ * 
+ *  return 1 (got violation)
+ *  return 0 (no violation)
+ */
 int checkStudentViolation(Class newClass[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS], int day, int time) {
   int venue, i;
   
@@ -156,11 +177,16 @@ int checkStudentViolation(Class newClass[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS], in
 
 //constraints function ends here
 
+/**
+ *  The purpose of this function is to check whether the chromosome
+ *  have empty slots or not, if it has empty slots it will return the address 
+ *  of the chromosome
+ */
 Class *checkChromosomeIsEmpty(Class newClass[4][MAX_DAY][MAX_TIME_SLOTS]) {
   int venue = 0;
   int day = 0, time = 0;
   
-  for(venue; venue < 4; venue++) {
+  for(venue; venue < MAX_VENUE; venue++) {
     for(day; day < MAX_DAY; day++) {
       for(time; time < MAX_TIME_SLOTS; time++) {
         if(newClass[venue][day][time].course == NULL && newClass[venue][day][time].lecturer == NULL)
