@@ -111,42 +111,6 @@ char *getCourseCode(Course newCourse){
 // }
 
 // constraints try
-/**
-*	Name:	checkCourseHoursClash()
-*	Input: Class struct pointer
-*	Output: return 1 if there is clash/violation, else 0
-*	
-*	Descriptions:
-*	This function is to check the clashes and maximum hours of the class.
-*	In the chromosome, only one Course, and type of class available at times.
-*	Besides that, each type of class have a limit of hours
-*
-*	Constraints included for each Chromosome's slot
-*	- Only can have one in each array slot. Tutorial, Practical, Lecture
-*	- Lecture cannot more than 4 hours
-*	- Tutorial cannot more than 2 hours
-*
-*/
-int checkCourseHoursClash(Class *newClass){
-if( newClass->course->hoursOfLecture != 0 && (newClass->course->hoursOfTutorial + newClass->course->hoursOfPractical) == 0){
-	if( newClass->course->hoursOfLecture >= 0 && newClass->course->hoursOfLecture <= 4)
-		return 0;
-	else
-		return 1;
-}
-else if( newClass->course->hoursOfTutorial != 0 && (newClass->course->hoursOfLecture + newClass->course->hoursOfPractical) == 0){
-	if( newClass->course->hoursOfTutorial >= 0 && newClass->course->hoursOfTutorial <=2 )
-		return 0;
-	else
-		return 1;
-}
-else if( newClass->course->hoursOfPractical != 0 && (newClass->course->hoursOfLecture + newClass->course->hoursOfTutorial) == 0)
-		return 0;
-else if((newClass->course->hoursOfLecture + newClass->course->hoursOfTutorial + newClass->course->hoursOfPractical) == 0)
-		return 0;
-	return 1;
-	
-}
 
 /**
 *	Name:	checkLecturerNotInchargeOfCourse()
@@ -157,46 +121,48 @@ else if((newClass->course->hoursOfLecture + newClass->course->hoursOfTutorial + 
 *	To check the course on the time slot incharge by the lecturer
 *
 */
-int checkLecturerNotInchargeOfCourse(Class *newClass){
+int checkLecturerNotInchargeOfCourse(Class newClass[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS], int venue, int day, int time){
 
-	int i,j;
-	for(j=0 ; newClass->lecturer->courseCodeInCharge[j] != NULL ; j++){
-		if(newClass->lecturer->courseCodeInCharge[j] == newClass->course->courseCode)
+	int j;
+	for(j=0 ; newClass[venue][day][time].lecturer->courseCodeInCharge[j] != NULL ; j++){
+		if(newClass[venue][day][time].lecturer->courseCodeInCharge[j] == newClass[venue][day][time].course->courseCode)
 			return 0;
 	}
 	return 1;
 }
 
-int checkIfTutionOverloadedInSingleDay(Class newClass[4][MAX_DAY][MAX_TIME_SLOTS], int venue, int day){
-
-	int time, i, j;
-	int counter[MAX_TIME_SLOTS] = {0,0,0,0,0,0,0,0};
+int checkIfTutionOverloadedInSingleDay(Class newClass[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS], int day){
 	
-	// Add up hours of lecture
+	int time, venue, i, violationCounter = 0;
+	Counter counter[(sizeof(group)/sizeof(Group))] = {{.tutorialHours = 0, .lectureHours = 0},
+																										{.tutorialHours = 0, .lectureHours = 0},
+																										{.tutorialHours = 0, .lectureHours = 0},
+																										{.tutorialHours = 0, .lectureHours = 0}};
+
+for(venue = 0 ; venue < MAX_VENUE ; venue++){
 	for(time = 0 ; time < MAX_TIME_SLOTS ; time++){
-		for(i = 0; i < MAX_TIME_SLOTS; i++){
-				if(newClass[venue][day][time].course == newClass[venue][day][i].course
-					&& newClass[venue][day][time].typeOfClass == newClass[venue][day][i].typeOfClass)
-					counter[time]++;
+		for(i = 0 ; i < MAX_TIME_SLOTS ; i++){
+				if(newClass[venue][day][time].course && newClass[venue][day][time].course == &course[i]){
+					if(newClass[venue][day][time].typeOfClass == 'l')
+						counter[i].lectureHours+=1;
+					else if(newClass[venue][day][time].typeOfClass == 't')
+						counter[i].tutorialHours+=1;
+					else if(newClass[venue][day][time].typeOfClass == 'p')
+						counter[i].practicalHours+=1;	
+			}
 		}
-	}
+	}	
+}
 
-	for(j = 0 ; j < MAX_TIME_SLOTS && newClass[venue][day][j].course; j++){
-		if(newClass[venue][day][j].typeOfClass == 'l'){
-			if(counter[j] > newClass[venue][day][j].course->hoursOfLecture)
-				return 1;
-		}
-		else if(newClass[venue][day][j].typeOfClass == 't'){
-			if(counter[j] > newClass[venue][day][j].course->hoursOfTutorial)
-				return 1;
-		}
-		else if(newClass[venue][day][j].typeOfClass == 'p'){
-			if(counter[j] > newClass[venue][day][j].course->hoursOfPractical)
-				return 1;
-		}
-	}
-		return 0;
-
+for( i = 0; i < (sizeof(group)/ sizeof(Group)) ; i++){
+	if(counter[i].lectureHours > course[i].hoursOfLecture)
+		violationCounter+= counter[i].lectureHours - course[i].hoursOfLecture;
+	if(counter[i].tutorialHours > course[i].hoursOfTutorial)
+		violationCounter+= counter[i].tutorialHours - course[i].hoursOfTutorial;
+	if(counter[i].practicalHours > course[i].hoursOfPractical)
+		violationCounter+= counter[i].practicalHours - course[i].hoursOfPractical;
+}
+return violationCounter;
 }
 
 /**
