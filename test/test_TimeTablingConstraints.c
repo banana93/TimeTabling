@@ -350,3 +350,55 @@ void test_checkIfLecturerAppearInTwoVenue_shoud_return_1_with_same_lecturer2(){
 
 	TEST_ASSERT_EQUAL(1,checkIfLecturerAppearInTwoVenue(class,1,1));
 }
+
+void test_checkStudentViolation_should_return_1_if_same_programme_same_group_but_appear_at_different_venue(void) {
+  Course course[] = {{.courseCode = "AAMP2013",
+                      .courseName = "RMB2",
+                      .hoursOfLecture = 2,
+                      .hoursOfTutorial = 1,
+                      .hoursOfPractical = 2,
+                      &programme[0],
+                      .sizeOfProgramme = 20
+                     },
+                     {.courseCode = "AAMP2114",
+                      .courseName = "RMB3",
+                      .hoursOfLecture = 2,
+                      .hoursOfTutorial = 1,
+                      .hoursOfPractical = 2,
+                      &programme[0],
+                      .sizeOfProgramme = 10
+                    },
+                    {.courseCode = "AAMP2015",
+                      .courseName = "RMB4",
+                      .hoursOfLecture = 2,
+                      .hoursOfTutorial = 1,
+                      .hoursOfPractical = 2,
+                      &programme[0],
+                      .sizeOfProgramme = 22
+                    },
+                    {.courseCode = "AAMP2113",
+                      .courseName = "RMB1",
+                      .hoursOfLecture = 2,
+                      .hoursOfTutorial = 1,
+                      .hoursOfPractical = 2,
+                      &programme[0],
+                      .sizeOfProgramme = 10
+                    }
+                    };
+                    
+  class[0][1][1].course = &course[0];
+  class[1][1][1].course = &course[1];
+  class[2][1][1].course = &course[2];
+  class[3][1][1].course = &course[3];
+  
+  TEST_ASSERT_EQUAL(1, checkStudentViolation(class, 1, 1));
+}
+
+void test_checkStudentViolation_should_return_0_if_different_programme_different_group_but_appear_at_different_venue(void) {
+  class[0][1][1].course = &course[0];
+  class[1][1][1].course = &course[1];
+  class[2][1][1].course = &course[2];
+  class[3][1][1].course = &course[3];
+  
+  TEST_ASSERT_EQUAL(0, checkStudentViolation(class, 1, 1));
+}

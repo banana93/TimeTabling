@@ -140,6 +140,20 @@ int checkIfLecturerAppearInTwoVenue(Class newClass[MAX_VENUE][MAX_DAY][MAX_TIME_
 	return 0;
 }
 
+int checkStudentViolation(Class newClass[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS], int day, int time) {
+  int venue, i;
+  
+  for(venue = 0; venue < MAX_VENUE; venue++) {
+    for(i = 0; i < MAX_VENUE; i++) {
+      if(venue != i) {
+        if(newClass[venue][day][time].course->programme == newClass[i][day][time].course->programme)
+          return 1;
+      }
+    }
+  }
+  return 0;
+}
+
 //constraints function ends here
 
 Class *checkChromosomeIsEmpty(Class newClass[4][MAX_DAY][MAX_TIME_SLOTS]) {
