@@ -402,3 +402,13 @@ void test_checkStudentViolation_should_return_0_if_different_programme_different
   
   TEST_ASSERT_EQUAL(0, checkStudentViolation(class, 1, 1));
 }
+
+void test_getNumberOfClash_should_return_1_due_to_there_is_1_number_of_clash(void) {
+  class[0][1][1].lecturer = &lecturer[0];
+	class[1][1][1].lecturer = &lecturer[2];
+	class[2][1][1].lecturer = &lecturer[1];
+	class[3][1][1].lecturer = &lecturer[0];
+  
+  TEST_ASSERT_EQUAL(8, getNumberOfClash(class));
+}
+ 

@@ -175,6 +175,21 @@ int checkStudentViolation(Class newClass[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS], in
   return 0;
 }
 
+int getNumberOfClash(Class newClass[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS]) {
+  int numberOfClashes = 0, venue = 0, day = 0, time = 0;
+  
+  for(venue; venue < MAX_VENUE; venue++) {
+    for(day; day < MAX_DAY; day++) {
+      for(time; time < MAX_TIME_SLOTS; time++) {
+        if(checkIfLecturerAppearInTwoVenue(newClass, 1, 1))
+          numberOfClashes = numberOfClashes + 1;
+      }
+    }
+  }
+  
+  return numberOfClashes;
+}
+
 //constraints function ends here
 
 /**
