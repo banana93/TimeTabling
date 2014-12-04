@@ -324,6 +324,6 @@ void test_getNumberOfClash_should_return_1_due_to_there_is_1_number_of_clash(voi
 	class[2][1][1].lecturer = &lecturer[1];
 	class[3][1][1].lecturer = &lecturer[0];
   
-  TEST_ASSERT_EQUAL(8, getNumberOfClash(class));
+  TEST_ASSERT_EQUAL(1, getNumberOfClash(class));
 }
  
