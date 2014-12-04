@@ -257,3 +257,19 @@ void addDetailsIntoChromosome(Class newClass[4][MAX_DAY][MAX_TIME_SLOTS], Course
 	addIntoClass->typeOfClass = typeOfClass;
 }
 
+int calculateFitnessScore(Class newClass[4][MAX_DAY][MAX_TIME_SLOTS]){
+	int venue = 0;
+  int day = 0, time = 0;
+	
+  for(venue; venue < MAX_VENUE; venue++) {
+    for(day; day < MAX_DAY; day++) {
+			checkIfTutionOverloadedInSingleDay(newClass, day);
+      for(time; time < MAX_TIME_SLOTS; time++) {
+        checkLecturerNotInchargeOfCourse(newClass, venue, day, time);
+				if(venue == 0)
+					checkIfLecturerAppearInTwoVenue(newClass, day, time);
+      }
+    }
+  }
+
+}
