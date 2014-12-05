@@ -20,8 +20,11 @@ void setUp(void){
 void tearDown(void){}
 
 void test_calculateFitnessScore(){
+	
 
-
-
-
+// calculateFitnessScore(class);
+// checkLecturerNotInchargeOfCourse(class, 0, 0, 0);
+// checkIfTutionOverloadedInSingleDay(class, 0);
+// checkIfLecturerAppearInTwoVenue(class,0,0);
+checkStudentViolation(class,0,0);
 }

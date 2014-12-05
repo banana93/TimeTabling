@@ -5,6 +5,7 @@
 #define MAX_DAY 5
 #define MAX_TIME_SLOTS 8
 #define MAX_VENUE 4
+#define MAX_COURSE_PER_LECTURER 5
 
 typedef enum
 {
@@ -48,7 +49,7 @@ struct Lecturer
 {
 	char *lecturerName;
   char *department;
-  char *courseCodeInCharge[5];
+  char *courseCodeInCharge[MAX_COURSE_PER_LECTURER];
 };
 
 struct Group

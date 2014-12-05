@@ -124,9 +124,11 @@ char *getCourseCode(Course newCourse){
 int checkLecturerNotInchargeOfCourse(Class newClass[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS], int venue, int day, int time){
 
 	int j;
-	for(j=0 ; newClass[venue][day][time].lecturer->courseCodeInCharge[j] != NULL ; j++){
-		if(newClass[venue][day][time].lecturer->courseCodeInCharge[j] == newClass[venue][day][time].course->courseCode)
-			return 0;
+	for(j=0 ; j < MAX_COURSE_PER_LECTURER ; j++){
+		if(newClass[venue][day][time].lecturer != NULL && newClass[venue][day][time].lecturer->courseCodeInCharge[j] != NULL){
+			if(newClass[venue][day][time].lecturer->courseCodeInCharge[j] == newClass[venue][day][time].course->courseCode)
+				return 0;
+		}
 	}
 	return 1;
 }
@@ -221,8 +223,10 @@ int checkStudentViolation(Class newClass[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS], in
   for(venue = 0; venue < MAX_VENUE; venue++) {
     for(i = 0; i < MAX_VENUE; i++) {
       if(venue != i) {
-        if(newClass[venue][day][time].course->programme == newClass[i][day][time].course->programme)
-          return 1;
+        if(newClass[venue][day][time].course && newClass[i][day][time].course){
+					if(newClass[venue][day][time].course->programme == newClass[i][day][time].course->programme)
+						return 1;
+				}
       }
     }
   }
@@ -266,8 +270,10 @@ int calculateFitnessScore(Class newClass[4][MAX_DAY][MAX_TIME_SLOTS]){
 			checkIfTutionOverloadedInSingleDay(newClass, day);
       for(time; time < MAX_TIME_SLOTS; time++) {
         checkLecturerNotInchargeOfCourse(newClass, venue, day, time);
-				if(venue == 0)
+				if(venue == 0){
 					checkIfLecturerAppearInTwoVenue(newClass, day, time);
+					checkStudentViolation(newClass, day, time);
+				}
       }
     }
   }
