@@ -169,7 +169,7 @@ void test_determineNumberOfViolationForCourseVenueSize_should_return_1_because_t
   int result;
   
   addDetailsIntoChromosome(class, &course[3], &lecturer[3], 'p');
-  result = determineNumberOfViolationForCourseVenueSize(class, &venue[0]);
+  result = determineNumberOfViolationForCourseVenueSize(class);
   
   TEST_ASSERT_EQUAL(1, result);
 }
@@ -178,7 +178,7 @@ void test_determineNumberOfViolationForCourseVenueSize_should_return_0_because_t
   int result;
   
   addDetailsIntoChromosome(class, &course[0], &lecturer[0], 'p');
-  result = determineNumberOfViolationForCourseVenueSize(class, &venue[0]);
+  result = determineNumberOfViolationForCourseVenueSize(class);
   
   TEST_ASSERT_EQUAL(0, result);
 }
