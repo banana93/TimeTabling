@@ -125,8 +125,10 @@ int checkLecturerNotInchargeOfCourse(Class newClass[MAX_VENUE][MAX_DAY][MAX_TIME
 
 	int j;
 	for(j=0 ; j < MAX_COURSE_PER_LECTURER ; j++){
-		if(newClass[venue][day][time].lecturer != NULL && newClass[venue][day][time].lecturer->courseCodeInCharge[j] != NULL){
-			if(newClass[venue][day][time].lecturer->courseCodeInCharge[j] == newClass[venue][day][time].course->courseCode)
+		if(!newClass[venue][day][time].course || !newClass[venue][day][time].course->courseCode || !newClass[venue][day][time].lecturer )
+			return 0;
+		else if(newClass[venue][day][time].lecturer != NULL && newClass[venue][day][time].lecturer->courseCodeInCharge[j] != NULL && class[0][0][0].course->courseCode){
+			if(strcmp(newClass[venue][day][time].lecturer->courseCodeInCharge[j], newClass[venue][day][time].course->courseCode) == 0)
 				return 0;
 		}
 	}
@@ -202,8 +204,10 @@ int checkIfLecturerAppearInTwoVenue(Class newClass[MAX_VENUE][MAX_DAY][MAX_TIME_
 	for(venue = 0 ; venue < MAX_VENUE ; venue++){
 		for(i = 0; i < MAX_VENUE; i++){
 			if(venue != i){
-				if(newClass[venue][day][time].lecturer == newClass[i][day][time].lecturer)
-					return 1;
+				if(newClass[venue][day][time].lecturer && newClass[i][day][time].lecturer){
+					if(newClass[venue][day][time].lecturer == newClass[i][day][time].lecturer)
+						return 1;
+				}
 			}
 		}
 	}
@@ -261,21 +265,25 @@ void addDetailsIntoChromosome(Class newClass[4][MAX_DAY][MAX_TIME_SLOTS], Course
 	addIntoClass->typeOfClass = typeOfClass;
 }
 
-int calculateFitnessScore(Class newClass[4][MAX_DAY][MAX_TIME_SLOTS]){
+int calculateFitnessScore(Class newClass[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS]){
 	int venue = 0;
   int day = 0, time = 0;
+	int violation = 0;
 	
+		// printf("Before function : %d\n",violation);
+		// printf("After function : %d\n",violation);
+		
   for(venue; venue < MAX_VENUE; venue++) {
     for(day; day < MAX_DAY; day++) {
-			checkIfTutionOverloadedInSingleDay(newClass, day);
+			violation += checkIfTutionOverloadedInSingleDay(newClass, day);
       for(time; time < MAX_TIME_SLOTS; time++) {
-        checkLecturerNotInchargeOfCourse(newClass, venue, day, time);
+       violation +=  checkLecturerNotInchargeOfCourse(newClass, venue, day, time);
 				if(venue == 0){
-					checkIfLecturerAppearInTwoVenue(newClass, day, time);
-					checkStudentViolation(newClass, day, time);
+					violation += checkIfLecturerAppearInTwoVenue(newClass, day, time);
+					violation += checkStudentViolation(newClass, day, time);
 				}
       }
     }
   }
-
+	return violation;
 }

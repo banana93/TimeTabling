@@ -61,7 +61,7 @@ void tearDown(void){}
 	newLecturer.courseCodeInCharge[1] = "AAMP2041";
 	newLecturer.courseCodeInCharge[2] = NULL;
 	class[0][0][0].lecturer = &newLecturer;
-	//courseB declared on top
+	// courseB declared on top
 	class[0][0][0].course = &courseB[0]; // course code = "AAMP2041"
 	
 	TEST_ASSERT_EQUAL(0,checkLecturerNotInchargeOfCourse(class,0,0,0));
@@ -73,9 +73,9 @@ void tearDown(void){}
 	newLecturer.lecturerName = "Samuel";
 	newLecturer.courseCodeInCharge[0] = "MPU223";
 	newLecturer.courseCodeInCharge[1] = "ABMC1035";
-	newLecturer.courseCodeInCharge[1] = "ABNC1045";
-	newLecturer.courseCodeInCharge[1] = "ABXC1045";
-	newLecturer.courseCodeInCharge[2] = NULL;
+	newLecturer.courseCodeInCharge[2] = "ABNC1045";
+	newLecturer.courseCodeInCharge[3] = "ABXC1045";
+	newLecturer.courseCodeInCharge[4] = NULL;
 	class[0][0][0].lecturer = &newLecturer;
 	//courseB declared on top
 	class[0][0][0].course = &courseB[0];// course code = "AAMP2041"
