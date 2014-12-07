@@ -165,20 +165,20 @@ void test_checkIfTutionOverloadedInSingleDay_shoud_return_2_for_exceeding_practi
 	TEST_ASSERT_EQUAL(2, checkIfTutionOverloadedInSingleDay(class, 0));
  }
  
-void test_determineNumberOfViolationForCourseVenueSize_should_return_1_because_the_size_of_group_exceed_the_venue_size(void) {
+void test_determineViolationForCourseVenueSize_should_return_1_because_the_size_of_group_exceed_the_venue_size(void) {
   int result;
   
   addDetailsIntoChromosome(class, &course[3], &lecturer[3], 'p');
-  result = determineNumberOfViolationForCourseVenueSize(class);
+  result = determineViolationForCourseVenueSize(class);
   
   TEST_ASSERT_EQUAL(1, result);
 }
 
-void test_determineNumberOfViolationForCourseVenueSize_should_return_0_because_the_size_of_group_exceed_the_venue_size(void) {
+void test_determineViolationForCourseVenueSize_should_return_0_because_the_size_of_group_exceed_the_venue_size(void) {
   int result;
   
   addDetailsIntoChromosome(class, &course[0], &lecturer[0], 'p');
-  result = determineNumberOfViolationForCourseVenueSize(class);
+  result = determineViolationForCourseVenueSize(class);
   
   TEST_ASSERT_EQUAL(0, result);
 }
@@ -276,13 +276,3 @@ void test_checkStudentViolation_should_return_0_if_different_programme_different
   
   TEST_ASSERT_EQUAL(0, checkStudentViolation(class, 1, 1));
 }
-
-void test_getNumberOfClash_should_return_1_due_to_there_is_1_number_of_clash(void) {
-  // class[0][1][1].lecturer = &lecturer[0];
-	// class[1][1][1].lecturer = &lecturer[2];
-	// class[2][1][1].lecturer = &lecturer[1];
-	// class[3][1][1].lecturer = &lecturer[0];
-  
-  // TEST_ASSERT_EQUAL(1, getNumberOfClash(class));
-}
- 

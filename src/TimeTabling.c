@@ -176,15 +176,13 @@ return violationCounter;
  *  return 1 (the size of student in the class exceeded)
  *  return 0 (the size did not exceed)
  */
-int determineNumberOfViolationForCourseVenueSize(Class newClass[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS]) {
-  int venue = 0, day = 0, time = 0;
-  Venue venueUsed[MAX_VENUE];
+int determineViolationForCourseVenueSize(Class newClass[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS]) {
+  int VenueNumber = 0, day = 0, time = 0;
   
-  printf("programme: %s\n", newClass[0][0][0].course->programme->programmeName);
-  for(venue; venue < MAX_VENUE; venue++) {
+  for(VenueNumber; VenueNumber < MAX_VENUE; VenueNumber++) {
     for(day; day < MAX_DAY; day++) {
       for(time; time < MAX_TIME_SLOTS; time++) {
-        if(venueUsed[venue].sizeOfVenue < newClass[venue][day][time].course->programme->group->groupSize) {
+        if(venue[VenueNumber].sizeOfVenue < newClass[VenueNumber][day][time].course->programme->group->groupSize) {
           return 1;
         } else { 
             return 0;
@@ -239,26 +237,6 @@ int checkStudentViolation(Class newClass[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS], in
     }
   }
   return 0;
-}
-
-int getNumberOfClash(Class newClass[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS]) {
-  // int numberOfClashes = 0, venue = 0, day = 0, time = 0;
-  // Venue usedVenue[MAX_VENUE];
-  
-  // addDetailsIntoChromosome(newClass, &course[0], &lecturer[0], 'l');
-  
-  // for(venue; venue < MAX_VENUE; venue++) {
-    // for(day; day < MAX_DAY; day++) {
-      // for(time; time < MAX_TIME_SLOTS; time++) {
-        // if(checkStudentAndVenueSize(newClass, usedVenue[venue])){
-          // numberOfClashes++;
-          // printf("asd\n");
-        // }
-      // }
-    // }
-  // }
-  
-  // return numberOfClashes;
 }
 
 //constraints function ends here
