@@ -3,7 +3,7 @@
 
 Class class[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS];
 	
-Group group[] = { {.groupName = "A2",
+  Group group[] = { {.groupName = "A2",
                      .groupSize = 10},
                      
                     {.groupName = "A3",
@@ -16,7 +16,7 @@ Group group[] = { {.groupName = "A2",
                      .groupSize = 50}
                   };
                  
-Venue venue[] = { {.nameOfVenue = "D203",
+  Venue venue[] = { {.nameOfVenue = "D203",
                      .sizeOfVenue = 40},
                      
                     {.nameOfVenue = "D300",
@@ -29,7 +29,7 @@ Venue venue[] = { {.nameOfVenue = "D203",
                      .sizeOfVenue = 25}
                   };
                   
-Lecturer lecturer[] = { {.lecturerName = "Poh TV",
+  Lecturer lecturer[] = { {.lecturerName = "Poh TV",
                            .department = "FASC"},
                            
                           {.lecturerName = "Chan CK",
@@ -42,7 +42,7 @@ Lecturer lecturer[] = { {.lecturerName = "Poh TV",
                            .department = "HSSchool"}
                         };
                         
-Programme programme[] = { {.programmeName = "RMB2",
+  Programme programme[] = { {.programmeName = "RMB2",
                              &group[0]},
                             
                             {.programmeName = "RMB3",
@@ -55,7 +55,7 @@ Programme programme[] = { {.programmeName = "RMB2",
                              &group[3]}
                           };
                       
-Course course[] = { {.courseCode = "AAMP2041",
+  Course course[] = { {.courseCode = "AAMP2041",
                        .courseName = "Mathematics",
                        .hoursOfLecture = 2,
                        .hoursOfTutorial = 1,
@@ -143,30 +143,31 @@ int checkIfTutionOverloadedInSingleDay(Class newClass[MAX_VENUE][MAX_DAY][MAX_TI
 																										{.tutorialHours = 0, .lectureHours = 0},
 																										{.tutorialHours = 0, .lectureHours = 0}};
 
-for(venue = 0 ; venue < MAX_VENUE ; venue++){
-	for(time = 0 ; time < MAX_TIME_SLOTS ; time++){
-		for(i = 0 ; i < MAX_TIME_SLOTS ; i++){
-				if(newClass[venue][day][time].course && newClass[venue][day][time].course == &course[i]){
-					if(newClass[venue][day][time].typeOfClass == 'l')
-						counter[i].lectureHours+=1;
-					else if(newClass[venue][day][time].typeOfClass == 't')
-						counter[i].tutorialHours+=1;
-					else if(newClass[venue][day][time].typeOfClass == 'p')
-						counter[i].practicalHours+=1;	
-			}
-		}
-	}	
-}
+  for(venue = 0 ; venue < MAX_VENUE ; venue++){
+    for(time = 0 ; time < MAX_TIME_SLOTS ; time++){
+      for(i = 0 ; i < MAX_TIME_SLOTS ; i++){
+        if(newClass[venue][day][time].course && newClass[venue][day][time].course == &course[i]){
+          if(newClass[venue][day][time].typeOfClass == 'l')
+            counter[i].lectureHours+=1;
+          else if(newClass[venue][day][time].typeOfClass == 't')
+            counter[i].tutorialHours+=1;
+          else if(newClass[venue][day][time].typeOfClass == 'p')
+            counter[i].practicalHours+=1;	
+        }
+      }
+    }	
+  }
 
-for( i = 0; i < (sizeof(group)/ sizeof(Group)) ; i++){
-	if(counter[i].lectureHours > course[i].hoursOfLecture)
-		violationCounter+= counter[i].lectureHours - course[i].hoursOfLecture;
-	if(counter[i].tutorialHours > course[i].hoursOfTutorial)
-		violationCounter+= counter[i].tutorialHours - course[i].hoursOfTutorial;
-	if(counter[i].practicalHours > course[i].hoursOfPractical)
-		violationCounter+= counter[i].practicalHours - course[i].hoursOfPractical;
-}
-return violationCounter;
+  for( i = 0; i < (sizeof(group)/ sizeof(Group)) ; i++){
+    if(counter[i].lectureHours > course[i].hoursOfLecture)
+      violationCounter+= counter[i].lectureHours - course[i].hoursOfLecture;
+    if(counter[i].tutorialHours > course[i].hoursOfTutorial)
+      violationCounter+= counter[i].tutorialHours - course[i].hoursOfTutorial;
+    if(counter[i].practicalHours > course[i].hoursOfPractical)
+      violationCounter+= counter[i].practicalHours - course[i].hoursOfPractical;
+  }
+  
+  return violationCounter;
 }
 
 /**
@@ -182,15 +183,14 @@ int determineViolationForCourseVenueSize(Class newClass[MAX_VENUE][MAX_DAY][MAX_
   for(VenueNumber; VenueNumber < MAX_VENUE; VenueNumber++) {
     for(day; day < MAX_DAY; day++) {
       for(time; time < MAX_TIME_SLOTS; time++) {
-        if(venue[VenueNumber].sizeOfVenue < newClass[VenueNumber][day][time].course->programme->group->groupSize) {
+        if(venue[VenueNumber].sizeOfVenue < newClass[VenueNumber][day][time].course->programme->group->groupSize) 
           return 1;
-        } else { 
-            return 0;
-          }
+        else
+          return 0;
       }
     }
   }
-
+  // return 0;
 }
 
 /**
@@ -275,17 +275,36 @@ int calculateFitnessScore(Class newClass[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS]){
 		// printf("Before function : %d\n",violation);
 		// printf("After function : %d\n",violation);
 		
+  // for(venue; venue < MAX_VENUE; venue++) {
+    // for(day; day < MAX_DAY; day++) {
+			// violation += checkIfTutionOverloadedInSingleDay(newClass, day);
+      // for(time; time < MAX_TIME_SLOTS; time++) {
+       // violation +=  checkLecturerNotInchargeOfCourse(newClass, venue, day, time);
+				// if(venue == 0){
+					// violation += checkIfLecturerAppearInTwoVenue(newClass, day, time);
+					// violation += checkStudentViolation(newClass, day, time);
+          // violation += determineViolationForCourseVenueSize(newClass);
+				// }
+      // }
+    // }
+  // }
+  
   for(venue; venue < MAX_VENUE; venue++) {
     for(day; day < MAX_DAY; day++) {
-			violation += checkIfTutionOverloadedInSingleDay(newClass, day);
-      for(time; time < MAX_TIME_SLOTS; time++) {
-       violation +=  checkLecturerNotInchargeOfCourse(newClass, venue, day, time);
-				if(venue == 0){
-					violation += checkIfLecturerAppearInTwoVenue(newClass, day, time);
-					violation += checkStudentViolation(newClass, day, time);
-				}
-      }
+      if(checkIfTutionOverloadedInSingleDay(newClass, day))
+        violation += checkIfTutionOverloadedInSingleDay(newClass, day);
+        for(time; time < MAX_TIME_SLOTS; time++) {
+          if(checkIfLecturerAppearInTwoVenue(newClass, day, time))
+            violation++;
+          if(checkLecturerNotInchargeOfCourse(newClass, venue, day, time))
+            violation++;
+          if(checkStudentViolation(newClass, day, time))
+            violation++;
+          // if(determineViolationForCourseVenueSize(newClass))
+            // violation++;
+        } 
     }
   }
+  
 	return violation;
 }

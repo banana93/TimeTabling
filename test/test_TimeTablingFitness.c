@@ -28,61 +28,67 @@ TEST_ASSERT_EQUAL(0,calculateFitnessScore(class));
 
 void test_calculateFitnessScore_should_return_1_when_only_violating_lecturerNotInCharge(){
 	
-lecturer[0].courseCodeInCharge[0] = "ABCD1234";
-class[0][0][0].course = &course[0];
-class[0][0][0].lecturer = &lecturer[0];
+  lecturer[0].courseCodeInCharge[0] = "ABCD1234";
+  addDetailsIntoChromosome(class, &course[0], &lecturer[0], 'l');
 
-TEST_ASSERT_EQUAL(1,calculateFitnessScore(class));
-
+  TEST_ASSERT_EQUAL(1,calculateFitnessScore(class));
 }
 
 void test_calculateFitnessScore_should_return_2_when_only_violating_TutionOverloadedInSingleDay(){
-lecturer[0].courseCodeInCharge[0] = "AAMP2041";
-lecturer[0].courseCodeInCharge[1] = NULL;
-class[0][0][0].course = &course[0];
-class[0][0][0].lecturer = &lecturer[0];
-class[0][0][0].typeOfClass = 'l';
-class[0][0][1].course = &course[0];
-class[0][0][1].lecturer = &lecturer[0];
-class[0][0][1].typeOfClass = 'l';
-//extra 2 to violate twice, returns 2
-class[0][0][2].course = &course[0];
-class[0][0][2].lecturer = &lecturer[0];
-class[0][0][2].typeOfClass = 'l';
-class[0][0][3].course = &course[0];
-class[0][0][3].lecturer = &lecturer[0];
-class[0][0][3].typeOfClass = 'l';
+  lecturer[0].courseCodeInCharge[0] = "AAMP2041";
+  lecturer[0].courseCodeInCharge[1] = NULL;
 
-TEST_ASSERT_EQUAL(2,calculateFitnessScore(class));
+  addDetailsIntoChromosome(class, &course[0], &lecturer[0], 'l');
+  addDetailsIntoChromosome(class, &course[0], &lecturer[0], 'l');
 
+  //extra 2 to violate twice, returns 2  
+  addDetailsIntoChromosome(class, &course[0], &lecturer[0], 'l');
+  addDetailsIntoChromosome(class, &course[0], &lecturer[0], 'l');
+
+  TEST_ASSERT_EQUAL(2,calculateFitnessScore(class));
 }
 
 void test_calculateFitnessScore_should_return_1_when_lecturerAppearInTwoVenue(){
-lecturer[0].courseCodeInCharge[0] = "AAMP2041";
-lecturer[0].courseCodeInCharge[1] = NULL;
-class[0][0][0].course = &course[0];
-class[0][0][0].lecturer = &lecturer[0];
-class[0][0][0].typeOfClass = 'l';
-class[3][0][0].course = &course[1];
-class[3][0][0].lecturer = &lecturer[0];
-class[3][0][0].typeOfClass = 'l';
+  lecturer[0].courseCodeInCharge[0] = "AAMP2041";
+  lecturer[0].courseCodeInCharge[1] = NULL;
 
+  addDetailsIntoChromosome(class, &course[0], &lecturer[0], 'l');
+  class[3][0][0].course = &course[1];
+  class[3][0][0].lecturer = &lecturer[0];
+  class[3][0][0].typeOfClass = 'l';
 
-TEST_ASSERT_EQUAL(1,calculateFitnessScore(class));
+  TEST_ASSERT_EQUAL(1,calculateFitnessScore(class));
 }
 
 void test_calculateFitnessScore_should_return_1_when_studentAppearInTwoVenue(){
-lecturer[0].courseCodeInCharge[0] = "AAMP2041";
-lecturer[0].courseCodeInCharge[1] = NULL;
-lecturer[1].courseCodeInCharge[0] = "AAMP2041";
-lecturer[1].courseCodeInCharge[1] = NULL;
-class[0][0][0].course = &course[0];
-class[0][0][0].lecturer = &lecturer[0];
-class[0][0][0].typeOfClass = 'l';
-class[3][0][0].course = &course[0];
-class[3][0][0].lecturer = &lecturer[1];
-class[3][0][0].typeOfClass = 'l';
+  lecturer[0].courseCodeInCharge[0] = "AAMP2041";
+  lecturer[0].courseCodeInCharge[1] = NULL;
+  lecturer[1].courseCodeInCharge[0] = "AAMP2041";
+  lecturer[1].courseCodeInCharge[1] = NULL;
 
+  addDetailsIntoChromosome(class, &course[0], &lecturer[0], 'l');
+  class[3][0][0].course = &course[0];
+  class[3][0][0].lecturer = &lecturer[1];
+  class[3][0][0].typeOfClass = 'l';
 
-TEST_ASSERT_EQUAL(1,calculateFitnessScore(class));
+  TEST_ASSERT_EQUAL(1,calculateFitnessScore(class));
+}
+
+void test_calculateFitnessScore_should_return_2_when_it_violates_lecturerNotInCharge_and_lecturerApeearInTwoVenue(){
+  // lecturerNotInCharge() Violation
+  lecturer[0].courseCodeInCharge[0] = "ABCD1234";
+  addDetailsIntoChromosome(class, &course[0], &lecturer[0], 'l');
+  
+  // lecturerAppearInTwoVenue Violation
+  lecturer[0].courseCodeInCharge[0] = "AAMP2041";
+  lecturer[0].courseCodeInCharge[1] = NULL;
+  lecturer[1].courseCodeInCharge[0] = "AAMP2041";
+  lecturer[1].courseCodeInCharge[1] = NULL;
+
+  addDetailsIntoChromosome(class, &course[0], &lecturer[0], 'l');
+  class[3][0][0].course = &course[0];
+  class[3][0][0].lecturer = &lecturer[1];
+  class[3][0][0].typeOfClass = 'l';
+  
+  TEST_ASSERT_EQUAL(2, calculateFitnessScore(class));
 }
