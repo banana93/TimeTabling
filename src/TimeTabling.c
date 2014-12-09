@@ -291,8 +291,7 @@ int calculateFitnessScore(Class newClass[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS]){
   
   for(venue; venue < MAX_VENUE; venue++) {
     for(day; day < MAX_DAY; day++) {
-      if(checkIfTutionOverloadedInSingleDay(newClass, day))
-        violation += checkIfTutionOverloadedInSingleDay(newClass, day);
+      violation += checkIfTutionOverloadedInSingleDay(newClass, day);
         for(time; time < MAX_TIME_SLOTS; time++) {
           if(checkIfLecturerAppearInTwoVenue(newClass, day, time))
             violation++;
