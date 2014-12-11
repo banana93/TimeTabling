@@ -94,12 +94,15 @@ void test_calculateFitnessScore_should_return_8_when_violates_all_but_TuitionOve
   lecturer[2].courseCodeInCharge[0] = NULL; // to remove value declared on top
   lecturer[3].courseCodeInCharge[0] = NULL; // to remove value declared on top
 	
-//checkIfTutionOverloadedInSingleDay = 0
-//checkLecturerNotInchargeOfCourse = 4
-//checkIfLecturerAppearInTwoVenue = 1
-//checkStudentViolation = 1
-//determineViolationForCourseVenueSize = 2
-//total should be 8
+  /**
+   *  checkIfTutionOverloadedInSingleDay = 0
+   *  checkLecturerNotInchargeOfCourse = 4
+   *  checkIfLecturerAppearInTwoVenue = 1
+   *  checkStudentViolation = 1
+   *  determineViolationForCourseVenueSize = 2
+   *  total should be 8
+   */
+
 	addDetailsIntoChromosome(class, &course[3], &lecturer[3], 'l');
 	addDetailsIntoChromosome(class, &course[3], &lecturer[3], 'l');
 	addDetailsIntoChromosome(class, &course[2], &lecturer[3], 'l');
@@ -119,12 +122,15 @@ void test_calculateFitnessScore_should_return_8_when_violates_all_but_checkLectu
   lecturer[3].courseCodeInCharge[0] = "ABCD1234"; 
   lecturer[3].courseCodeInCharge[1] = NULL; 
 	
-//checkIfTutionOverloadedInSingleDay = 2
-//checkLecturerNotInchargeOfCourse = 0
-//checkIfLecturerAppearInTwoVenue = 1
-//checkStudentViolation = 1
-//determineViolationForCourseVenueSize = 4
-//total should be 8
+  /**
+   *  checkIfTutionOverloadedInSingleDay = 2
+   *  checkLecturerNotInchargeOfCourse = 0
+   *  checkIfLecturerAppearInTwoVenue = 1
+   *  checkStudentViolation = 1
+   *  determineViolationForCourseVenueSize = 4
+   *  total should be 8
+   */
+
 	addDetailsIntoChromosome(class, &course[3], &lecturer[3], 'l');
 	addDetailsIntoChromosome(class, &course[3], &lecturer[3], 'l');
 	addDetailsIntoChromosome(class, &course[3], &lecturer[3], 'l');
@@ -142,13 +148,17 @@ void test_calculateFitnessScore_should_return_11_when_violates_all_but_checkIfLe
   lecturer[1].courseCodeInCharge[0] = NULL; // to remove value declared on top
   lecturer[2].courseCodeInCharge[0] = NULL; // to remove value declared on top
   lecturer[3].courseCodeInCharge[0] = NULL; // to remove value declared on top
-//checkIfTutionOverloadedInSingleDay = 2
-//checkLecturerNotInchargeOfCourse = 4
-//checkIfLecturerAppearInTwoVenue = 0
-//checkStudentViolation = 1
-//determineViolationForCourseVenueSize = 4
-//total should be 11
-	addDetailsIntoChromosome(class, &course[3], &lecturer[3], 'l');
+
+  /**
+   *  checkIfTutionOverloadedInSingleDay = 2
+   *  checkLecturerNotInchargeOfCourse = 4
+   *  checkIfLecturerAppearInTwoVenue = 0
+   *  checkStudentViolation = 1
+   *  determineViolationForCourseVenueSize = 4
+   *  total should be 11
+   */
+	
+  addDetailsIntoChromosome(class, &course[3], &lecturer[3], 'l');
 	addDetailsIntoChromosome(class, &course[3], &lecturer[3], 'l');
 	addDetailsIntoChromosome(class, &course[3], &lecturer[3], 'l');
 	
@@ -165,13 +175,17 @@ void test_calculateFitnessScore_should_return_9_when_violates_all_but_checkStude
   lecturer[1].courseCodeInCharge[0] = NULL; // to remove value declared on top
   lecturer[2].courseCodeInCharge[0] = NULL; // to remove value declared on top
   lecturer[3].courseCodeInCharge[0] = NULL; // to remove value declared on top
-//checkIfTutionOverloadedInSingleDay = 1
-//checkLecturerNotInchargeOfCourse = 4
-//checkIfLecturerAppearInTwoVenue = 1
-//checkStudentViolation = 0
-//determineViolationForCourseVenueSize = 3
-//total should be 9
-	addDetailsIntoChromosome(class, &course[3], &lecturer[3], 'l');
+  
+  /**
+   *  checkIfTutionOverloadedInSingleDay = 1
+   *  checkLecturerNotInchargeOfCourse = 4
+   *  checkIfLecturerAppearInTwoVenue = 1
+   *  checkStudentViolation = 0
+   *  determineViolationForCourseVenueSize = 3
+   *  total should be 9
+   */
+	
+  addDetailsIntoChromosome(class, &course[3], &lecturer[3], 'l');
 	addDetailsIntoChromosome(class, &course[3], &lecturer[3], 'l');
 	addDetailsIntoChromosome(class, &course[3], &lecturer[3], 'l');
 	
@@ -188,12 +202,16 @@ void test_calculateFitnessScore_should_return_8_when_violates_all_but_determineV
   lecturer[1].courseCodeInCharge[0] = NULL; // to remove value declared on top
   lecturer[2].courseCodeInCharge[0] = NULL; // to remove value declared on top
   lecturer[3].courseCodeInCharge[0] = NULL; // to remove value declared on top
-//checkIfTutionOverloadedInSingleDay = 2
-//checkLecturerNotInchargeOfCourse = 4
-//checkIfLecturerAppearInTwoVenue = 1
-//checkStudentViolation = 1
-//determineViolationForCourseVenueSize = 0
-//total should be 8
+  
+  /**
+   *  checkIfTutionOverloadedInSingleDay = 2
+   *  checkLecturerNotInchargeOfCourse = 4
+   *  checkIfLecturerAppearInTwoVenue = 1
+   *  checkStudentViolation = 1
+   *  determineViolationForCourseVenueSize = 0
+   *  total should be 8
+   */
+   
 	addDetailsIntoChromosome(class, &course[2], &lecturer[3], 'l');
 	addDetailsIntoChromosome(class, &course[2], &lecturer[3], 'l');
 	addDetailsIntoChromosome(class, &course[2], &lecturer[3], 'l');
@@ -211,13 +229,17 @@ void test_calculateFitnessScore_should_return_12_when_violates_all(){
   lecturer[1].courseCodeInCharge[0] = NULL; // to remove value declared on top
   lecturer[2].courseCodeInCharge[0] = NULL; // to remove value declared on top
   lecturer[3].courseCodeInCharge[0] = NULL; // to remove value declared on top
-//checkIfTutionOverloadedInSingleDay = 2
-//checkLecturerNotInchargeOfCourse = 4
-//checkIfLecturerAppearInTwoVenue = 1
-//checkStudentViolation = 1
-//determineViolationForCourseVenueSize = 4
-//total should be 12
-	addDetailsIntoChromosome(class, &course[3], &lecturer[3], 'l');
+  
+  /**
+   *  checkIfTutionOverloadedInSingleDay = 2
+   *  checkLecturerNotInchargeOfCourse = 4
+   *  checkIfLecturerAppearInTwoVenue = 1
+   *  checkStudentViolation = 1
+   *  determineViolationForCourseVenueSize = 4
+   *  total should be 12
+   */
+	
+  addDetailsIntoChromosome(class, &course[3], &lecturer[3], 'l');
 	addDetailsIntoChromosome(class, &course[3], &lecturer[3], 'l');
 	addDetailsIntoChromosome(class, &course[3], &lecturer[3], 'l');
 	
@@ -235,7 +257,7 @@ void test_calculateFitnessScore_should_return_12_when_violates_all(){
  *           v          score 1        v
  *          NULL    ------------->     1
  */
-void test_calculateFitnessScore_and_genericRedBlackTreeAdd_should_be_able_to_add_the_details_into_the_redBlackTree(void) {
+void test_calculateFitnessScore_and_genericRedBlackTreeAdd_should_be_able_to_add_fitness_score_2_into_the_redBlackTree(void) {
   int numberOfClashes = 0;
   lecturer[0].courseCodeInCharge[0] = NULL; // to remove value declared on top
   lecturer[1].courseCodeInCharge[0] = NULL; // to remove value declared on top
@@ -246,16 +268,169 @@ void test_calculateFitnessScore_and_genericRedBlackTreeAdd_should_be_able_to_add
 	addDetailsIntoChromosome(class, &course[3], &lecturer[3], 'l');
   
   numberOfClashes = calculateFitnessScore(class);
-  printf("numberOfClashes: %d\n", numberOfClashes);
   resetNode(&node1, numberOfClashes);
   class[0][0][0].classNode = &node1;
-  
   setNode(&node1, NULL, NULL, 'b');
   Node *root = NULL;
   
   genericRedBlackTreeAdd(&root, &node1, compare);
+  TEST_ASSERT_EQUAL(1, numberOfClashes);
   TEST_ASSERT_EQUAL_PTR(&node1, root);
   TEST_ASSERT_EQUAL_NODE(NULL, NULL, 'b', &node1);
   TEST_ASSERT_EQUAL(1, class[0][0][0].classNode->data);
+}
+
+/**
+ *       root                   root                     root
+ *        |     add fitness      |     add fitness        |
+ *        v       score 2        v       score 1          v
+ *       NULL  ------------>     2    ------------>       2
+ *                                                       /
+ *                                                      1
+ */
+void test_calculateFitnessScore_and_genericRedBlackTreeAdd_should_be_able_to_add_fitness_score_2_1_into_redBlackTree(void) {
+  int firstNumberOfClashes = 0, secondNumberOfClashes = 0;
+
+  // TuitionOverloadInSingleDay() Violation
+  lecturer[0].courseCodeInCharge[0] = NULL; // to remove value declared on top
+  lecturer[1].courseCodeInCharge[0] = NULL; // to remove value declared on top
+  lecturer[2].courseCodeInCharge[0] = NULL; // to remove value declared on top
+  lecturer[3].courseCodeInCharge[0] = NULL; // to remove value declared on top
+  lecturer[0].courseCodeInCharge[0] = "AAMP2041";
+  lecturer[0].courseCodeInCharge[1] = NULL;
+
+  addDetailsIntoChromosome(class, &course[0], &lecturer[0], 'l');
+  addDetailsIntoChromosome(class, &course[0], &lecturer[0], 'l');
+
+  // extra 2 to violate twice, returns 2  
+  addDetailsIntoChromosome(class, &course[0], &lecturer[0], 'l');
+  addDetailsIntoChromosome(class, &course[0], &lecturer[0], 'l');
+
+  firstNumberOfClashes = calculateFitnessScore(class);
+  resetNode(&node2, firstNumberOfClashes);
+  class[0][0][0].classNode = &node2;
+  setNode(&node2, NULL, NULL, 'b');
+  Node *root = NULL;
   
+  genericRedBlackTreeAdd(&root, &node2, compare);
+  setUp();
+  
+  // determineViolationForCourseVenueSize() Violation
+  lecturer[0].courseCodeInCharge[0] = NULL; // to remove value declared on top
+  lecturer[1].courseCodeInCharge[0] = NULL; // to remove value declared on top
+  lecturer[2].courseCodeInCharge[0] = NULL; // to remove value declared on top
+  lecturer[3].courseCodeInCharge[0] = NULL; // to remove value declared on top
+  lecturer[3].courseCodeInCharge[0] = "ABCD1234";
+  lecturer[3].courseCodeInCharge[1] = NULL;
+	addDetailsIntoChromosome(class, &course[3], &lecturer[3], 'l');
+  
+  secondNumberOfClashes = calculateFitnessScore(class);
+  resetNode(&node1, secondNumberOfClashes);
+  class[0][0][1].classNode = &node1;
+  setNode(&node1, NULL, NULL, 'b');
+  root = &node2;
+  
+  genericRedBlackTreeAdd(&root, &node1, compare);
+  TEST_ASSERT_EQUAL_PTR(&node2, root);
+  TEST_ASSERT_EQUAL_NODE(&node1, NULL, 'b', &node2);
+  TEST_ASSERT_EQUAL_NODE(NULL, NULL, 'b', &node1);
+  TEST_ASSERT_EQUAL(2, class[0][0][0].classNode->data);
+  TEST_ASSERT_EQUAL(1, class[0][0][1].classNode->data);
+}
+
+/**
+ *      root                  root                    root                   root
+ *       |    add fitness      |     add fitness       |     add fitness      |
+ *       v     score 2         v      score 1          v      score 8         v
+ *      NULL  ----------->     2    ------------>      2     ----------->     2
+ *                                                    /                     /   \
+ *                                                   1                     1     8
+ */
+void test_calculateFitnessScore_and_genericRedBlackTreeAdd_should_be_able_to_add_fitness_score_2_1_8_into_redBlackTree(void) {
+  int firstNumberOfClashes = 0, secondNumberOfClashes = 0, thirdNumberOfClashes;
+
+  // TuitionOverloadInSingleDay() Violation
+  lecturer[0].courseCodeInCharge[0] = NULL; // to remove value declared on top
+  lecturer[1].courseCodeInCharge[0] = NULL; // to remove value declared on top
+  lecturer[2].courseCodeInCharge[0] = NULL; // to remove value declared on top
+  lecturer[3].courseCodeInCharge[0] = NULL; // to remove value declared on top
+  lecturer[0].courseCodeInCharge[0] = "AAMP2041";
+  lecturer[0].courseCodeInCharge[1] = NULL;
+
+  addDetailsIntoChromosome(class, &course[0], &lecturer[0], 'l');
+  addDetailsIntoChromosome(class, &course[0], &lecturer[0], 'l');
+
+  // extra 2 to violate twice, returns 2  
+  addDetailsIntoChromosome(class, &course[0], &lecturer[0], 'l');
+  addDetailsIntoChromosome(class, &course[0], &lecturer[0], 'l');
+
+  firstNumberOfClashes = calculateFitnessScore(class);
+  resetNode(&node2, firstNumberOfClashes);
+  class[0][0][0].classNode = &node2;
+  setNode(&node2, NULL, NULL, 'b');
+  Node *root = NULL;
+  
+  genericRedBlackTreeAdd(&root, &node2, compare);
+  setUp();
+  
+  // determineViolationForCourseVenueSize() Violation
+  lecturer[0].courseCodeInCharge[0] = NULL; // to remove value declared on top
+  lecturer[1].courseCodeInCharge[0] = NULL; // to remove value declared on top
+  lecturer[2].courseCodeInCharge[0] = NULL; // to remove value declared on top
+  lecturer[3].courseCodeInCharge[0] = NULL; // to remove value declared on top
+  lecturer[3].courseCodeInCharge[0] = "ABCD1234";
+  lecturer[3].courseCodeInCharge[1] = NULL;
+	addDetailsIntoChromosome(class, &course[3], &lecturer[3], 'l');
+  
+  secondNumberOfClashes = calculateFitnessScore(class);
+  resetNode(&node1, secondNumberOfClashes);
+  class[0][0][1].classNode = &node1;
+  setNode(&node1, NULL, NULL, 'b');
+  root = &node2;
+  
+  genericRedBlackTreeAdd(&root, &node1, compare);
+  setUp();
+  
+  // checkLecturerNotInchargeOfCourse() Violation
+  lecturer[0].courseCodeInCharge[0] = NULL; // to remove value declared on top
+  lecturer[1].courseCodeInCharge[0] = NULL; // to remove value declared on top
+  lecturer[2].courseCodeInCharge[0] = NULL; // to remove value declared on top
+  lecturer[3].courseCodeInCharge[0] = "ABCD1234"; 
+  lecturer[3].courseCodeInCharge[1] = NULL; 
+	
+  /**
+   *  checkIfTutionOverloadedInSingleDay = 2
+   *  checkLecturerNotInchargeOfCourse = 0
+   *  checkIfLecturerAppearInTwoVenue = 1
+   *  checkStudentViolation = 1
+   *  determineViolationForCourseVenueSize = 4
+   *  total should be 8
+   */
+
+	addDetailsIntoChromosome(class, &course[3], &lecturer[3], 'l');
+	addDetailsIntoChromosome(class, &course[3], &lecturer[3], 'l');
+	addDetailsIntoChromosome(class, &course[3], &lecturer[3], 'l');
+	
+	class[3][0][2].course = &course[3];
+  class[3][0][2].lecturer = &lecturer[3];
+  class[3][0][2].typeOfClass = 'l';
+  
+  thirdNumberOfClashes = calculateFitnessScore(class);
+  resetNode(&node8, thirdNumberOfClashes);
+  class[0][0][2].classNode = &node8;
+  setNode(&node8, NULL, NULL, 'b');
+  root = &node2;
+  
+  genericRedBlackTreeAdd(&root, &node8, compare);
+  
+  TEST_ASSERT_EQUAL_PTR(&node2, root);
+  TEST_ASSERT_EQUAL_NODE(&node1, &node8, 'b', &node2);
+  TEST_ASSERT_EQUAL_NODE(NULL, NULL, 'b', &node1);
+  TEST_ASSERT_EQUAL_NODE(NULL, NULL, 'b', &node8);
+  TEST_ASSERT_EQUAL(2, class[0][0][0].classNode->data);
+  TEST_ASSERT_EQUAL(1, class[0][0][1].classNode->data);
+  TEST_ASSERT_EQUAL(8, class[0][0][2].classNode->data);
+  TEST_ASSERT_EQUAL(2, firstNumberOfClashes);
+  TEST_ASSERT_EQUAL(1, secondNumberOfClashes);
+  TEST_ASSERT_EQUAL(8, thirdNumberOfClashes);
 }
