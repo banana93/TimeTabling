@@ -3,9 +3,8 @@
 #include <stdio.h>
 
 #define MAX_DAY 5
-#define MAX_TIME_SLOTS 8
+#define MAX_TIME_SLOTS 5
 #define MAX_VENUE 4
-#define MAX_COURSE_PER_LECTURER 5
 
 typedef enum
 {
@@ -49,7 +48,6 @@ struct Lecturer
 {
 	char *lecturerName;
   char *department;
-  char *courseCodeInCharge[MAX_COURSE_PER_LECTURER];
 };
 
 struct Group
@@ -104,9 +102,9 @@ int getVenueSize(Class *newClass);
 void addDetailsIntoChromosome(Class newClass[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS], Course course[], Lecturer lecturer[], char typeOfClass);
 Class *checkChromosomeIsEmpty(Class newClass[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS]);
 int calculateFitnessScore(Class newClass[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS]);
-
+void fillInTheChromosome(Class classList[]);
 //constraints
-int checkLecturerNotInchargeOfCourse(Class newClass[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS], int venue, int day, int time);
+// int checkLecturerNotInchargeOfCourse(Class newClass[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS], int venue, int day, int time);
 int checkIfTutionOverloadedInSingleDay(Class newClass[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS], int day);
 int checkIfLecturerAppearInTwoVenue(Class newClass[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS], int day, int time);
 int determineViolationForCourseVenueSize(Class newClass[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS]);
