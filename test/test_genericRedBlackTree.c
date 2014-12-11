@@ -56,6 +56,19 @@ void test_compare_should_return_1_when_the_fitness_score_of_the_newNode_is_large
   TEST_ASSERT_EQUAL(1, compare(&root, &node3));
 }
 
+void test_compare_should_throw_ERR_NODE_UNAVAILABLE_due_to_it_is_comparing_NULL(void) {
+  CEXCEPTION_T err;
+  setNode(&node2, NULL, NULL, 'b');
+  Node *root = NULL;
+  
+  Try {
+    compare(&root, &node2);
+    TEST_FAIL_MESSAGE("Expect it to throw ERR_NODE_UNAVAILABLE");
+  } Catch(err) {
+      TEST_ASSERT_EQUAL_MESSAGE(ERR_NODE_UNAVAILABLE, err, "Expected ERR_NODE_UNAVAILABLE exception");
+    }
+  
+}
 
 /**
  *         root      add fitness         root

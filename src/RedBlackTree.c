@@ -446,12 +446,16 @@ Node *removeNextLargerSuccessor(Node **nodePtr)
  *  return 1, if the newNode fitness score is larger than the nodePtr data
  */
 int compare(Node **nodePtr, Node *newNode) {
-  if((*nodePtr)->data > newNode->data)
-    return -1;
-  else if((*nodePtr)->data == newNode->data)
-    return 0;
-  else if((*nodePtr)->data < newNode->data)
-    return 1;
+  if((*nodePtr) != NULL) {
+    if((*nodePtr)->data > newNode->data)
+      return -1;
+    else if((*nodePtr)->data == newNode->data)
+      return 0;
+    else if((*nodePtr)->data < newNode->data)
+      return 1;
+  } else {
+      Throw(ERR_NODE_UNAVAILABLE);
+    }
 }
 
 void genericRedBlackTreeAdd(Node **nodePtr, Node *newNode, int (*compare)(Node **nodePtr, Node *newNode)) {
