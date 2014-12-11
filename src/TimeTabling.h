@@ -1,6 +1,12 @@
 #ifndef TimeTabling_H
 #define TimeTabling_H
 #include <stdio.h>
+#include "Node.h"
+#include "RedBlackTree.h"
+#include "ErrorCode.h"
+#include "CustomAssertions.h"
+#include "Rotations.h"
+#include "InitNode.h"
 
 #define MAX_DAY 5
 #define MAX_TIME_SLOTS 8
@@ -80,6 +86,7 @@ struct Class
   Course *course;
   Lecturer *lecturer;
 	char typeOfClass;
+  Node *classNode;
 };
 
 struct Counter

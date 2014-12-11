@@ -1,5 +1,11 @@
 #include <stdio.h>
 #include "TimeTabling.h"
+#include "Node.h"
+#include "RedBlackTree.h"
+#include "ErrorCode.h"
+#include "CustomAssertions.h"
+#include "Rotations.h"
+#include "InitNode.h"
 
 Class class[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS];
 	

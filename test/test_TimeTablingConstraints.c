@@ -1,6 +1,12 @@
 #include "unity.h"
 #include <stdio.h>
 #include "TimeTabling.h"
+#include "Node.h"
+#include "RedBlackTree.h"
+#include "ErrorCode.h"
+#include "CustomAssertions.h"
+#include "Rotations.h"
+#include "InitNode.h"
 
 Course courseB[] = { {.courseCode = "AAMP2041",
                        .courseName = "Mathematics",
