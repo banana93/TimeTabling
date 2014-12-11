@@ -198,6 +198,8 @@ Class class[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS];
                     };
 										
 									
+
+									
 char *getCourseName(Course newCourse){
 	if(newCourse.courseName != NULL)
     return newCourse.courseName;
@@ -220,29 +222,6 @@ char *getCourseCode(Course newCourse){
 // }
 
 // constraints try
-
-/**
-*	Name:	checkLecturerNotInchargeOfCourse()
-*	Input: 	Class struct pointer, Course *course[]
-*	Output: return 1 if there is violation, else 0
-*	
-*	Descriptions:
-*	To check the course on the time slot incharge by the lecturer
-*
-*/
-int checkLecturerNotInchargeOfCourse(Class newClass[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS], int venue, int day, int time){
-
-	int j;
-	for(j=0 ; j < MAX_COURSE_PER_LECTURER ; j++){
-		if(!newClass[venue][day][time].course || !newClass[venue][day][time].course->courseCode || !newClass[venue][day][time].lecturer )
-			return 0;
-		else if(newClass[venue][day][time].lecturer != NULL && newClass[venue][day][time].lecturer->courseCodeInCharge[j] != NULL && class[0][0][0].course->courseCode){
-			if(strcmp(newClass[venue][day][time].lecturer->courseCodeInCharge[j], newClass[venue][day][time].course->courseCode) == 0)
-				return 0;
-		}
-	}
-	return 1;
-}
 
 int checkIfTutionOverloadedInSingleDay(Class newClass[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS], int day){
 	
@@ -283,7 +262,7 @@ int checkIfTutionOverloadedInSingleDay(Class newClass[MAX_VENUE][MAX_DAY][MAX_TI
  *  The purpose of this function is to check whether the number of 
  *  students in the class exceed the venue size or not
  *  
- *  return 1 (the size of student in the class exceeded)
+ *  return number of exceeded (the size of student in the class exceeded)
  *  return 0 (the size did not exceed)
  */
 int determineViolationForCourseVenueSize(Class newClass[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS]) {
@@ -308,46 +287,54 @@ int determineViolationForCourseVenueSize(Class newClass[MAX_VENUE][MAX_DAY][MAX_
  *  This function is to check whether the same lecturer appear at 
  *  different venue or not
  *  
- *  return 1 (got violation)
+ *  return number of exceeded (got violation)
  *  return 0 (no violation)
  */
 int checkIfLecturerAppearInTwoVenue(Class newClass[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS], int day, int time){
 	int venue, i;
+	int counter[(sizeof(lecturer)/sizeof(Lecturer))] = { 0,0,0,0 };
+	int returnCounter = 0;
 	
 	for(venue = 0 ; venue < MAX_VENUE ; venue++){
 		for(i = 0; i < MAX_VENUE; i++){
-			if(venue != i){
-				if(newClass[venue][day][time].lecturer && newClass[i][day][time].lecturer){
-					if(newClass[venue][day][time].lecturer == newClass[i][day][time].lecturer)
-						return 1;
-				}
+			if(newClass[venue][day][time].lecturer){
+				if(newClass[venue][day][time].lecturer == &lecturer[i])
+					counter[i]++;
 			}
 		}
 	}
-	return 0;
+  for(i = 0 ; i < (sizeof(lecturer)/sizeof(Lecturer)) ; i++){
+		if(counter[i] > 1)
+			returnCounter = counter[i] - 1;
+	}
+  return returnCounter;
 }
 
 /**
  *  This function is to check whether the same programme and same group 
  *  appears at different venue or not
  * 
- *  return 1 (got violation)
+ *  return value of exceeding (got violation)
  *  return 0 (no violation)
  */
 int checkStudentViolation(Class newClass[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS], int day, int time) {
   int venue, i;
+	int counter[(sizeof(course)/sizeof(Course))] = { 0,0,0,0 };
+	int returnCounter = 0;
   
   for(venue = 0; venue < MAX_VENUE; venue++) {
     for(i = 0; i < MAX_VENUE; i++) {
-      if(venue != i) {
-        if(newClass[venue][day][time].course && newClass[i][day][time].course){
-					if(newClass[venue][day][time].course->programme == newClass[i][day][time].course->programme)
-						return 1;
-				}
-      }
+      if(newClass[venue][day][time].course){
+				if(newClass[venue][day][time].course->programme == &programme[i])
+					counter[i]++;
+			}
     }
   }
-  return 0;
+  for(i = 0 ; i < (sizeof(course)/sizeof(Course)) ; i++){
+		if(counter[i] > 1)
+			returnCounter = counter[i] - 1;
+	}
+  return returnCounter;
 }
 
 //constraints function ends here
@@ -389,7 +376,6 @@ int calculateFitnessScore(Class newClass[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS]){
 			if(venue == 0)
 				violation += checkIfTutionOverloadedInSingleDay(newClass, day);
       for(time = 0; time < MAX_TIME_SLOTS; time++) {
-				violation +=  checkLecturerNotInchargeOfCourse(newClass, venue, day, time);
 				if(venue == 0){
 					violation += checkIfLecturerAppearInTwoVenue(newClass, day, time);
 					violation += checkStudentViolation(newClass, day, time);
@@ -400,4 +386,8 @@ int calculateFitnessScore(Class newClass[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS]){
   violation += determineViolationForCourseVenueSize(newClass);
     
 	return violation;
+}
+
+void fillInTheChromosome(Class classList[]){
+
 }
