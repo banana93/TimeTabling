@@ -13,8 +13,8 @@ Node node1, node2, node3, node4, node5, node6, node7, node8, node9, node10, node
 void setUp(void){
 	int venue = 0;
   int day = 0, time = 0;
-  
-  for(venue = 0; venue < 4; venue++) {
+
+  for(venue = 0 ; venue < MAX_VENUE; venue++) {
     for(day = 0; day < MAX_DAY; day++) {
       for(time = 0; time < MAX_TIME_SLOTS; time++) {
 				class[venue][day][time].lecturer = NULL;
@@ -88,12 +88,129 @@ void test_calculateFitnessScore_should_return_1_when_determineViolationForCourse
   TEST_ASSERT_EQUAL(1,calculateFitnessScore(class));
 }
 
-void test_calculateFitnessScore_should_return_(){
+void test_calculateFitnessScore_should_return_8_when_violates_all_but_TuitionOverload(){
   lecturer[0].courseCodeInCharge[0] = NULL; // to remove value declared on top
   lecturer[1].courseCodeInCharge[0] = NULL; // to remove value declared on top
   lecturer[2].courseCodeInCharge[0] = NULL; // to remove value declared on top
   lecturer[3].courseCodeInCharge[0] = NULL; // to remove value declared on top
 	
+//checkIfTutionOverloadedInSingleDay = 0
+//checkLecturerNotInchargeOfCourse = 4
+//checkIfLecturerAppearInTwoVenue = 1
+//checkStudentViolation = 1
+//determineViolationForCourseVenueSize = 2
+//total should be 8
+	addDetailsIntoChromosome(class, &course[3], &lecturer[3], 'l');
+	addDetailsIntoChromosome(class, &course[3], &lecturer[3], 'l');
+	addDetailsIntoChromosome(class, &course[2], &lecturer[3], 'l');
+	
+	class[3][0][2].course = &course[2];
+  class[3][0][2].lecturer = &lecturer[3];
+  class[3][0][2].typeOfClass = 'l';
+	
+
+  TEST_ASSERT_EQUAL(8,calculateFitnessScore(class));
+}
+
+void test_calculateFitnessScore_should_return_8_when_violates_all_but_checkLecturerNotInchargeOfCourse(){
+  lecturer[0].courseCodeInCharge[0] = NULL; // to remove value declared on top
+  lecturer[1].courseCodeInCharge[0] = NULL; // to remove value declared on top
+  lecturer[2].courseCodeInCharge[0] = NULL; // to remove value declared on top
+  lecturer[3].courseCodeInCharge[0] = "ABCD1234"; 
+  lecturer[3].courseCodeInCharge[1] = NULL; 
+	
+//checkIfTutionOverloadedInSingleDay = 2
+//checkLecturerNotInchargeOfCourse = 0
+//checkIfLecturerAppearInTwoVenue = 1
+//checkStudentViolation = 1
+//determineViolationForCourseVenueSize = 4
+//total should be 8
+	addDetailsIntoChromosome(class, &course[3], &lecturer[3], 'l');
+	addDetailsIntoChromosome(class, &course[3], &lecturer[3], 'l');
+	addDetailsIntoChromosome(class, &course[3], &lecturer[3], 'l');
+	
+	class[3][0][2].course = &course[3];
+  class[3][0][2].lecturer = &lecturer[3];
+  class[3][0][2].typeOfClass = 'l';
+	
+
+  TEST_ASSERT_EQUAL(8,calculateFitnessScore(class));
+}
+
+void test_calculateFitnessScore_should_return_11_when_violates_all_but_checkIfLecturerAppearInTwoVenue(){
+  lecturer[0].courseCodeInCharge[0] = NULL; // to remove value declared on top
+  lecturer[1].courseCodeInCharge[0] = NULL; // to remove value declared on top
+  lecturer[2].courseCodeInCharge[0] = NULL; // to remove value declared on top
+  lecturer[3].courseCodeInCharge[0] = NULL; // to remove value declared on top
+//checkIfTutionOverloadedInSingleDay = 2
+//checkLecturerNotInchargeOfCourse = 4
+//checkIfLecturerAppearInTwoVenue = 0
+//checkStudentViolation = 1
+//determineViolationForCourseVenueSize = 4
+//total should be 11
+	addDetailsIntoChromosome(class, &course[3], &lecturer[3], 'l');
+	addDetailsIntoChromosome(class, &course[3], &lecturer[3], 'l');
+	addDetailsIntoChromosome(class, &course[3], &lecturer[3], 'l');
+	
+	class[3][0][0].course = &course[3];
+  class[3][0][0].lecturer = &lecturer[2];
+  class[3][0][0].typeOfClass = 'l';
+	
+
+  TEST_ASSERT_EQUAL(11,calculateFitnessScore(class));
+}
+
+void test_calculateFitnessScore_should_return_9_when_violates_all_but_checkStudentViolation(){
+  lecturer[0].courseCodeInCharge[0] = NULL; // to remove value declared on top
+  lecturer[1].courseCodeInCharge[0] = NULL; // to remove value declared on top
+  lecturer[2].courseCodeInCharge[0] = NULL; // to remove value declared on top
+  lecturer[3].courseCodeInCharge[0] = NULL; // to remove value declared on top
+//checkIfTutionOverloadedInSingleDay = 1
+//checkLecturerNotInchargeOfCourse = 4
+//checkIfLecturerAppearInTwoVenue = 1
+//checkStudentViolation = 0
+//determineViolationForCourseVenueSize = 3
+//total should be 9
+	addDetailsIntoChromosome(class, &course[3], &lecturer[3], 'l');
+	addDetailsIntoChromosome(class, &course[3], &lecturer[3], 'l');
+	addDetailsIntoChromosome(class, &course[3], &lecturer[3], 'l');
+	
+	class[3][0][0].course = &course[2];
+  class[3][0][0].lecturer = &lecturer[3];
+  class[3][0][0].typeOfClass = 'l';
+	
+
+  TEST_ASSERT_EQUAL(9,calculateFitnessScore(class));
+}
+
+void test_calculateFitnessScore_should_return_8_when_violates_all_but_determineViolationForCourseVenueSize(){
+  lecturer[0].courseCodeInCharge[0] = NULL; // to remove value declared on top
+  lecturer[1].courseCodeInCharge[0] = NULL; // to remove value declared on top
+  lecturer[2].courseCodeInCharge[0] = NULL; // to remove value declared on top
+  lecturer[3].courseCodeInCharge[0] = NULL; // to remove value declared on top
+//checkIfTutionOverloadedInSingleDay = 2
+//checkLecturerNotInchargeOfCourse = 4
+//checkIfLecturerAppearInTwoVenue = 1
+//checkStudentViolation = 1
+//determineViolationForCourseVenueSize = 0
+//total should be 8
+	addDetailsIntoChromosome(class, &course[2], &lecturer[3], 'l');
+	addDetailsIntoChromosome(class, &course[2], &lecturer[3], 'l');
+	addDetailsIntoChromosome(class, &course[2], &lecturer[3], 'l');
+	
+	class[3][0][0].course = &course[2];
+  class[3][0][0].lecturer = &lecturer[3];
+  class[3][0][0].typeOfClass = 'l';
+	
+
+  TEST_ASSERT_EQUAL(8,calculateFitnessScore(class));
+}
+
+void test_calculateFitnessScore_should_return_12_when_violates_all(){
+  lecturer[0].courseCodeInCharge[0] = NULL; // to remove value declared on top
+  lecturer[1].courseCodeInCharge[0] = NULL; // to remove value declared on top
+  lecturer[2].courseCodeInCharge[0] = NULL; // to remove value declared on top
+  lecturer[3].courseCodeInCharge[0] = NULL; // to remove value declared on top
 //checkIfTutionOverloadedInSingleDay = 2
 //checkLecturerNotInchargeOfCourse = 4
 //checkIfLecturerAppearInTwoVenue = 1
