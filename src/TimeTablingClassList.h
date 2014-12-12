@@ -9,78 +9,82 @@
 #include "InitNode.h"
 
 
-  Group group[] = { {.groupName = "A2",
+  Group group[] = { {.groupName = "A1",
                      .groupSize = 10},
                      
-                    {.groupName = "A3",
+                    {.groupName = "A2",
                      .groupSize = 13},
                      
-                    {.groupName = "K2",
+                    {.groupName = "B1",
                      .groupSize = 20},
                      
-                    {.groupName = "K3",
+                    {.groupName = "B2",
                      .groupSize = 50},
                     
-                    {.groupName = "B2",
+                    {.groupName = "C1",
                      .groupSize = 34},
                      
-                    {.groupName = "B3",
+                    {.groupName = "C2",
                      .groupSize = 25},
                      
-                    {.groupName = "C2",
+                    {.groupName = "D1",
                      .groupSize = 14},
                     
                     {.groupName = "D2",
                      .groupSize = 20},
                      
-                    {.groupName = "E2",
+                    {.groupName = "E1",
                      .groupSize = 13},
                      
-                    {.groupName = "E3",
+                    {.groupName = "E2",
                      .groupSize = 16},
                      
-                    {.groupName = "F2",
+                    {.groupName = "F1",
                      .groupSize = 17},
                     
-                    {.groupName = "F3",
+                    {.groupName = "F2",
                      .groupSize = 26},
                     
-                    {.groupName = "G2",
+                    {.groupName = "G1",
                      .groupSize = 22},
                     
-                    {.groupName = "G3",
+                    {.groupName = "G2",
                      .groupSize = 12},
                      
-                    {.groupName = "H2",
+                    {.groupName = "H1",
                      .groupSize = 10},
                     
-                    {.groupName = "H3",
+                    {.groupName = "H2",
                      .groupSize = 11},
                     
-                    {.groupName = "I2",
+                    {.groupName = "I1",
                      .groupSize = 19},
                     
-                    {.groupName = "I3",
+                    {.groupName = "I2",
                      .groupSize = 20},
                     
-                    {.groupName = "J2",
+                    {.groupName = "J1",
                      .groupSize = 27},
                     
-                    {.groupName = "J3",
+                    {.groupName = "J2",
                      .groupSize = 30}  
                   };
                  
   Venue venue[] = { {.nameOfVenue = "D203",
-                     .sizeOfVenue = 40},
+                     .sizeOfVenue = 40,
+										 .venueType = 'p'},
                      
                     {.nameOfVenue = "D300",
-                     .sizeOfVenue = 25},
+                     .sizeOfVenue = 25,
+										 .venueType = 'a'},
                      
                     {.nameOfVenue = "D204",
-                     .sizeOfVenue = 30},
+                     .sizeOfVenue = 30,
+										 .venueType = 'a'},
                      
                     {.nameOfVenue = "D301",
-                     .sizeOfVenue = 25}
+                     .sizeOfVenue = 25,
+										 .venueType = 'a'}
                   };
                   
   Lecturer lecturer[] = { {.lecturerName = "Poh TV",
@@ -120,49 +124,49 @@
                              .group[2] = NULL},
                             
                             {.programmeName = "RMB3",
-                             .group[2] = &group[2],
-                             .group[3] = &group[3],
-                             .group[4] = NULL},
+                             .group[0] = &group[2],
+                             .group[1] = &group[3],
+                             .group[2] = NULL},
                              
                             {.programmeName = "RMM2",
-                             .group[4] = &group[4],
-                             .group[5] = &group[5],
-                             .group[6] = NULL},
+                             .group[0] = &group[4],
+                             .group[1] = &group[5],
+                             .group[2] = NULL},
                              
                             {.programmeName = "RMM3",
-                             .group[6] = &group[6],
-                             .group[7] = &group[7],
-                             .group[8] = NULL},
+                             .group[0] = &group[6],
+                             .group[1] = &group[7],
+                             .group[2] = NULL},
                             
                             {.programmeName = "RMS2",
-                             .group[8] = &group[8],
-                             .group[9] = &group[9],
-                             .group[10] = NULL},
+                             .group[0] = &group[8],
+                             .group[1] = &group[9],
+                             .group[2] = NULL},
                             
                             {.programmeName = "RMS3",
-                             .group[10] = &group[10],
-                             .group[11] = &group[11],
-                             .group[12] = NULL},
+                             .group[0] = &group[10],
+                             .group[1] = &group[11],
+                             .group[2] = NULL},
                             
                             {.programmeName = "RMT2",
-                             .group[12] = &group[12],
-                             .group[13] = &group[13],
-                             .group[14] = NULL},
+                             .group[0] = &group[12],
+                             .group[1] = &group[13],
+                             .group[2] = NULL},
                             
                             {.programmeName = "RMT3",
-                             .group[14] = &group[14],
-                             .group[15] = &group [15],
-                             .group[16] = NULL},
+                             .group[0] = &group[14],
+                             .group[1] = &group [15],
+                             .group[2] = NULL},
                             
                             {.programmeName = "RMA2",
-                             .group[16] = &group[16],
-                             .group[17] = &group[17],
-                             .group[18] = NULL},
+                             .group[0] = &group[16],
+                             .group[1] = &group[17],
+                             .group[2] = NULL},
                             
                             {.programmeName = "RMA3",
-                             .group[18] = &group[18],
-                             .group[19] = &group[19],
-                             .group[20] = NULL}
+                             .group[0] = &group[18],
+                             .group[1] = &group[19],
+                             .group[2] = NULL}
                           };
                       
   Course course[] = { {.courseCode = "AAMP2041",
@@ -172,6 +176,7 @@
                        .hoursOfPractical = 2,
                        .programme[0] = &programme[0],
                        .programme[1] = &programme[1],
+                       .programme[2] = NULL,
                        .sizeOfProgramme = 20},
                        
                       {.courseCode = "AAMB2034",
@@ -179,8 +184,9 @@
                        .hoursOfLecture = 2,
                        .hoursOfTutorial = 1,
                        .hoursOfPractical = 0,
-                       .programme[2] = &programme[2],
-                       .programme[3] = &programme[3],
+                       .programme[0] = &programme[2],
+                       .programme[1] = &programme[3],
+                       .programme[2] = NULL,
                        .sizeOfProgramme = 30},
                        
                       {.courseCode = "ABMC1045",
@@ -188,8 +194,9 @@
                        .hoursOfLecture = 2,
                        .hoursOfTutorial = 1,
                        .hoursOfPractical = 0,
-                       .programme[4] = &programme[4],
-                       .programme[5] = &programme[5],
+                       .programme[0] = &programme[4],
+                       .programme[1] = &programme[5],
+											 .programme[2] = NULL,
                        .sizeOfProgramme = 15},
                       
                       {.courseCode = "ABCD1234",
@@ -197,8 +204,9 @@
                        .hoursOfLecture = 2,
                        .hoursOfTutorial = 1,
                        .hoursOfPractical = 0,
-                       .programme[6] = &programme[6],
-                       .programme[7] = &programme[7],
+                       .programme[0] = &programme[6],
+                       .programme[1] = &programme[7],
+											 .programme[2] = NULL,
                        .sizeOfProgramme = 30},
                        
                       {.courseCode = "AAMP1034",
@@ -206,8 +214,9 @@
                        .hoursOfLecture = 2,
                        .hoursOfTutorial = 2,
                        .hoursOfPractical = 2,
-                       .programme[8] = &programme[8],
-                       .programme[9] = &programme[9],
+                       .programme[0] = &programme[8],
+                       .programme[1] = &programme[9],
+											 .programme[2] = NULL,
                        .sizeOfProgramme = 10},
                        
                       {.courseCode = "EFGH5656",
@@ -215,8 +224,9 @@
                        .hoursOfLecture = 2,
                        .hoursOfTutorial = 1,
                        .hoursOfPractical = 2,
-                       .programme[10] = &programme[10],
-                       .programme[11] = &programme[11],
+                       .programme[0] = &programme[10],
+                       .programme[1] = &programme[11],
+											 .programme[2] = NULL,
                        .sizeOfProgramme = 20},
                        
                       {.courseCode = "JDHS5839",
@@ -224,8 +234,9 @@
                        .hoursOfLecture = 2,
                        .hoursOfTutorial = 1,
                        .hoursOfPractical = 2,
-                       .programme[12] = &programme[12],
-                       .programme[13] = &programme[13],
+                       .programme[0] = &programme[12],
+                       .programme[1] = &programme[13],
+											 .programme[2] = NULL,
                        .sizeOfProgramme = 24},
                        
                       {.courseCode = "UWQI8912",
@@ -233,8 +244,9 @@
                        .hoursOfLecture = 2,
                        .hoursOfTutorial = 1,
                        .hoursOfPractical = 0,
-                       .programme[14] = &programme[14],
-                       .programme[15] = &programme[15],
+                       .programme[0] = &programme[14],
+                       .programme[1] = &programme[15],
+											 .programme[2] = NULL,
                        .sizeOfProgramme = 15},
                        
                       {.courseCode = "IQJD1875",
@@ -242,8 +254,9 @@
                        .hoursOfLecture = 2,
                        .hoursOfTutorial = 1,
                        .hoursOfPractical = 0,
-                       .programme[16] = &programme[16],
-                       .programme[17] = &programme[17],
+                       .programme[0] = &programme[16],
+                       .programme[1] = &programme[17],
+											 .programme[2] = NULL,
                        .sizeOfProgramme = 33},
                        
                       {.courseCode = "ZXCV8787",
@@ -251,8 +264,9 @@
                        .hoursOfLecture = 2,
                        .hoursOfTutorial = 1,
                        .hoursOfPractical = 0,
-                       .programme[18] = &programme[18],
-                       .programme[19] = &programme[19],
+                       .programme[0] = &programme[18],
+                       .programme[1] = &programme[19],
+											 .programme[2] = NULL,
                        .sizeOfProgramme = 32}
                     };
 										
