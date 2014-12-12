@@ -8,7 +8,7 @@
 #include "Rotations.h"
 #include "InitNode.h"
 
-#define MAX_DAY 5
+#define MAX_DAY 3
 #define MAX_TIME_SLOTS 5
 #define MAX_VENUE 4
 
