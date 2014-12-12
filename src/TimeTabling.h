@@ -48,6 +48,7 @@ struct Venue
 {
   char *nameOfVenue;
   int sizeOfVenue;
+  char venueType;
 };
 
 struct Lecturer
@@ -65,7 +66,7 @@ struct Group
 struct Programme
 {
   char *programmeName;
-  Group *group;
+  Group *group[5];
 };
 
 struct Course
@@ -75,7 +76,7 @@ struct Course
   int hoursOfLecture;
   int hoursOfTutorial;
   int hoursOfPractical;
-  Programme *programme;
+  Programme *programme[5];
   int sizeOfProgramme;
 };
 
@@ -84,6 +85,7 @@ struct Class
   Course *course;
   Lecturer *lecturer;
 	char typeOfClass;
+	Group *group;
   Node *classNode;
 };
 

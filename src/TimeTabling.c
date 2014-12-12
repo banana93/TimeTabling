@@ -82,8 +82,8 @@ int determineViolationForCourseVenueSize(Class newClass[MAX_VENUE][MAX_DAY][MAX_
   for(VenueNumber = 0; VenueNumber < MAX_VENUE; VenueNumber++) {
     for(day = 0; day < MAX_DAY; day++) {
       for(time = 0; time < MAX_TIME_SLOTS; time++) {
-				if(newClass[VenueNumber][day][time].course != NULL){
-					if(venue[VenueNumber].sizeOfVenue < newClass[VenueNumber][day][time].course->programme->group->groupSize){
+				if(newClass[VenueNumber][day][time].course != NULL && newClass[VenueNumber][day][time].group != NULL){
+					if(venue[VenueNumber].sizeOfVenue < newClass[VenueNumber][day][time].group->groupSize){
 						violationCounter++;
 					}
 				}
