@@ -7,6 +7,7 @@
 #include "CustomAssertions.h"
 #include "Rotations.h"
 #include "InitNode.h"
+#include "TimeTabling.h"
 
 
   Group group[] = { {.groupName = "A2",

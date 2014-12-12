@@ -76,7 +76,7 @@ struct Course
   int hoursOfLecture;
   int hoursOfTutorial;
   int hoursOfPractical;
-  Programme *programme[5];
+  Programme *programme[20];
   int sizeOfProgramme;
 };
 
@@ -85,7 +85,7 @@ struct Class
   Course *course;
   Lecturer *lecturer;
 	char typeOfClass;
-	Group *group[5];
+	Group *group[20];
   Node *classNode;
 };
 
@@ -97,11 +97,11 @@ struct Counter
 };
 
 extern	Class class[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS];
-extern	Group group[10];
-extern	Venue venue[10];
-extern	Lecturer lecturer[10];
-extern	Programme programme[10];
-extern	Course course[10];
+extern	Group group[20];
+extern	Venue venue[20];
+extern	Lecturer lecturer[20];
+extern	Programme programme[20];
+extern	Course course[20];
 
 
 char *getCourseName(Course newCourse);

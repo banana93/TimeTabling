@@ -163,6 +163,7 @@ Class *checkChromosomeIsEmpty(Class newClass[4][MAX_DAY][MAX_TIME_SLOTS]) {
       for(time; time < MAX_TIME_SLOTS; time++) {
         if(newClass[venue][day][time].course == NULL && newClass[venue][day][time].lecturer == NULL)
           return &newClass[venue][day][time];
+        printf("asd\n");
       }
     }
   }
