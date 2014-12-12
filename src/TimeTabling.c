@@ -78,12 +78,12 @@ int checkIfTutionOverloadedInSingleDay(Class newClass[MAX_VENUE][MAX_DAY][MAX_TI
 int determineViolationForCourseVenueSize(Class newClass[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS]) {
   int VenueNumber = 0, day = 0, time = 0;
 	int violationCounter = 0;
-  
+
   for(VenueNumber = 0; VenueNumber < MAX_VENUE; VenueNumber++) {
     for(day = 0; day < MAX_DAY; day++) {
       for(time = 0; time < MAX_TIME_SLOTS; time++) {
 				if(newClass[VenueNumber][day][time].course != NULL && newClass[VenueNumber][day][time].group != NULL){
-					if(venue[VenueNumber].sizeOfVenue < newClass[VenueNumber][day][time].group->groupSize){
+          if(venue[VenueNumber].sizeOfVenue < newClass[VenueNumber][day][time].group->groupSize){
 						violationCounter++;
 					}
 				}
@@ -168,11 +168,12 @@ Class *checkChromosomeIsEmpty(Class newClass[4][MAX_DAY][MAX_TIME_SLOTS]) {
   }
 }
 
-void addDetailsIntoChromosome(Class newClass[4][MAX_DAY][MAX_TIME_SLOTS], Course course[], Lecturer lecturer[], char typeOfClass){
+void addDetailsIntoChromosome(Class newClass[4][MAX_DAY][MAX_TIME_SLOTS], Course course[], Lecturer lecturer[], Group group[], char typeOfClass){
 	Class *addIntoClass = checkChromosomeIsEmpty(newClass);
 	addIntoClass->lecturer = lecturer;
 	addIntoClass->course = course;
 	addIntoClass->typeOfClass = typeOfClass;
+  addIntoClass->group = group;
 }
 
 int calculateFitnessScore(Class newClass[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS]){

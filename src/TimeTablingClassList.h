@@ -37,8 +37,37 @@
                      .groupSize = 13},
                      
                     {.groupName = "E3",
-                     .groupSize = 16}
+                     .groupSize = 16},
+                     
+                    {.groupName = "F2",
+                     .groupSize = 17},
                     
+                    {.groupName = "F3",
+                     .groupSize = 26},
+                    
+                    {.groupName = "G2",
+                     .groupSize = 22},
+                    
+                    {.groupName = "G3",
+                     .groupSize = 12},
+                     
+                    {.groupName = "H2",
+                     .groupSize = 10},
+                    
+                    {.groupName = "H3",
+                     .groupSize = 11},
+                    
+                    {.groupName = "I2",
+                     .groupSize = 19},
+                    
+                    {.groupName = "I3",
+                     .groupSize = 20},
+                    
+                    {.groupName = "J2",
+                     .groupSize = 27},
+                    
+                    {.groupName = "J3",
+                     .groupSize = 30}  
                   };
                  
   Venue venue[] = { {.nameOfVenue = "D203",
@@ -86,34 +115,54 @@
                         };
                         
   Programme programme[] = { {.programmeName = "RMB2",
-                             &group[0]},
+                             .group[0] = &group[0],
+                             .group[1] = &group[1],
+                             .group[2] = NULL},
                             
                             {.programmeName = "RMB3",
-                             &group[1]},
+                             .group[2] = &group[2],
+                             .group[3] = &group[3],
+                             .group[4] = NULL},
                              
                             {.programmeName = "RMM2",
-                             &group[2]},
+                             .group[4] = &group[4],
+                             .group[5] = &group[5],
+                             .group[6] = NULL},
                              
                             {.programmeName = "RMM3",
-                             &group[3]},
+                             .group[6] = &group[6],
+                             .group[7] = &group[7],
+                             .group[8] = NULL},
                             
                             {.programmeName = "RMS2",
-                             &group[4]},
+                             .group[8] = &group[8],
+                             .group[9] = &group[9],
+                             .group[10] = NULL},
                             
                             {.programmeName = "RMS3",
-                             &group[5]},
+                             .group[10] = &group[10],
+                             .group[11] = &group[11],
+                             .group[12] = NULL},
                             
                             {.programmeName = "RMT2",
-                             &group[6]},
+                             .group[12] = &group[12],
+                             .group[13] = &group[13],
+                             .group[14] = NULL},
                             
                             {.programmeName = "RMT3",
-                             &group[7]},
+                             .group[14] = &group[14],
+                             .group[15] = &group [15],
+                             .group[16] = NULL},
                             
                             {.programmeName = "RMA2",
-                             &group[8]},
+                             .group[16] = &group[16],
+                             .group[17] = &group[17],
+                             .group[18] = NULL},
                             
                             {.programmeName = "RMA3",
-                             &group[9]}
+                             .group[18] = &group[18],
+                             .group[19] = &group[19],
+                             .group[20] = NULL}
                           };
                       
   Course course[] = { {.courseCode = "AAMP2041",
@@ -121,7 +170,8 @@
                        .hoursOfLecture = 2,
                        .hoursOfTutorial = 1,
                        .hoursOfPractical = 2,
-                       &programme[0],
+                       .programme[0] = &programme[0],
+                       .programme[1] = &programme[1],
                        .sizeOfProgramme = 20},
                        
                       {.courseCode = "AAMB2034",
@@ -129,7 +179,8 @@
                        .hoursOfLecture = 2,
                        .hoursOfTutorial = 1,
                        .hoursOfPractical = 0,
-                       &programme[1],
+                       .programme[2] = &programme[2],
+                       .programme[3] = &programme[3],
                        .sizeOfProgramme = 30},
                        
                       {.courseCode = "ABMC1045",
@@ -137,7 +188,8 @@
                        .hoursOfLecture = 2,
                        .hoursOfTutorial = 1,
                        .hoursOfPractical = 0,
-                       &programme[2],
+                       .programme[4] = &programme[4],
+                       .programme[5] = &programme[5],
                        .sizeOfProgramme = 15},
                       
                       {.courseCode = "ABCD1234",
@@ -145,7 +197,8 @@
                        .hoursOfLecture = 2,
                        .hoursOfTutorial = 1,
                        .hoursOfPractical = 0,
-                       &programme[3],
+                       .programme[6] = &programme[6],
+                       .programme[7] = &programme[7],
                        .sizeOfProgramme = 30},
                        
                       {.courseCode = "AAMP1034",
@@ -153,7 +206,8 @@
                        .hoursOfLecture = 2,
                        .hoursOfTutorial = 2,
                        .hoursOfPractical = 2,
-                       &programme[4],
+                       .programme[8] = &programme[8],
+                       .programme[9] = &programme[9],
                        .sizeOfProgramme = 10},
                        
                       {.courseCode = "EFGH5656",
@@ -161,7 +215,8 @@
                        .hoursOfLecture = 2,
                        .hoursOfTutorial = 1,
                        .hoursOfPractical = 2,
-                       &programme[5],
+                       .programme[10] = &programme[10],
+                       .programme[11] = &programme[11],
                        .sizeOfProgramme = 20},
                        
                       {.courseCode = "JDHS5839",
@@ -169,7 +224,8 @@
                        .hoursOfLecture = 2,
                        .hoursOfTutorial = 1,
                        .hoursOfPractical = 2,
-                       &programme[6],
+                       .programme[12] = &programme[12],
+                       .programme[13] = &programme[13],
                        .sizeOfProgramme = 24},
                        
                       {.courseCode = "UWQI8912",
@@ -177,7 +233,8 @@
                        .hoursOfLecture = 2,
                        .hoursOfTutorial = 1,
                        .hoursOfPractical = 0,
-                       &programme[7],
+                       .programme[14] = &programme[14],
+                       .programme[15] = &programme[15],
                        .sizeOfProgramme = 15},
                        
                       {.courseCode = "IQJD1875",
@@ -185,7 +242,8 @@
                        .hoursOfLecture = 2,
                        .hoursOfTutorial = 1,
                        .hoursOfPractical = 0,
-                       &programme[8],
+                       .programme[16] = &programme[16],
+                       .programme[17] = &programme[17],
                        .sizeOfProgramme = 33},
                        
                       {.courseCode = "ZXCV8787",
@@ -193,7 +251,8 @@
                        .hoursOfLecture = 2,
                        .hoursOfTutorial = 1,
                        .hoursOfPractical = 0,
-                       &programme[9],
+                       .programme[18] = &programme[18],
+                       .programme[19] = &programme[19],
                        .sizeOfProgramme = 32}
                     };
 										

@@ -85,7 +85,7 @@ struct Class
   Course *course;
   Lecturer *lecturer;
 	char typeOfClass;
-	Group *group;
+	Group *group[5];
   Node *classNode;
 };
 
@@ -108,7 +108,7 @@ char *getCourseName(Course newCourse);
 char *getCourseCode(Course newCourse);
 int getTotalStudentsInCourse(Class *newClass);
 int getVenueSize(Class *newClass);
-void addDetailsIntoChromosome(Class newClass[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS], Course course[], Lecturer lecturer[], char typeOfClass);
+void addDetailsIntoChromosome(Class newClass[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS], Course course[], Lecturer lecturer[], Group group[], char typeOfClass);
 Class *checkChromosomeIsEmpty(Class newClass[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS]);
 int calculateFitnessScore(Class newClass[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS]);
 void fillInTheChromosome(Class classList[]);
