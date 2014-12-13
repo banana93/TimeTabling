@@ -13,13 +13,17 @@ Node node1, node2, node3, node4, node5, node6, node7, node8, node9, node10, node
 void setUp(void){
 	int venue = 0;
   int day = 0, time = 0;
-
-  for(venue = 0 ; venue < MAX_VENUE; venue++) {
+	int i;
+  
+  for(venue = 0; venue < MAX_VENUE; venue++) {
     for(day = 0; day < MAX_DAY; day++) {
       for(time = 0; time < MAX_TIME_SLOTS; time++) {
 				class[venue][day][time].lecturer = NULL;
 				class[venue][day][time].course = NULL;
 				class[venue][day][time].typeOfClass = 0;
+				for(i = 0 ; i < 5 ; i++){
+					class[venue][day][time].group[i] = NULL;
+				}
 			}
 		}
 	}
@@ -27,174 +31,202 @@ void setUp(void){
 
 void tearDown(void){}
 
-void xtest_calculateFitnessScore_should_return_0_when_empty_class(){
+void test_calculateFitnessScore_should_return_0_when_empty_class(){
 	TEST_ASSERT_EQUAL(0,calculateFitnessScore(class));
 }
 
-void xtest_calculateFitnessScore_should_return_2_when_only_violating_TutionOverloadedInSingleDay(){
-  // addDetailsIntoChromosome(class, &course[0], &lecturer[0], 'l');
-  // addDetailsIntoChromosome(class, &course[0], &lecturer[0], 'l');
+void test_calculateFitnessScore_should_return_1_when_only_violating_TutionOverloadedInSingleDay(){
+	class[1][0][0].group[0] = &group[0];
+	class[1][0][0].group[1] = NULL;
+	class[1][0][1].group[0] = &group[0];
+	class[1][0][1].group[1] = NULL;
+	class[1][0][2].group[0] = &group[0];
+	class[1][0][2].group[1] = NULL;
+	class[1][0][3].group[0] = &group[0];
+	class[1][0][3].group[1] = NULL;
+	class[1][0][4].group[0] = &group[0];
+	class[1][0][4].group[1] = NULL;
 
-  // extra 2 to violate twice, returns 2  
-  // addDetailsIntoChromosome(class, &course[0], &lecturer[0], 'l');
-  // addDetailsIntoChromosome(class, &course[0], &lecturer[0], 'l');
-
-  TEST_ASSERT_EQUAL(2,calculateFitnessScore(class));
+  TEST_ASSERT_EQUAL(1,calculateFitnessScore(class));
 }
 
-void xtest_calculateFitnessScore_should_return_1_when_lecturerAppearInTwoVenue(){
-  // addDetailsIntoChromosome(class, &course[0], &lecturer[0], 'l');
-  class[3][0][0].course = &course[1];
+void test_calculateFitnessScore_should_return_1_when_lecturerAppearInTwoVenue(){
+
+  class[0][0][0].lecturer = &lecturer[0];
   class[3][0][0].lecturer = &lecturer[0];
-  class[3][0][0].typeOfClass = 'l';
 
   TEST_ASSERT_EQUAL(1,calculateFitnessScore(class));
 }
 
-void xtest_calculateFitnessScore_should_return_1_when_studentAppearInTwoVenue(){
-  // addDetailsIntoChromosome(class, &course[0], &lecturer[0], 'l');
-  class[3][0][0].course = &course[0];
-  class[3][0][0].lecturer = &lecturer[1];
-  class[3][0][0].typeOfClass = 'l';
+void test_calculateFitnessScore_should_return_1_when_studentAppearInTwoVenue(){
+
+  class[0][0][0].group[0] = &group[0];
+  class[0][0][0].group[1] = NULL;
+	class[1][0][0].group[0] = &group[0];
+  class[1][0][0].group[1] = NULL;
 
   TEST_ASSERT_EQUAL(1,calculateFitnessScore(class));
 }
 
-void test_calculateFitnessScore_should_return_1_when_determineViolationForCourseVenueSize_violates(){
-	addDetailsIntoChromosome(class, &course[3], &lecturer[3], &group[3], 'l');
-  TEST_ASSERT_EQUAL(1,calculateFitnessScore(class));
+void test_calculateFitnessScore_should_return_3_when_determineViolationForCourseVenueSize_violates(){
+	class[0][0][0].group[0] = &group[0]; // 				10
+  class[0][0][0].group[1] = &group[1]; // 				13
+  class[0][0][0].group[2] = &group[2]; // 				20
+																			 //total = 	43
+  class[0][0][0].group[3] = NULL;			 //venue = 	40
+																			 //violate = 3
+	
+  TEST_ASSERT_EQUAL(3,calculateFitnessScore(class));
 }
 
-void xtest_calculateFitnessScore_should_return_8_when_violates_all_but_TuitionOverload(){
+void test_calculateFitnessScore_should_return_5_when_violates_all_but_TuitionOverload(){
   /**
    *  checkIfTutionOverloadedInSingleDay = 0
-   *  checkLecturerNotInchargeOfCourse = 4
    *  checkIfLecturerAppearInTwoVenue = 1
    *  checkStudentViolation = 1
-   *  determineViolationForCourseVenueSize = 2
-   *  total should be 8
+   *  determineViolationForCourseVenueSize = 3
+   *  total should be 5
    */
+	class[0][0][0].group[0] = &group[0];
+	class[0][0][0].group[1] = &group[1];
+	class[0][0][0].group[2] = &group[2];
+  class[0][0][0].group[3] = NULL;
+  class[0][0][0].lecturer = &lecturer[0];
+  class[1][0][0].group[0] = &group[0];
+  class[1][0][0].group[1] = NULL;
+	class[1][0][0].lecturer = &lecturer[0];
 
-	// addDetailsIntoChromosome(class, &course[3], &lecturer[3], 'l');
-	// addDetailsIntoChromosome(class, &course[3], &lecturer[3], 'l');
-	// addDetailsIntoChromosome(class, &course[2], &lecturer[3], 'l');
-	
-	class[3][0][2].course = &course[2];
-  class[3][0][2].lecturer = &lecturer[3];
-  class[3][0][2].typeOfClass = 'l';
-	
-
-  TEST_ASSERT_EQUAL(4,calculateFitnessScore(class));
+  TEST_ASSERT_EQUAL(5,calculateFitnessScore(class));
 }
 
-void xtest_calculateFitnessScore_should_return_8_when_violates_all_but_checkLecturerNotInchargeOfCourse(){
-  /**
-   *  checkIfTutionOverloadedInSingleDay = 2
-   *  checkLecturerNotInchargeOfCourse = 0
-   *  checkIfLecturerAppearInTwoVenue = 1
-   *  checkStudentViolation = 1
-   *  determineViolationForCourseVenueSize = 4
-   *  total should be 8
-   */
-
-	// addDetailsIntoChromosome(class, &course[3], &lecturer[3], 'l');
-	// addDetailsIntoChromosome(class, &course[3], &lecturer[3], 'l');
-	// addDetailsIntoChromosome(class, &course[3], &lecturer[3], 'l');
-	
-	class[3][0][2].course = &course[3];
-  class[3][0][2].lecturer = &lecturer[3];
-  class[3][0][2].typeOfClass = 'l';
-	
-
-  TEST_ASSERT_EQUAL(8,calculateFitnessScore(class));
-}
-
-void xtest_calculateFitnessScore_should_return_11_when_violates_all_but_checkIfLecturerAppearInTwoVenue(){
-  /**
-   *  checkIfTutionOverloadedInSingleDay = 2
-   *  checkLecturerNotInchargeOfCourse = 4
-   *  checkIfLecturerAppearInTwoVenue = 0
-   *  checkStudentViolation = 1
-   *  determineViolationForCourseVenueSize = 4
-   *  total should be 11
-   */
-	
-  // addDetailsIntoChromosome(class, &course[3], &lecturer[3], 'l');
-	// addDetailsIntoChromosome(class, &course[3], &lecturer[3], 'l');
-	// addDetailsIntoChromosome(class, &course[3], &lecturer[3], 'l');
-	
-	class[3][0][0].course = &course[3];
-  class[3][0][0].lecturer = &lecturer[2];
-  class[3][0][0].typeOfClass = 'l';
-	
-
-  TEST_ASSERT_EQUAL(7,calculateFitnessScore(class));
-}
-
-void xtest_calculateFitnessScore_should_return_9_when_violates_all_but_checkStudentViolation(){
+void test_calculateFitnessScore_should_return_5_when_violates_all_but_checkIfLecturerAppearInTwoVenue(){
   /**
    *  checkIfTutionOverloadedInSingleDay = 1
-   *  checkLecturerNotInchargeOfCourse = 4
-   *  checkIfLecturerAppearInTwoVenue = 1
-   *  checkStudentViolation = 0
+   *  checkIfLecturerAppearInTwoVenue = 0
+   *  checkStudentViolation = 1
    *  determineViolationForCourseVenueSize = 3
-   *  total should be 9
+   *  total should be 5
    */
 	
-  // addDetailsIntoChromosome(class, &course[3], &lecturer[3], 'l');
-	// addDetailsIntoChromosome(class, &course[3], &lecturer[3], 'l');
-	// addDetailsIntoChromosome(class, &course[3], &lecturer[3], 'l');
+	class[0][0][0].group[0] = &group[0];
+	class[0][0][0].group[1] = &group[1];
+	class[0][0][0].group[2] = &group[2];
+	class[0][0][0].group[3] = NULL;
+  class[0][0][0].lecturer = &lecturer[0];
+	class[0][0][1].group[0] = &group[0];
+	class[0][0][1].group[1] = NULL;
+  class[0][0][1].lecturer = &lecturer[0];
+	class[0][0][2].group[0] = &group[0];
+	class[0][0][2].group[1] = NULL;
+  class[0][0][2].lecturer = &lecturer[0];
 	
-	class[3][0][0].course = &course[2];
-  class[3][0][0].lecturer = &lecturer[3];
-  class[3][0][0].typeOfClass = 'l';
+	class[3][0][2].group[0] = &group[0];
+	class[3][0][2].group[1] = NULL;
+  class[3][0][2].lecturer = &lecturer[1];
+	class[3][0][3].group[0] = &group[0];
+	class[3][0][3].group[1] = NULL;
+  class[3][0][3].lecturer = &lecturer[1];
 	
 
   TEST_ASSERT_EQUAL(5,calculateFitnessScore(class));
 }
 
-void xtest_calculateFitnessScore_should_return_8_when_violates_all_but_determineViolationForCourseVenueSize(){
+void test_calculateFitnessScore_should_return_5_when_violates_all_but_checkStudentViolation(){
   /**
-   *  checkIfTutionOverloadedInSingleDay = 2
-   *  checkLecturerNotInchargeOfCourse = 4
+   *  checkIfTutionOverloadedInSingleDay = 1
+   *  checkIfLecturerAppearInTwoVenue = 1
+   *  checkStudentViolation = 0
+   *  determineViolationForCourseVenueSize = 3
+   *  total should be 5
+   */
+	
+	class[0][0][0].group[0] = &group[0];
+	class[0][0][0].group[1] = &group[1];
+	class[0][0][0].group[2] = &group[2];
+	class[0][0][0].group[3] = NULL;
+  class[0][0][0].lecturer = &lecturer[0];
+	class[0][0][1].group[0] = &group[0];
+	class[0][0][1].group[1] = NULL;
+  class[0][0][1].lecturer = &lecturer[0];
+	class[0][0][2].group[0] = &group[0];
+	class[0][0][2].group[1] = NULL;
+  class[0][0][2].lecturer = &lecturer[0];
+	
+	class[3][0][2].group[0] = &group[1];
+	class[3][0][2].group[1] = NULL;
+  class[3][0][2].lecturer = &lecturer[0];
+	class[3][0][3].group[0] = &group[0];
+	class[3][0][3].group[1] = NULL;
+  class[3][0][3].lecturer = &lecturer[1];
+	class[3][0][4].group[0] = &group[0];
+	class[3][0][4].group[1] = NULL;
+  class[3][0][4].lecturer = &lecturer[1];
+	
+
+  TEST_ASSERT_EQUAL(5,calculateFitnessScore(class));
+}
+
+void test_calculateFitnessScore_should_return_3_when_violates_all_but_determineViolationForCourseVenueSize(){
+  /**
+   *  checkIfTutionOverloadedInSingleDay = 1
    *  checkIfLecturerAppearInTwoVenue = 1
    *  checkStudentViolation = 1
    *  determineViolationForCourseVenueSize = 0
-   *  total should be 8
+   *  total should be 3
    */
   
-	// addDetailsIntoChromosome(class, &course[2], &lecturer[3], 'l');
-	// addDetailsIntoChromosome(class, &course[2], &lecturer[3], 'l');
-	// addDetailsIntoChromosome(class, &course[2], &lecturer[3], 'l');
+	class[0][0][0].group[0] = &group[0];
+	class[0][0][0].group[2] = NULL;
+  class[0][0][0].lecturer = &lecturer[0];
+	class[0][0][1].group[0] = &group[0];
+	class[0][0][1].group[1] = NULL;
+  class[0][0][1].lecturer = &lecturer[0];
+	class[0][0][2].group[0] = &group[0];
+	class[0][0][2].group[1] = NULL;
+  class[0][0][2].lecturer = &lecturer[0];
 	
-	class[3][0][0].course = &course[2];
-  class[3][0][0].lecturer = &lecturer[3];
-  class[3][0][0].typeOfClass = 'l';
+	class[3][0][2].group[0] = &group[0];
+	class[3][0][2].group[1] = NULL;
+  class[3][0][2].lecturer = &lecturer[0];
+	class[3][0][3].group[0] = &group[0];
+	class[3][0][3].group[1] = NULL;
+  class[3][0][3].lecturer = &lecturer[0];
+
 	
 
-  TEST_ASSERT_EQUAL(4,calculateFitnessScore(class));
+  TEST_ASSERT_EQUAL(3,calculateFitnessScore(class));
 }
 
-void xtest_calculateFitnessScore_should_return_12_when_violates_all(){ 
+void test_calculateFitnessScore_should_return_6_when_violates_all(){ 
   /**
-   *  checkIfTutionOverloadedInSingleDay = 2
-   *  checkLecturerNotInchargeOfCourse = 4
+   *  checkIfTutionOverloadedInSingleDay = 1
    *  checkIfLecturerAppearInTwoVenue = 1
    *  checkStudentViolation = 1
-   *  determineViolationForCourseVenueSize = 4
-   *  total should be 12
+   *  determineViolationForCourseVenueSize = 3
+   *  total should be 6
    */
 	
-	// addDetailsIntoChromosome(class, &course[3], &lecturer[3], 'l');
-	// addDetailsIntoChromosome(class, &course[3], &lecturer[3], 'l');
-	// addDetailsIntoChromosome(class, &course[3], &lecturer[3], 'l');
+	class[0][0][0].group[0] = &group[0];
+	class[0][0][0].group[1] = &group[1];
+	class[0][0][0].group[2] = &group[2];
+	class[0][0][0].group[3] = NULL;
+  class[0][0][0].lecturer = &lecturer[0];
+	class[0][0][1].group[0] = &group[0];
+	class[0][0][1].group[1] = NULL;
+  class[0][0][1].lecturer = &lecturer[0];
+	class[0][0][2].group[0] = &group[0];
+	class[0][0][2].group[1] = NULL;
+  class[0][0][2].lecturer = &lecturer[0];
 	
-	class[3][0][0].course = &course[3];
-  class[3][0][0].lecturer = &lecturer[3];
-  class[3][0][0].typeOfClass = 'l';
+	class[3][0][2].group[0] = &group[0];
+	class[3][0][2].group[1] = NULL;
+  class[3][0][2].lecturer = &lecturer[0];
+	class[3][0][3].group[0] = &group[0];
+	class[3][0][3].group[1] = NULL;
+  class[3][0][3].lecturer = &lecturer[0];
 	
 
-  TEST_ASSERT_EQUAL(8,calculateFitnessScore(class));
+  TEST_ASSERT_EQUAL(6,calculateFitnessScore(class));
 }
 
 /**
