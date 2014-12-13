@@ -35,34 +35,24 @@ char *getCourseCode(Course newCourse){
 
 int checkIfTutionOverloadedInSingleDay(Class newClass[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS], int day){
 	
-	int time, venue, i, violationCounter = 0;
-	Counter counter[(sizeof(group)/sizeof(Group))] = {{.tutorialHours = 0, .lectureHours = 0},
-																										{.tutorialHours = 0, .lectureHours = 0},
-																										{.tutorialHours = 0, .lectureHours = 0},
-																										{.tutorialHours = 0, .lectureHours = 0}};
+	int time, venue, i, j, violationCounter = 0;
+	int counter[(sizeof(group)/sizeof(Group))] = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
 
   for(venue = 0 ; venue < MAX_VENUE ; venue++){
     for(time = 0 ; time < MAX_TIME_SLOTS ; time++){
-      for(i = 0 ; i < MAX_TIME_SLOTS ; i++){
-        if(newClass[venue][day][time].course && newClass[venue][day][time].course == &course[i]){
-          if(newClass[venue][day][time].typeOfClass == 'l')
-            counter[i].lectureHours+=1;
-          else if(newClass[venue][day][time].typeOfClass == 't')
-            counter[i].tutorialHours+=1;
-          else if(newClass[venue][day][time].typeOfClass == 'p')
-            counter[i].practicalHours+=1;	
+      for(i = 0 ; newClass[venue][day][time].group[i] != NULL ; i++){
+				for(j = 0 ; j < (sizeof(group)/sizeof(Group)) ; j++){
+					if(newClass[venue][day][time].group[i] != NULL && newClass[venue][day][time].group[i] == &group[j]){
+						counter[j]++;
+					}
         }
       }
     }	
   }
 
   for( i = 0; i < (sizeof(group)/ sizeof(Group)) ; i++){
-    if(counter[i].lectureHours > course[i].hoursOfLecture)
-      violationCounter+= counter[i].lectureHours - course[i].hoursOfLecture;
-    if(counter[i].tutorialHours > course[i].hoursOfTutorial)
-      violationCounter+= counter[i].tutorialHours - course[i].hoursOfTutorial;
-    if(counter[i].practicalHours > course[i].hoursOfPractical)
-      violationCounter+= counter[i].practicalHours - course[i].hoursOfPractical;
+    if(counter[i] > 4)
+      violationCounter+= counter[i] - 4;
   }
   
   return violationCounter;
@@ -75,21 +65,18 @@ int checkIfTutionOverloadedInSingleDay(Class newClass[MAX_VENUE][MAX_DAY][MAX_TI
  *  return number of exceeded (the size of student in the class exceeded)
  *  return 0 (the size did not exceed)
  */
-int determineViolationForCourseVenueSize(Class newClass[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS]) {
-  int VenueNumber = 0, day = 0, time = 0;
+int determineViolationForCourseVenueSize(Class newClass[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS], int VenueNumber, int day, int time) {
+  int i = 0;
 	int violationCounter = 0;
 
-  for(VenueNumber = 0; VenueNumber < MAX_VENUE; VenueNumber++) {
-    for(day = 0; day < MAX_DAY; day++) {
-      for(time = 0; time < MAX_TIME_SLOTS; time++) {
-				if(newClass[VenueNumber][day][time].course != NULL && newClass[VenueNumber][day][time].group != NULL){
-          if(venue[VenueNumber].sizeOfVenue < newClass[VenueNumber][day][time].group->groupSize){
-						violationCounter++;
-					}
-				}
-      }
-    }
-  }
+	for(i = 0 ; newClass[VenueNumber][day][time].group[i] != NULL ; i++){
+		violationCounter += newClass[VenueNumber][day][time].group[i]->groupSize;
+	}
+	if(violationCounter > venue[VenueNumber].sizeOfVenue)
+		violationCounter = violationCounter - venue[VenueNumber].sizeOfVenue;
+	else
+		violationCounter = 0;
+	
   return violationCounter;
 }
 
@@ -128,19 +115,19 @@ int checkIfLecturerAppearInTwoVenue(Class newClass[MAX_VENUE][MAX_DAY][MAX_TIME_
  *  return 0 (no violation)
  */
 int checkStudentViolation(Class newClass[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS], int day, int time) {
-  int venue, i;
-	int counter[(sizeof(course)/sizeof(Course))] = { 0,0,0,0 };
+  int venue, i , j;
+	int counter[(sizeof(group)/sizeof(Group))] = { 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
 	int returnCounter = 0;
-  
-  for(venue = 0; venue < MAX_VENUE; venue++) {
-    for(i = 0; i < MAX_VENUE; i++) {
-      if(newClass[venue][day][time].course){
-				if(newClass[venue][day][time].course->programme == &programme[i])
-					counter[i]++;
+	
+  for(venue = 0; venue < MAX_VENUE; venue++){
+		for(i = 0; newClass[venue][day][time].group[i] != NULL ; i++){
+			for(j = 0; j < (sizeof(group)/sizeof(Group)); j++){
+				if(newClass[venue][day][time].group[i] == &group[j])
+					counter[j]++;
+				}
 			}
     }
-  }
-  for(i = 0 ; i < (sizeof(course)/sizeof(Course)) ; i++){
+  for(i = 0 ; i < (sizeof(group)/sizeof(Group)) ; i++){
 		if(counter[i] > 1)
 			returnCounter = counter[i] - 1;
 	}
@@ -163,18 +150,21 @@ Class *checkChromosomeIsEmpty(Class newClass[4][MAX_DAY][MAX_TIME_SLOTS]) {
       for(time; time < MAX_TIME_SLOTS; time++) {
         if(newClass[venue][day][time].course == NULL && newClass[venue][day][time].lecturer == NULL)
           return &newClass[venue][day][time];
-        printf("asd\n");
       }
     }
   }
 }
 
 void addDetailsIntoChromosome(Class newClass[4][MAX_DAY][MAX_TIME_SLOTS], Course course[], Lecturer lecturer[], Group group[], char typeOfClass){
+	int i;
 	Class *addIntoClass = checkChromosomeIsEmpty(newClass);
 	addIntoClass->lecturer = lecturer;
 	addIntoClass->course = course;
 	addIntoClass->typeOfClass = typeOfClass;
-  addIntoClass->group = group;
+	for( i = 0 ; i < 3 ; i++){
+		if(&group[i] != NULL)
+      addIntoClass->group[i] = &group[i];
+	}
 }
 
 int calculateFitnessScore(Class newClass[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS]){
@@ -188,6 +178,7 @@ int calculateFitnessScore(Class newClass[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS]){
 			if(venue == 0)
 				violation += checkIfTutionOverloadedInSingleDay(newClass, day);
       for(time = 0; time < MAX_TIME_SLOTS; time++) {
+				violation += determineViolationForCourseVenueSize(newClass,venue,day,time);
 				if(venue == 0){
 					violation += checkIfLecturerAppearInTwoVenue(newClass, day, time);
 					violation += checkStudentViolation(newClass, day, time);
@@ -195,7 +186,6 @@ int calculateFitnessScore(Class newClass[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS]){
       }
     }
   }
-  violation += determineViolationForCourseVenueSize(newClass);
     
 	return violation;
 }

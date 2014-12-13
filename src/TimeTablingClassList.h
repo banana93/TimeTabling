@@ -10,78 +10,82 @@
 #include "TimeTabling.h"
 
 
-  Group group[] = { {.groupName = "A2",
+  Group group[] = { {.groupName = "A1",
                      .groupSize = 10},
                      
-                    {.groupName = "A3",
+                    {.groupName = "A2",
                      .groupSize = 13},
                      
-                    {.groupName = "K2",
+                    {.groupName = "B1",
                      .groupSize = 20},
                      
-                    {.groupName = "K3",
+                    {.groupName = "B2",
                      .groupSize = 50},
                     
-                    {.groupName = "B2",
+                    {.groupName = "C1",
                      .groupSize = 34},
                      
-                    {.groupName = "B3",
+                    {.groupName = "C2",
                      .groupSize = 25},
                      
-                    {.groupName = "C2",
+                    {.groupName = "D1",
                      .groupSize = 14},
                     
                     {.groupName = "D2",
                      .groupSize = 20},
                      
-                    {.groupName = "E2",
+                    {.groupName = "E1",
                      .groupSize = 13},
                      
-                    {.groupName = "E3",
+                    {.groupName = "E2",
                      .groupSize = 16},
                      
-                    {.groupName = "F2",
+                    {.groupName = "F1",
                      .groupSize = 17},
                     
-                    {.groupName = "F3",
+                    {.groupName = "F2",
                      .groupSize = 26},
                     
-                    {.groupName = "G2",
+                    {.groupName = "G1",
                      .groupSize = 22},
                     
-                    {.groupName = "G3",
+                    {.groupName = "G2",
                      .groupSize = 12},
                      
-                    {.groupName = "H2",
+                    {.groupName = "H1",
                      .groupSize = 10},
                     
-                    {.groupName = "H3",
+                    {.groupName = "H2",
                      .groupSize = 11},
                     
-                    {.groupName = "I2",
+                    {.groupName = "I1",
                      .groupSize = 19},
                     
-                    {.groupName = "I3",
+                    {.groupName = "I2",
                      .groupSize = 20},
                     
-                    {.groupName = "J2",
+                    {.groupName = "J1",
                      .groupSize = 27},
                     
-                    {.groupName = "J3",
+                    {.groupName = "J2",
                      .groupSize = 30}  
                   };
                  
   Venue venue[] = { {.nameOfVenue = "D203",
-                     .sizeOfVenue = 40},
+                     .sizeOfVenue = 40,
+										 .venueType = 'p'},
                      
                     {.nameOfVenue = "D300",
-                     .sizeOfVenue = 25},
+                     .sizeOfVenue = 25,
+										 .venueType = 'a'},
                      
                     {.nameOfVenue = "D204",
-                     .sizeOfVenue = 30},
+                     .sizeOfVenue = 30,
+										 .venueType = 'a'},
                      
                     {.nameOfVenue = "D301",
-                     .sizeOfVenue = 25}
+                     .sizeOfVenue = 25,
+										 .venueType = 'a'}
                   };
                   
   Lecturer lecturer[] = { {.lecturerName = "Poh TV",
@@ -172,6 +176,7 @@
                        .hoursOfTutorial = 1,
                        .hoursOfPractical = 2,
                        .programme[0] = &programme[0],
+                       .programme[1] = NULL,
                        .sizeOfProgramme = 20},
                        
                       {.courseCode = "AAMB2034",
@@ -179,7 +184,9 @@
                        .hoursOfLecture = 2,
                        .hoursOfTutorial = 1,
                        .hoursOfPractical = 0,
-                       .programme[1] = &programme[1],
+                       .programme[0] = &programme[1],
+                       .programme[1] = NULL,
+
                        .sizeOfProgramme = 30},
                        
                       {.courseCode = "ABMC1045",
@@ -187,7 +194,8 @@
                        .hoursOfLecture = 2,
                        .hoursOfTutorial = 1,
                        .hoursOfPractical = 0,
-                       .programme[2] = &programme[2],
+                       .programme[0] = &programme[2],
+											 .programme[1] = NULL,
                        .sizeOfProgramme = 15},
                       
                       {.courseCode = "ABCD1234",
@@ -195,7 +203,8 @@
                        .hoursOfLecture = 2,
                        .hoursOfTutorial = 1,
                        .hoursOfPractical = 0,
-                       .programme[3] = &programme[3],
+                       .programme[0] = &programme[3],
+											 .programme[1] = NULL,
                        .sizeOfProgramme = 30},
                        
                       {.courseCode = "AAMP1034",
@@ -203,7 +212,8 @@
                        .hoursOfLecture = 2,
                        .hoursOfTutorial = 2,
                        .hoursOfPractical = 2,
-                       .programme[4] = &programme[4],
+                       .programme[0] = &programme[4],
+											 .programme[1] = NULL,
                        .sizeOfProgramme = 10},
                        
                       {.courseCode = "EFGH5656",
@@ -211,7 +221,8 @@
                        .hoursOfLecture = 2,
                        .hoursOfTutorial = 1,
                        .hoursOfPractical = 2,
-                       .programme[5] = &programme[5],
+                       .programme[0] = &programme[5],
+											 .programme[1] = NULL,
                        .sizeOfProgramme = 20},
                        
                       {.courseCode = "JDHS5839",
@@ -219,7 +230,8 @@
                        .hoursOfLecture = 2,
                        .hoursOfTutorial = 1,
                        .hoursOfPractical = 2,
-                       .programme[6] = &programme[6],
+                       .programme[0] = &programme[6],
+											 .programme[1] = NULL,
                        .sizeOfProgramme = 24},
                        
                       {.courseCode = "UWQI8912",
@@ -227,7 +239,8 @@
                        .hoursOfLecture = 2,
                        .hoursOfTutorial = 1,
                        .hoursOfPractical = 0,
-                       .programme[7] = &programme[7],
+                       .programme[0] = &programme[7],
+											 .programme[1] = NULL,
                        .sizeOfProgramme = 15},
                        
                       {.courseCode = "IQJD1875",
@@ -235,7 +248,8 @@
                        .hoursOfLecture = 2,
                        .hoursOfTutorial = 1,
                        .hoursOfPractical = 0,
-                       .programme[8] = &programme[8],
+                       .programme[0] = &programme[8],
+											 .programme[1] = NULL,
                        .sizeOfProgramme = 33},
                        
                       {.courseCode = "ZXCV8787",
@@ -243,7 +257,8 @@
                        .hoursOfLecture = 2,
                        .hoursOfTutorial = 1,
                        .hoursOfPractical = 0,
-                       .programme[9] = &programme[9],
+                       .programme[0] = &programme[9],
+											 .programme[1] = NULL,
                        .sizeOfProgramme = 32}
                     };
 										
