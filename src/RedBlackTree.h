@@ -28,5 +28,6 @@ Node *removeNextLargerSuccessor(Node **nodePtr);
 int compare(Node **nodePtr, Node *newNode);
 void genericRedBlackTreeAdd(Node **nodePtr, Node *newNode, int (*compare)(Node **nodePtr, Node *newNode));
 void _genericRedBlackTreeAdd(Node **nodePtr, Node *newNode, int (*Compare)(Node **nodePtr, Node *newNode));
+Node *removeLargestValue(Node **nodePtr);
 
 #endif // RedBlackTree_H

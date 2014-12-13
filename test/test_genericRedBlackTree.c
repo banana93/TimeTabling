@@ -143,3 +143,23 @@ void test_genericRedBlackTreeAdd_should_throw_ERR_EQUIVALENT_NODE_due_to_newNode
     }
 }
 
+/**
+ *        root                              root
+ *         |                                 |
+ *         v                                 v
+ *        2(b)         remove 3            2(b)
+ *       /   \       ------------>        /   
+ *     1(r)  3(r)                      1(r)   
+ */
+void test_removeLargestValue_it_should_remove_node_3_from_2_1_3_tree(void) {
+  setNode(&node3, NULL, NULL, 'r');
+  setNode(&node1, NULL, NULL, 'r');
+  setNode(&node2, &node1, &node3, 'b');
+  Node *root = &node2;
+  Node *removeNode;
+  
+  removeNode = removeLargestValue(&root);
+  TEST_ASSERT_EQUAL_PTR(&node2, root);
+  TEST_ASSERT_EQUAL_NODE(NULL, NULL, 'r', &node1);
+  TEST_ASSERT_EQUAL_NODE(&node1, NULL, 'b', &node2);
+}

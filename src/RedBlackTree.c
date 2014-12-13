@@ -481,3 +481,26 @@ void _genericRedBlackTreeAdd(Node **nodePtr, Node *newNode, int (*Compare)(Node 
         Throw(ERR_EQUIVALENT_NODE);
       }
 }
+
+Node *removeLargestValue(Node **nodePtr)
+{
+  Node *node = *nodePtr;
+  
+  if(node->left == NULL && node->right == NULL) {
+    node = (*nodePtr);
+    (*nodePtr) = NULL;
+    return node;
+  } else {
+      if(node->right != NULL) {
+        node = removeNextLargerSuccessor(&node->right);
+      } else if(node->left != NULL) {
+          (*nodePtr) = (*nodePtr)->left;
+          (*nodePtr)->left = NULL;
+          (*nodePtr)->color = 'b';
+        }
+    } 
+    
+  checkCase(&(*nodePtr), node);
+  
+  return node;
+}
