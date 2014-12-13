@@ -235,10 +235,11 @@ void test_calculateFitnessScore_should_return_6_when_violates_all(){
  *           v          score 1        v
  *          NULL    ------------->     1
  */
-void xtest_calculateFitnessScore_and_genericRedBlackTreeAdd_should_be_able_to_add_fitness_score_2_into_the_redBlackTree(void) {
+void test_calculateFitnessScore_and_genericRedBlackTreeAdd_should_be_able_to_add_fitness_score_2_into_the_redBlackTree(void) {
   int numberOfClashes = 0;
-	setUp();
-  addDetailsIntoChromosome(class, &course[3], &lecturer[3], &group[3], 'l');
+  //lecturerAppearInTwoVenue() Violation
+  class[0][0][0].lecturer = &lecturer[0];
+  class[3][0][0].lecturer = &lecturer[0];
   
   numberOfClashes = calculateFitnessScore(class);
   resetNode(&node1, numberOfClashes);
@@ -256,122 +257,134 @@ void xtest_calculateFitnessScore_and_genericRedBlackTreeAdd_should_be_able_to_ad
 /**
  *       root                   root                     root
  *        |     add fitness      |     add fitness        |
- *        v       score 2        v       score 1          v
- *       NULL  ------------>     2    ------------>       2
+ *        v       score 3        v       score 1          v
+ *       NULL  ------------>     3    ------------>       3
  *                                                       /
  *                                                      1
  */
-void xtest_calculateFitnessScore_and_genericRedBlackTreeAdd_should_be_able_to_add_fitness_score_2_1_into_redBlackTree(void) {
+void test_calculateFitnessScore_and_genericRedBlackTreeAdd_should_be_able_to_add_fitness_score_2_1_into_redBlackTree(void) {
   int firstNumberOfClashes = 0, secondNumberOfClashes = 0;
 
-  // TuitionOverloadInSingleDay() Violation
-  // addDetailsIntoChromosome(class, &course[0], &lecturer[0], 'l');
-  // addDetailsIntoChromosome(class, &course[0], &lecturer[0], 'l');
-
-  // extra 2 to violate twice, returns 2  
-  // addDetailsIntoChromosome(class, &course[0], &lecturer[0], 'l');
-  // addDetailsIntoChromosome(class, &course[0], &lecturer[0], 'l');
+  // determineViolationForCourseVenueSize() Violation
+ 	class[0][0][0].group[0] = &group[0]; // 				10
+  class[0][0][0].group[1] = &group[1]; // 				13
+  class[0][0][0].group[2] = &group[2]; // 				20
+																			 //total = 	43
+  class[0][0][0].group[3] = NULL;			 //venue = 	40
+																			 //violate = 3
 
   firstNumberOfClashes = calculateFitnessScore(class);
-  resetNode(&node2, firstNumberOfClashes);
-  class[0][0][0].classNode = &node2;
-  setNode(&node2, NULL, NULL, 'b');
+  resetNode(&node3, firstNumberOfClashes);
+  class[0][0][0].classNode = &node3;
+  setNode(&node3, NULL, NULL, 'b');
   Node *root = NULL;
   
-  genericRedBlackTreeAdd(&root, &node2, compare);
+  genericRedBlackTreeAdd(&root, &node3, compare);
   setUp();
   
-  // determineViolationForCourseVenueSize() Violation
-	// addDetailsIntoChromosome(class, &course[3], &lecturer[3], 'l');
+  // lecturerAppearInTwoVenue() Violation
+  class[0][0][0].lecturer = &lecturer[0];
+  class[3][0][0].lecturer = &lecturer[0];
   
   secondNumberOfClashes = calculateFitnessScore(class);
   resetNode(&node1, secondNumberOfClashes);
   class[0][0][1].classNode = &node1;
   setNode(&node1, NULL, NULL, 'b');
-  root = &node2;
+  root = &node3;
   
   genericRedBlackTreeAdd(&root, &node1, compare);
-  TEST_ASSERT_EQUAL_PTR(&node2, root);
-  TEST_ASSERT_EQUAL_NODE(&node1, NULL, 'b', &node2);
+  TEST_ASSERT_EQUAL_PTR(&node3, root);
+  TEST_ASSERT_EQUAL_NODE(&node1, NULL, 'b', &node3);
   TEST_ASSERT_EQUAL_NODE(NULL, NULL, 'b', &node1);
-  TEST_ASSERT_EQUAL(2, class[0][0][0].classNode->data);
+  TEST_ASSERT_EQUAL(3, class[0][0][0].classNode->data);
   TEST_ASSERT_EQUAL(1, class[0][0][1].classNode->data);
 }
 
 /**
  *      root                  root                    root                   root
  *       |    add fitness      |     add fitness       |     add fitness      |
- *       v     score 2         v      score 1          v      score 8         v
- *      NULL  ----------->     2    ------------>      2     ----------->     2
+ *       v     score 3         v      score 1          v      score 6         v
+ *      NULL  ----------->     3    ------------>      3     ----------->     3
  *                                                    /                     /   \
- *                                                   1                     1     8
+ *                                                   1                     1     6
  */
-void xtest_calculateFitnessScore_and_genericRedBlackTreeAdd_should_be_able_to_add_fitness_score_2_1_8_into_redBlackTree(void) {
+void test_calculateFitnessScore_and_genericRedBlackTreeAdd_should_be_able_to_add_fitness_score_2_1_8_into_redBlackTree(void) {
   int firstNumberOfClashes = 0, secondNumberOfClashes = 0, thirdNumberOfClashes;
 
-  // TuitionOverloadInSingleDay() Violation
-  // addDetailsIntoChromosome(class, &course[0], &lecturer[0], 'l');
-  // addDetailsIntoChromosome(class, &course[0], &lecturer[0], 'l');
-
-  // extra 2 to violate twice, returns 2  
-  // addDetailsIntoChromosome(class, &course[0], &lecturer[0], 'l');
-  // addDetailsIntoChromosome(class, &course[0], &lecturer[0], 'l');
+  // determineViolationForCourseVenueSize() Violation
+ 	class[0][0][0].group[0] = &group[0]; // 				10
+  class[0][0][0].group[1] = &group[1]; // 				13
+  class[0][0][0].group[2] = &group[2]; // 				20
+																			 //total = 	43
+  class[0][0][0].group[3] = NULL;			 //venue = 	40
+																			 //violate = 3
 
   firstNumberOfClashes = calculateFitnessScore(class);
-  resetNode(&node2, firstNumberOfClashes);
-  class[0][0][0].classNode = &node2;
-  setNode(&node2, NULL, NULL, 'b');
+  resetNode(&node3, firstNumberOfClashes);
+  class[0][0][0].classNode = &node3;
+  setNode(&node3, NULL, NULL, 'b');
   Node *root = NULL;
   
-  genericRedBlackTreeAdd(&root, &node2, compare);
+  genericRedBlackTreeAdd(&root, &node3, compare);
   setUp();
   
-  // determineViolationForCourseVenueSize() Violation
-	// addDetailsIntoChromosome(class, &course[3], &lecturer[3], 'l');
+  // lecturerAppearInTwoVenue() Violation
+  class[0][0][0].lecturer = &lecturer[0];
+  class[3][0][0].lecturer = &lecturer[0];
   
   secondNumberOfClashes = calculateFitnessScore(class);
   resetNode(&node1, secondNumberOfClashes);
   class[0][0][1].classNode = &node1;
   setNode(&node1, NULL, NULL, 'b');
-  root = &node2;
+  root = &node3;
   
   genericRedBlackTreeAdd(&root, &node1, compare);
   setUp();
   
   // checkLecturerNotInchargeOfCourse() Violation
   /**
-   *  checkIfTutionOverloadedInSingleDay = 2
-   *  checkLecturerNotInchargeOfCourse = 0
+   *  checkIfTutionOverloadedInSingleDay = 1
    *  checkIfLecturerAppearInTwoVenue = 1
    *  checkStudentViolation = 1
-   *  determineViolationForCourseVenueSize = 4
-   *  total should be 8
+   *  determineViolationForCourseVenueSize = 3
+   *  total should be 6
    */
-
-	// addDetailsIntoChromosome(class, &course[3], &lecturer[3], 'l');
-	// addDetailsIntoChromosome(class, &course[3], &lecturer[3], 'l');
-	// addDetailsIntoChromosome(class, &course[3], &lecturer[3], 'l');
 	
-	class[3][0][2].course = &course[3];
-  class[3][0][2].lecturer = &lecturer[3];
-  class[3][0][2].typeOfClass = 'l';
+	class[0][0][0].group[0] = &group[0];
+	class[0][0][0].group[1] = &group[1];
+	class[0][0][0].group[2] = &group[2];
+	class[0][0][0].group[3] = NULL;
+  class[0][0][0].lecturer = &lecturer[0];
+	class[0][0][1].group[0] = &group[0];
+	class[0][0][1].group[1] = NULL;
+  class[0][0][1].lecturer = &lecturer[0];
+	class[0][0][2].group[0] = &group[0];
+	class[0][0][2].group[1] = NULL;
+  class[0][0][2].lecturer = &lecturer[0];
+	
+	class[3][0][2].group[0] = &group[0];
+	class[3][0][2].group[1] = NULL;
+  class[3][0][2].lecturer = &lecturer[0];
+	class[3][0][3].group[0] = &group[0];
+	class[3][0][3].group[1] = NULL;
+  class[3][0][3].lecturer = &lecturer[0];
   
   thirdNumberOfClashes = calculateFitnessScore(class);
-  resetNode(&node8, thirdNumberOfClashes);
-  class[0][0][2].classNode = &node8;
-  setNode(&node8, NULL, NULL, 'b');
-  root = &node2;
+  resetNode(&node6, thirdNumberOfClashes);
+  class[0][0][2].classNode = &node6;
+  setNode(&node6, NULL, NULL, 'b');
+  root = &node3;
   
-  genericRedBlackTreeAdd(&root, &node8, compare);
+  genericRedBlackTreeAdd(&root, &node6, compare);
   
-  TEST_ASSERT_EQUAL_PTR(&node2, root);
-  TEST_ASSERT_EQUAL_NODE(&node1, &node8, 'b', &node2);
+  TEST_ASSERT_EQUAL_PTR(&node3, root);
+  TEST_ASSERT_EQUAL_NODE(&node1, &node6, 'b', &node3);
   TEST_ASSERT_EQUAL_NODE(NULL, NULL, 'b', &node1);
-  TEST_ASSERT_EQUAL_NODE(NULL, NULL, 'b', &node8);
-  TEST_ASSERT_EQUAL(2, class[0][0][0].classNode->data);
+  TEST_ASSERT_EQUAL_NODE(NULL, NULL, 'b', &node6);
+  TEST_ASSERT_EQUAL(3, class[0][0][0].classNode->data);
   TEST_ASSERT_EQUAL(1, class[0][0][1].classNode->data);
-  TEST_ASSERT_EQUAL(8, class[0][0][2].classNode->data);
-  TEST_ASSERT_EQUAL(2, firstNumberOfClashes);
+  TEST_ASSERT_EQUAL(6, class[0][0][2].classNode->data);
+  TEST_ASSERT_EQUAL(3, firstNumberOfClashes);
   TEST_ASSERT_EQUAL(1, secondNumberOfClashes);
-  TEST_ASSERT_EQUAL(8, thirdNumberOfClashes);
+  TEST_ASSERT_EQUAL(6, thirdNumberOfClashes);
 }
