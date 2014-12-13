@@ -97,11 +97,12 @@ struct Counter
 };
 
 extern	Class class[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS];
-extern	Group group[20];
-extern	Venue venue[10];
-extern	Lecturer lecturer[10];
-extern	Programme programme[10];
-extern	Course course[10];
+extern	Group group[];
+extern	Venue venue[];
+extern	Lecturer lecturer[];
+extern	Programme programme[];
+extern	Course course[];
+extern	Class classList[];
 
 
 

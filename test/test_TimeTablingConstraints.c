@@ -50,7 +50,6 @@ void test_checkIfTutionOverloadedInSingleDay_shoud_return_1_for_exceeding_lectur
 	class[1][0][4].group[1] = NULL;
 
 
-
 	TEST_ASSERT_EQUAL(1, checkIfTutionOverloadedInSingleDay(class, 0));
  }
  
@@ -194,4 +193,11 @@ void test_checkStudentViolation_should_return_0_if_different_programme_different
   class[3][1][1].group[1] = NULL;
   
   TEST_ASSERT_EQUAL(0, checkStudentViolation(class, 1, 1));
+}
+
+void test_asdasd(){
+
+	// printf("size of classList: %d\n",(sizeof(classList)/sizeof(Class)));
+
+
 }
