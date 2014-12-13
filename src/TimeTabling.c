@@ -9,7 +9,7 @@
 #include "InitNode.h"
 
 Class class[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS];
-	
+
 char *getCourseName(Course newCourse){
 	if(newCourse.courseName != NULL)
     return newCourse.courseName;
