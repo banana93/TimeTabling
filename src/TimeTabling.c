@@ -241,6 +241,25 @@ void clearClassSlot(Class *newClass){
 	}
 }
 
+void copyClass(Class (*newClass)[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS]){
+	int venue, day, time;
+	for(venue = 0 ; venue < MAX_VENUE; venue+=1){
+		for(day = 0; day < MAX_DAY; day++) {
+			for(time = 0; time < MAX_TIME_SLOTS; time++) {
+				(*newClass)[venue][day][time] = class[venue][day][time];
+			
+			}
+		}
+	}
+
+}
+
 void performMutation(Class newClass[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS]) {
+
+}
+
+void performCrossover(Class newClass[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS], Class newClass2[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS], int sizeOfClassList){
+	
+
 
 }
