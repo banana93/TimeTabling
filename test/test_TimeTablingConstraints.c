@@ -91,16 +91,17 @@ void test_checkIfTutionOverloadedInSingleDay_shoud_return_2_for_exceeding_lectur
 /***********************************************************************************
  *  determineViolationForCourseVenueSize() 
  ***********************************************************************************/
-void test_determineViolationForCourseVenueSize_should_return_3_because_the_size_of_group_exceed_the_venue_size(void) {
+void test_determineViolationForCourseVenueSize_should_return_10_because_the_size_of_group_exceed_the_venue_size(void) {
   int result;
   class[0][0][0].group[0] = &group[0];
 	class[0][0][0].group[1] = &group[1];
 	class[0][0][0].group[2] = &group[2];
-	class[0][0][0].group[3] = NULL;
+	class[0][0][0].group[3] = &group[3];
+	class[0][0][0].group[4] = NULL;
   
   result = determineViolationForCourseVenueSize(class,0,0,0);
   
-  TEST_ASSERT_EQUAL(3, result);
+  TEST_ASSERT_EQUAL(10, result);
 }
 
 void test_determineViolationForCourseVenueSize_should_return_0_because_the_size_of_group_did_not_the_venue_size(void) {
@@ -193,11 +194,4 @@ void test_checkStudentViolation_should_return_0_if_different_programme_different
   class[3][1][1].group[1] = NULL;
   
   TEST_ASSERT_EQUAL(0, checkStudentViolation(class, 1, 1));
-}
-
-void test_asdasd(){
-
-	// printf("size of classList: %d\n",(sizeof(classList)/sizeof(Class)));
-
-
 }
