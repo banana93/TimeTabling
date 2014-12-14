@@ -115,7 +115,7 @@ void addDetailsIntoChromosome(Class newClass[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS]
 Class *checkChromosomeIsEmpty(Class newClass[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS]);
 int calculateFitnessScore(Class newClass[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS]);
 void fillInTheChromosomeWithReducingViolation(Class classList[], int sizeOfClassList);
-void performMutation(Class newClass[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS]);
+int performMutation(Class newClass[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS]);
 
 //constraints
 // int checkLecturerNotInchargeOfCourse(Class newClass[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS], int venue, int day, int time);

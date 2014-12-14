@@ -100,11 +100,10 @@ void test_addDetailsIntoChromosome_given_the_details_should_be_able_to_add_into_
 	TEST_ASSERT_EQUAL('t', class[0][0][1].typeOfClass);
 }
 
-void xtest_performMutation_it_should_be_able_to_find_empty_slots(void) {
-
-}
-
-void xtest_performMutation_it_should_be_able_to_calculateFitnessScore_and_genericRedBlackTreeAdd_into_the_redBlackTree(void) {
-
+void test_performMutation_it_should_be_able_to_calculateFitnessScore_and_genericRedBlackTreeAdd_into_the_redBlackTree(void) {
+  int resultOfMutation = 0;
+  
+  resultOfMutation = performMutation(class);
+  printf("result = :%d\n", resultOfMutation);
 }
 
