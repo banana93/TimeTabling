@@ -101,7 +101,7 @@ void test_addDetailsIntoChromosome_given_the_details_should_be_able_to_add_into_
 }
 
 void xtest_addClassListIntoChromosome_should_be_able_to_add_the_lists_of_class_into_each_of_the_chromosome(void) {
-  // addClassListIntoChromosome(classList);
+  addClassListIntoChromosome(class, classList);
 }
 
 void xtest_performMutation_it_should_be_able_to_find_empty_slots(void) {

@@ -190,6 +190,9 @@ int calculateFitnessScore(Class newClass[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS]){
 	return violation;
 }
 
-void fillInTheChromosome(Class classList[]){
-
+void addClassListIntoChromosome(Class classList[]){
+  int numberOfClass = 0;
+  
+  for(numberOfClass; numberOfClass < 52; numberOfClass++) {
+    
 }
