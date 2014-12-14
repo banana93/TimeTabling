@@ -35,6 +35,9 @@ void test_calculateFitnessScore_should_return_0_when_empty_class(){
 	TEST_ASSERT_EQUAL(0,calculateFitnessScore(class));
 }
 
+/***********************************************************************************
+ *  calculateFitnessScore() 
+ ***********************************************************************************/
 void test_calculateFitnessScore_should_return_1_when_only_violating_TutionOverloadedInSingleDay(){
 	class[1][0][0].group[0] = &group[0];
 	class[1][0][0].group[1] = NULL;

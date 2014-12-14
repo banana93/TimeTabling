@@ -167,7 +167,7 @@ void test_checkIfLecturerAppearInTwoVenue_shoud_return_1_with_same_lecturer2(){
 }
 
 /***********************************************************************************
- *  checkIfLecturerAppearInTwoVenue() 
+ *  checkStudentViolation() 
  ***********************************************************************************/
 void test_checkStudentViolation_should_return_3_if_same_programme_same_group_but_appear_at_all_different_venue(void) {
 
