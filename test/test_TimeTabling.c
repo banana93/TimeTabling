@@ -58,7 +58,7 @@ void test_addDetailsIntoChromosome_given_the_details_should_be_able_to_add_into_
   TEST_ASSERT_EQUAL(2, class[0][0][0].course->hoursOfLecture);
   TEST_ASSERT_EQUAL(2, class[0][0][0].course->hoursOfPractical);
   TEST_ASSERT_EQUAL(1, class[0][0][0].course->hoursOfTutorial);
-  TEST_ASSERT_EQUAL(10, class[0][0][0].group[0]->groupSize);
+  TEST_ASSERT_EQUAL(12, class[0][0][0].group[0]->groupSize);
   TEST_ASSERT_EQUAL(20, class[0][0][0].course->sizeOfProgramme);
   TEST_ASSERT_EQUAL_STRING("Poh TV", class[0][0][0].lecturer->lecturerName);
   TEST_ASSERT_EQUAL_STRING("FASC", class[0][0][0].lecturer->department);
@@ -79,7 +79,7 @@ void test_addDetailsIntoChromosome_given_the_details_should_be_able_to_add_into_
   TEST_ASSERT_EQUAL(2, class[0][0][0].course->hoursOfLecture);
   TEST_ASSERT_EQUAL(2, class[0][0][0].course->hoursOfPractical);
   TEST_ASSERT_EQUAL(1, class[0][0][0].course->hoursOfTutorial);
-  TEST_ASSERT_EQUAL(10, class[0][0][0].course->programme[0]->group[0]->groupSize);
+  TEST_ASSERT_EQUAL(12, class[0][0][0].course->programme[0]->group[0]->groupSize);
   TEST_ASSERT_EQUAL(20, class[0][0][0].course->sizeOfProgramme);
   TEST_ASSERT_EQUAL_STRING("Poh TV", class[0][0][0].lecturer->lecturerName);
   TEST_ASSERT_EQUAL_STRING("FASC", class[0][0][0].lecturer->department);
@@ -93,7 +93,7 @@ void test_addDetailsIntoChromosome_given_the_details_should_be_able_to_add_into_
   TEST_ASSERT_EQUAL(2, class[0][0][1].course->hoursOfLecture);
   TEST_ASSERT_EQUAL(1, class[0][0][1].course->hoursOfTutorial);
   TEST_ASSERT_EQUAL(0, class[0][0][1].course->hoursOfPractical);
-  TEST_ASSERT_EQUAL(20, class[0][0][1].course->programme[0]->group[0]->groupSize);
+  TEST_ASSERT_EQUAL(15, class[0][0][1].course->programme[0]->group[0]->groupSize);
   TEST_ASSERT_EQUAL(30, class[0][0][1].course->sizeOfProgramme);
   TEST_ASSERT_EQUAL_STRING("Chan CK", class[0][0][1].lecturer->lecturerName);
   TEST_ASSERT_EQUAL_STRING("FASC", class[0][0][1].lecturer->department);
