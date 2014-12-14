@@ -504,3 +504,27 @@ Node *removeLargestValue(Node **nodePtr)
   
   return node;
 }
+
+Node *removeSmallestValue(Node **nodePtr)
+{
+  Node *leftNode, *rightNode;
+  Node *node = *nodePtr;
+  
+  if(node->left == NULL && node->right == NULL) {
+    node = (*nodePtr);
+    (*nodePtr) = NULL;
+    return node;
+  } else {
+      if(node->left != NULL) {
+        node = removeNextLargerSuccessor(&node->left);
+      } else if(node->right != NULL) {
+          (*nodePtr) = (*nodePtr)->right;
+          (*nodePtr)->right = NULL;
+          (*nodePtr)->color = 'b';
+        }
+    } 
+    
+  checkCase(&(*nodePtr), node);
+  
+  return node;
+}

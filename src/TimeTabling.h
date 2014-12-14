@@ -87,6 +87,7 @@ struct Class
 	char typeOfClass;
 	Group *group[20];
   Node *classNode;
+  int markOfViolation;
 };
 
 struct Counter
@@ -102,7 +103,7 @@ extern	Venue venue[];
 extern	Lecturer lecturer[];
 extern	Programme programme[];
 extern	Course course[];
-extern	Class classList[];
+extern	Class classList[52];
 
 
 
@@ -113,7 +114,8 @@ int getVenueSize(Class *newClass);
 void addDetailsIntoChromosome(Class newClass[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS], Course course[], Lecturer lecturer[], Group group[], char typeOfClass);
 Class *checkChromosomeIsEmpty(Class newClass[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS]);
 int calculateFitnessScore(Class newClass[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS]);
-void addClassListIntoChromosome(Class newClass[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS], Class classList[]);
+void fillInTheChromosomeWithReducingViolation(Class classList[], int sizeOfClassList);
+void performMutation(Class newClass[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS]);
 
 //constraints
 // int checkLecturerNotInchargeOfCourse(Class newClass[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS], int venue, int day, int time);
@@ -121,5 +123,5 @@ int checkIfTutionOverloadedInSingleDay(Class newClass[MAX_VENUE][MAX_DAY][MAX_TI
 int checkIfLecturerAppearInTwoVenue(Class newClass[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS], int day, int time);
 int determineViolationForCourseVenueSize(Class newClass[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS], int VenueNumber, int day, int time);
 int checkStudentViolation(Class newClass[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS], int day, int time);
-
+void clearClassSlot(Class *newClass);
 #endif // TimeTabling_H

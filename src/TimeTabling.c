@@ -36,7 +36,7 @@ char *getCourseCode(Course newCourse){
 int checkIfTutionOverloadedInSingleDay(Class newClass[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS], int day){
 	
 	int time, venue, i, j, violationCounter = 0;
-	int counter[(sizeof(group)/sizeof(Group))] = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
+	int counter[(sizeof(group)/sizeof(Group))] = {0,0,0,0,0,0,0,0,0,0,0,0,0,0};
 
   for(venue = 0 ; venue < MAX_VENUE ; venue++){
     for(time = 0 ; time < MAX_TIME_SLOTS ; time++){
@@ -70,6 +70,7 @@ int determineViolationForCourseVenueSize(Class newClass[MAX_VENUE][MAX_DAY][MAX_
 	int violationCounter = 0;
 
 	for(i = 0 ; newClass[VenueNumber][day][time].group[i] != NULL ; i++){
+    newClass[VenueNumber][day][time].markOfViolation = 1;
 		violationCounter += newClass[VenueNumber][day][time].group[i]->groupSize;
 	}
 	if(violationCounter > venue[VenueNumber].sizeOfVenue)
@@ -95,8 +96,10 @@ int checkIfLecturerAppearInTwoVenue(Class newClass[MAX_VENUE][MAX_DAY][MAX_TIME_
 	for(venue = 0 ; venue < MAX_VENUE ; venue++){
 		for(i = 0; i < MAX_VENUE; i++){
 			if(newClass[venue][day][time].lecturer){
-				if(newClass[venue][day][time].lecturer == &lecturer[i])
+				if(newClass[venue][day][time].lecturer == &lecturer[i]) {
+          newClass[venue][day][time].markOfViolation = 1;
 					counter[i]++;
+        }
 			}
 		}
 	}
@@ -116,7 +119,7 @@ int checkIfLecturerAppearInTwoVenue(Class newClass[MAX_VENUE][MAX_DAY][MAX_TIME_
  */
 int checkStudentViolation(Class newClass[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS], int day, int time) {
   int venue, i , j;
-	int counter[(sizeof(group)/sizeof(Group))] = { 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
+	int counter[(sizeof(group)/sizeof(Group))] = {0,0,0,0,0,0,0,0,0,0,0,0,0,0};
 	int returnCounter = 0;
 	
   for(venue = 0; venue < MAX_VENUE; venue++){
@@ -145,9 +148,9 @@ Class *checkChromosomeIsEmpty(Class newClass[4][MAX_DAY][MAX_TIME_SLOTS]) {
   int venue = 0;
   int day = 0, time = 0;
   
-  for(venue; venue < MAX_VENUE; venue++) {
-    for(day; day < MAX_DAY; day++) {
-      for(time; time < MAX_TIME_SLOTS; time++) {
+  for(venue = 0; venue < MAX_VENUE; venue++) {
+    for(day = 0; day < MAX_DAY; day++) {
+      for(time = 0; time < MAX_TIME_SLOTS; time++) {
         if(newClass[venue][day][time].course == NULL && newClass[venue][day][time].lecturer == NULL)
           return &newClass[venue][day][time];
       }
@@ -189,10 +192,55 @@ int calculateFitnessScore(Class newClass[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS]){
     
 	return violation;
 }
+void fillInTheChromosome(Class classList[], int sizeOfClassList){
+	int venue, day, time;
+	int i = 0, violation;
+	
+		for(venue = 0; venue < MAX_VENUE; venue++) {
+			for(day = 0; day < MAX_DAY; day++) {
+				for(time = 0; i < sizeOfClassList && time < MAX_TIME_SLOTS; time++) {
+					if(class[venue][day][time].course == NULL){
+						class[venue][day][time] = classList[i];
+						i++;
+					}
+				}
+			}
+		}
+}
 
-void addClassListIntoChromosome(Class classList[]){
-  int numberOfClass = 0;
-  
-  for(numberOfClass; numberOfClass < 52; numberOfClass++) {
-    
+void fillInTheChromosomeWithReducingViolation(Class classList[], int sizeOfClassList){
+	int venue, day, time;
+	int i = 0, violation;
+	
+	for(violation = 0 ; violation < 200; violation+=1){
+		for(venue = 0; venue < MAX_VENUE; venue++) {
+			for(day = 0; day < MAX_DAY; day++) {
+				for(time = 0; i < sizeOfClassList && time < MAX_TIME_SLOTS; time++) {
+					if(class[venue][day][time].course == NULL){
+						class[venue][day][time] = classList[i];
+						if(calculateFitnessScore(class) > violation)
+							clearClassSlot(&class[venue][day][time]);
+						else
+							i++;
+					}
+				}
+			}
+		}
+	}
+}
+
+void clearClassSlot(Class *newClass){
+	int i;
+	
+	newClass->lecturer = NULL;
+	newClass->course = NULL;
+	newClass->typeOfClass = 0;
+	newClass->classNode = NULL;
+	for(i = 0 ; i < 5 ; i++){
+		newClass->group[i] = NULL;
+	}
+}
+
+void performMutation(Class newClass[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS]) {
+
 }

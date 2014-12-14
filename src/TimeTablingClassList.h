@@ -11,64 +11,46 @@
 
 
   Group group[] = { {.groupName = "A1",
-                     .groupSize = 10},
+                     .groupSize = 12},
                      
                     {.groupName = "A2",
                      .groupSize = 13},
                      
                     {.groupName = "B1",
-                     .groupSize = 20},
+                     .groupSize = 15},
                      
                     {.groupName = "B2",
-                     .groupSize = 50},
+                     .groupSize = 10},
                     
                     {.groupName = "C1",
-                     .groupSize = 34},
+                     .groupSize = 11},
                      
                     {.groupName = "C2",
-                     .groupSize = 25},
+                     .groupSize = 14},
                      
                     {.groupName = "D1",
-                     .groupSize = 14},
+                     .groupSize = 16},
                     
                     {.groupName = "D2",
-                     .groupSize = 20},
+                     .groupSize = 14},
                      
                     {.groupName = "E1",
-                     .groupSize = 13},
+                     .groupSize = 18},
                      
                     {.groupName = "E2",
-                     .groupSize = 16},
+                     .groupSize = 12},
                      
                     {.groupName = "F1",
                      .groupSize = 17},
                     
                     {.groupName = "F2",
-                     .groupSize = 26},
+                     .groupSize = 13},
                     
                     {.groupName = "G1",
                      .groupSize = 22},
                     
                     {.groupName = "G2",
-                     .groupSize = 12},
-                     
-                    {.groupName = "H1",
-                     .groupSize = 10},
-                    
-                    {.groupName = "H2",
-                     .groupSize = 11},
-                    
-                    {.groupName = "I1",
-                     .groupSize = 19},
-                    
-                    {.groupName = "I2",
-                     .groupSize = 20},
-                    
-                    {.groupName = "J1",
-                     .groupSize = 27},
-                    
-                    {.groupName = "J2",
-                     .groupSize = 30}  
+                     .groupSize = 8}  
                   };
                  
   Venue venue[] = { {.nameOfVenue = "D203",
@@ -84,7 +66,7 @@
 										 .venueType = 'a'},
                      
                     {.nameOfVenue = "D301",
-                     .sizeOfVenue = 25,
+                     .sizeOfVenue = 60,
 										 .venueType = 'a'}
                   };
                   
@@ -232,7 +214,7 @@
                     };
 										
 										
-Class classList[] = {{	.course = &course[0],
+Class classList[52] = {{	.course = &course[0],
 												.lecturer = &lecturer[4],
 												.typeOfClass = 'l',
 												.group[0] = &group[0],
