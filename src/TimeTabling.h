@@ -76,7 +76,7 @@ struct Course
   int hoursOfLecture;
   int hoursOfTutorial;
   int hoursOfPractical;
-  Programme *programme[20];
+  Programme *programme[5];
   int sizeOfProgramme;
 };
 
@@ -85,7 +85,7 @@ struct Class
   Course *course;
   Lecturer *lecturer;
 	char typeOfClass;
-	Group *group[20];
+	Group *group[5];
   Node *classNode;
   int markOfViolation;
 };
@@ -106,7 +106,6 @@ char *getCourseName(Course newCourse);
 char *getCourseCode(Course newCourse);
 int getTotalStudentsInCourse(Class *newClass);
 int getVenueSize(Class *newClass);
-
 // did not use
 **/
 
@@ -126,12 +125,15 @@ int calculateFitnessScore(Class newClass[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS]);
 void addDetailsIntoChromosome(Class newClass[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS], Course course[], Lecturer lecturer[], Group group[], char typeOfClass);
 Class *checkChromosomeIsEmpty(Class newClass[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS]);
 void fillInTheChromosomeWithReducingViolation(Class classList[], int sizeOfClassList);
-void performMutation(Class newClass[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS]);
+int performMutation(Class newClass[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS]);
 void performCrossover(Class newClass[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS], Class newClass2[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS], int sizeOfClassList);
 
 /***********************************************************************************
  *  Clear and copy class functions
  ***********************************************************************************/
 void clearClassSlot(Class *newClass);
+void clearClassList(int sizeOfClass , Class (*newClass)[sizeOfClass]);
+Class copyClassSlot(Class sourceClass);
 void copyClass(Class (*newClass)[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS]);
+void randomizeClassList(int sizeOfClassList, Class (*targetClassList)[sizeOfClassList]);
 #endif // TimeTabling_H

@@ -34,12 +34,4 @@ void tearDown(void){}
 
 void test_performCrossover(){
 
-	fillInTheChromosomeWithReducingViolation(classList, sizeof(classList)/sizeof(Class));
-	Class newClass[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS];
-	
-	copyClass(&newClass);
-	// printf("%c\n", newClass[0][0][0].typeOfClass);
-	// printf("%c\n", class[0][0][0].typeOfClass);
-	
-	
 }

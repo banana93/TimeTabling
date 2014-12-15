@@ -47,3 +47,50 @@ void test_fillInTheChromosomeWithReducingViolation_should_less_violation_than_no
 	TEST_ASSERT_EQUAL(309 , normalFill);
 	TEST_ASSERT_EQUAL(171, reducedViolationFill);
 }
+
+void test_copyClassSlot_should_able_to_copy_1_class_to_another(){
+
+	Class testClass;
+	
+	testClass = copyClassSlot(classList[0]);
+
+	TEST_ASSERT_EQUAL_PTR( classList[0].course, testClass.course);
+	TEST_ASSERT_EQUAL_PTR( classList[0].lecturer, testClass.lecturer);
+	TEST_ASSERT_EQUAL_PTR( classList[0].group[0], testClass.group[0]);
+	TEST_ASSERT_EQUAL_PTR( classList[0].group[1], testClass.group[1]);
+	TEST_ASSERT_EQUAL_PTR( classList[0].group[2], testClass.group[2]);
+	TEST_ASSERT_EQUAL_PTR( classList[0].group[3], testClass.group[3]);
+	TEST_ASSERT_EQUAL_PTR( classList[0].group[4], testClass.group[4]);
+	TEST_ASSERT_EQUAL( classList[0].typeOfClass, testClass.typeOfClass);
+	
+}
+
+void test_clearClassSlot_should_able_to_remove_elements(){
+
+	Class testClass;
+	
+	testClass = copyClassSlot(classList[0]);
+	clearClassSlot(&testClass);
+	TEST_ASSERT_EQUAL_PTR( NULL, testClass.course);
+	TEST_ASSERT_EQUAL_PTR( NULL, testClass.lecturer);
+	TEST_ASSERT_EQUAL_PTR( NULL, testClass.group[0]);
+	TEST_ASSERT_EQUAL_PTR( NULL, testClass.group[1]);
+	TEST_ASSERT_EQUAL_PTR( NULL, testClass.group[2]);
+	TEST_ASSERT_EQUAL_PTR( NULL, testClass.group[3]);
+	TEST_ASSERT_EQUAL_PTR( NULL, testClass.group[4]);
+	TEST_ASSERT_EQUAL( 0, testClass.typeOfClass);
+	
+}
+
+
+void test_randomizeClassList(){
+ Class testList[52];
+ clearClassList(sizeof(testList)/sizeof(Class) , &testList);
+ printf("%d\n",(sizeof(testList)/sizeof(Class)));
+ randomizeClassList(sizeof(testList)/sizeof(Class),&testList);
+
+	// printf("print classType : %s\n",testList[0].course->programme[0]->programmeName);
+	// printf("print classType : %s\n",classList[51].course->programme[0]->programmeName);	
+	// printf("print classType : %s\n",testList[51].lecturer->lecturerName);
+	// printf("print classType : %s\n",classList[0].lecturer->lecturerName);
+}

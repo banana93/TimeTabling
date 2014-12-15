@@ -1,7 +1,8 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include "TimeTabling.h"
-#include "TimeTablingClassList.h"
 #include "Node.h"
+#include "TimeTablingClassList.h"
 #include "RedBlackTree.h"
 #include "ErrorCode.h"
 #include "CustomAssertions.h"
@@ -9,6 +10,8 @@
 #include "InitNode.h"
 
 Class class[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS];
+Node node1, node2, node3, node4, node5, node6, node7, node8, node9, node10, node11, node12, node13, node15, node17, node18, node20, node30;
+Node *root = NULL;
 
 /**
 char *getCourseName(Course newCourse){
@@ -77,13 +80,13 @@ int determineViolationForCourseVenueSize(Class newClass[MAX_VENUE][MAX_DAY][MAX_
 	int violationCounter = 0;
 
 	for(i = 0 ; newClass[VenueNumber][day][time].group[i] != NULL ; i++){
-    newClass[VenueNumber][day][time].markOfViolation = 1;
 		violationCounter += newClass[VenueNumber][day][time].group[i]->groupSize;
 	}
-	if(violationCounter > venue[VenueNumber].sizeOfVenue)
-		violationCounter = violationCounter - venue[VenueNumber].sizeOfVenue;
-	else
-		violationCounter = 0;
+	if(violationCounter > venue[VenueNumber].sizeOfVenue) {
+    newClass[VenueNumber][day][time].markOfViolation = 1;
+    violationCounter = violationCounter - venue[VenueNumber].sizeOfVenue;
+	} else
+      violationCounter = 0;
 	
   return violationCounter;
 }
@@ -132,11 +135,14 @@ int checkStudentViolation(Class newClass[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS], in
   for(venue = 0; venue < MAX_VENUE; venue++){
 		for(i = 0; newClass[venue][day][time].group[i] != NULL ; i++){
 			for(j = 0; j < (sizeof(group)/sizeof(Group)); j++){
-				if(newClass[venue][day][time].group[i] == &group[j])
+				if(newClass[venue][day][time].group[i] == &group[j]) {
+          newClass[venue][day][time].markOfViolation = 1;
 					counter[j]++;
-				}
+        }
 			}
-    }
+		}
+  }
+
   for(i = 0 ; i < (sizeof(group)/sizeof(Group)) ; i++){
 		if(counter[i] > 1)
 			returnCounter = counter[i] - 1;
@@ -241,8 +247,8 @@ void fillInTheChromosomeWithReducingViolation(Class classList[], int sizeOfClass
 	int venue, day, time;
 	int i = 0, violation;
 	
-	for(violation = 0 ; violation < 200; violation+=1){
-		for(venue = 0; venue < MAX_VENUE; venue++) {
+	for(violation = 0 ; violation < 1000; violation+=1){
+		for(venue = 0; venue < MAX_VENUE; venue++){
 			for(day = 0; day < MAX_DAY; day++) {
 				for(time = 0; i < sizeOfClassList && time < MAX_TIME_SLOTS; time++) {
 					if(class[venue][day][time].course == NULL){
@@ -268,34 +274,117 @@ void clearClassSlot(Class *newClass){
 	newClass->course = NULL;
 	newClass->typeOfClass = 0;
 	newClass->classNode = NULL;
+	newClass->markOfViolation = 0;
 	for(i = 0 ; i < 5 ; i++){
 		newClass->group[i] = NULL;
 	}
 }
 
 /**
- *  The purpose of this to copy class[][][] to a pointer of class
- *  class[][][] >> *targetClass
+ *  The purpose of this function is to clear class[] for population purpose
  */
-void copyClass(Class (*newClass)[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS]){
-	int venue, day, time;
-	for(venue = 0 ; venue < MAX_VENUE; venue+=1){
-		for(day = 0; day < MAX_DAY; day++) {
-			for(time = 0; time < MAX_TIME_SLOTS; time++) {
-				(*newClass)[venue][day][time] = class[venue][day][time];
-			
-			}
+void clearClassList(int sizeOfClass , Class (*newClass)[sizeOfClass]){
+	int i, j;
+	
+for(i = 0; i < sizeOfClass; i++) {
+	(*newClass)[i].lecturer = NULL;
+	(*newClass)[i].course = NULL;
+	(*newClass)[i].typeOfClass = 0;
+	(*newClass)[i].classNode = NULL;
+	(*newClass)[i].markOfViolation = 0;
+		for(j = 0 ; i < 5 ; i++){
+			(*newClass)[i].group[i] = NULL;
 		}
-	}
-
+}
 }
 
-void performMutation(Class newClass[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS]) {
+/**
+ *  The purpose of this function is to copy one  particular slot in class to another
+ */
+Class copyClassSlot(Class sourceClass){
+	int i;
+	Class targetClass;
+	
+	targetClass.course = sourceClass.course;
+	targetClass.lecturer = sourceClass.lecturer;
+	targetClass.typeOfClass = sourceClass.typeOfClass;
+	targetClass.classNode = sourceClass.classNode;
+	targetClass.markOfViolation = sourceClass.markOfViolation;
+	for(i = 0 ; i < 5 ; i++){
+		targetClass.group[i] = sourceClass.group[i];
+	}
+	return targetClass;
+}
+
+void randomizeClassList(int sizeOfClassList, Class (*targetClassList)[sizeOfClassList]){
+	int i, j;
+	int r;
+
+	for(i = 0 ; i < sizeOfClassList; ){
+		j = rand()%sizeOfClassList;
+			if((*targetClassList)[j].course == NULL){
+				(*targetClassList)[j] = copyClassSlot(classList[i]);
+				i++;
+			}
+		}
 
 }
 
 void performCrossover(Class newClass[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS], Class newClass2[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS], int sizeOfClassList){
 	
+}
 
 
+
+int performMutation(Class newClass[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS]) {
+  int fitnessScoreBeforeMutation = 0, fitnessScoreAfterMutation = 0;
+  int venue = 0, day = 0, time = 0;
+  int tempVenue = 0, tempDay = 0, tempTime = 0;
+  Class *tempClass;
+	
+	/*
+		not to destroy your code, but this actually shoudn't be here, you just pick the most fit
+		among the population and do it, this part will done by create population function, sorry
+	
+	fillInTheChromosome(classList, sizeof(classList)/sizeof(Class));
+  fitnessScoreBeforeMutation = calculateFitnessScore(newClass);
+  */
+	
+  resetNode(&node1, fitnessScoreBeforeMutation);
+  
+  for(venue; venue < MAX_VENUE; venue++) {
+    for(day; day < MAX_DAY; day++) {
+      for(time; time < MAX_TIME_SLOTS; time++) {
+        if(newClass[venue][day][time].course != NULL) {
+          newClass[venue][day][time].classNode = &node1;
+        }
+      }
+    }
+  }
+  
+  setNode(&node1, NULL, NULL, 'b');
+  genericRedBlackTreeAdd(&root, &node1, compare);
+  removeSmallestValue(&root);
+
+  for(venue; venue < MAX_VENUE; venue++) {
+    for(day; day < MAX_DAY; day++) {
+      for(time; time < MAX_TIME_SLOTS; time++) {
+        if(newClass[venue][day][time].markOfViolation == 1) {
+          tempVenue = venue;
+          tempDay = day;
+          tempTime = time;
+          break;
+        }
+      }
+    }
+  }  
+  
+  // tempClass = checkChromosomeIsEmpty(newClass);
+  // tempClass->lecturer = newClass[tempVenue][tempDay][tempTime].lecturer;
+  // tempClass->course = newClass[tempVenue][tempDay][tempTime].course;
+  // tempClass->typeOfClass = newClass[tempVenue][tempDay][tempTime].typeOfClass;
+  // tempClass->group = newClass[tempVenue][tempDay][tempTime].group;
+  
+  return fitnessScoreBeforeMutation;
+  
 }
