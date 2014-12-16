@@ -83,14 +83,11 @@ void test_clearClassSlot_should_able_to_remove_elements(){
 }
 
 
-void test_randomizeClassList(){
+void test_randomizeClassList_can_create_newList(){
  Class testList[52];
  clearClassList(sizeof(testList)/sizeof(Class) , &testList);
- printf("%d\n",(sizeof(testList)/sizeof(Class)));
  randomizeClassList(sizeof(testList)/sizeof(Class),&testList);
+ fillInTheChromosomeWithReducingViolation(testList, sizeof(testList)/sizeof(Class));
+ TEST_ASSERT_EQUAL(104,calculateFitnessScore(class));
 
-	// printf("print classType : %s\n",testList[0].course->programme[0]->programmeName);
-	// printf("print classType : %s\n",classList[51].course->programme[0]->programmeName);	
-	// printf("print classType : %s\n",testList[51].lecturer->lecturerName);
-	// printf("print classType : %s\n",classList[0].lecturer->lecturerName);
 }
