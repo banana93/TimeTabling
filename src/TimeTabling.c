@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include "TimeTabling.h"
 #include "Node.h"
 #include "TimeTablingClassList.h"
@@ -12,6 +13,7 @@ Class class[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS];
 Node node1, node2, node3, node4, node5, node6, node7, node8, node9, node10, node11, node12, node13, node15, node17, node18, node20, node30;
 Node *root = NULL;
 
+/**
 char *getCourseName(Course newCourse){
 	if(newCourse.courseName != NULL)
     return newCourse.courseName;
@@ -23,18 +25,24 @@ char *getCourseCode(Course newCourse){
     return newCourse.courseCode;
 }
 
-// int getTotalStudentsInCourse(Class *newClass) {
-  // if(newClass->group->groupSize != 0)
-      // return newClass->group->groupSize;  
-// }
+int getTotalStudentsInCourse(Class *newClass) {
+  if(newClass->group->groupSize != 0)
+      return newClass->group->groupSize;  
+}
 
-// int getVenueSize(Class *newClass) {
-  // if(newClass->venue->sizeOfVenue != 0)
-    // return newClass->venue->sizeOfVenue;
-// }
+int getVenueSize(Class *newClass) {
+  if(newClass->venue->sizeOfVenue != 0)
+    return newClass->venue->sizeOfVenue;
+}
+**/
 
-// constraints try
-
+/**
+ *  The purpose of this function is to check whether the number of 
+ *  hours of a particular group exceed 4 hours
+ *  
+ *  return number of exceeded (the size of student in the class exceeded)
+ *  return 0 (the size did not exceed)
+ */
 int checkIfTutionOverloadedInSingleDay(Class newClass[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS], int day){
 	
 	int time, venue, i, j, violationCounter = 0;
@@ -142,7 +150,7 @@ int checkStudentViolation(Class newClass[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS], in
   return returnCounter;
 }
 
-//constraints function ends here
+
 
 /**
  *  The purpose of this function is to check whether the chromosome
@@ -163,7 +171,11 @@ Class *checkChromosomeIsEmpty(Class newClass[4][MAX_DAY][MAX_TIME_SLOTS]) {
   }
 }
 
-void addDetailsIntoChromosome(Class newClass[4][MAX_DAY][MAX_TIME_SLOTS], Course course[], Lecturer lecturer[], Group group[], char typeOfClass){
+/**
+ *  The purpose of this function is to add
+ *	information of class into one particular slot of class
+ */
+void addDetailsIntoChromosome(Class newClass[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS], Course course[], Lecturer lecturer[], Group group[], char typeOfClass){
 	int i;
 	Class *addIntoClass = checkChromosomeIsEmpty(newClass);
 	addIntoClass->lecturer = lecturer;
@@ -175,6 +187,12 @@ void addDetailsIntoChromosome(Class newClass[4][MAX_DAY][MAX_TIME_SLOTS], Course
 	}
 }
 
+/**
+ *  This function is to calculate the number / points of violation of the entire class[][][]
+ *
+ *  return value of exceeding (got violation)
+ *  return 0 (no violation)
+ */
 int calculateFitnessScore(Class newClass[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS]){
 	int venue = 0;
   int day = 0, time = 0;
@@ -197,6 +215,12 @@ int calculateFitnessScore(Class newClass[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS]){
     
 	return violation;
 }
+
+/**
+ *  The purpose of this function is to add
+ *	information from classList (entire amount of classes)
+ *	into the venue, day and time slot (class[][][])
+ */
 void fillInTheChromosome(Class classList[], int sizeOfClassList){
 	int venue, day, time;
 	int i = 0, violation;
@@ -213,12 +237,18 @@ void fillInTheChromosome(Class classList[], int sizeOfClassList){
 		}
 }
 
+/**
+ *  The purpose of this function is to add
+ *	information from classList (entire amount of classes)
+ *	into the venue, day and time slot (class[][][])
+ *	with some logic to reduce the violation to reduce the burden of crossover / mutation
+ */
 void fillInTheChromosomeWithReducingViolation(Class classList[], int sizeOfClassList){
 	int venue, day, time;
 	int i = 0, violation;
 	
-	for(violation = 0 ; violation < 200; violation+=1){
-		for(venue = 0; venue < MAX_VENUE; venue++) {
+	for(violation = 0 ; violation < 1000; violation+=1){
+		for(venue = 0; venue < MAX_VENUE; venue++){
 			for(day = 0; day < MAX_DAY; day++) {
 				for(time = 0; i < sizeOfClassList && time < MAX_TIME_SLOTS; time++) {
 					if(class[venue][day][time].course == NULL){
@@ -234,6 +264,9 @@ void fillInTheChromosomeWithReducingViolation(Class classList[], int sizeOfClass
 	}
 }
 
+/**
+ *  The purpose of this function is to clear particular slot in class[][][]
+ */
 void clearClassSlot(Class *newClass){
 	int i;
 	
@@ -241,20 +274,82 @@ void clearClassSlot(Class *newClass){
 	newClass->course = NULL;
 	newClass->typeOfClass = 0;
 	newClass->classNode = NULL;
+	newClass->markOfViolation = 0;
 	for(i = 0 ; i < 5 ; i++){
 		newClass->group[i] = NULL;
 	}
 }
+
+/**
+ *  The purpose of this function is to clear class[] for population purpose
+ */
+void clearClassList(int sizeOfClass , Class (*newClass)[sizeOfClass]){
+	int i, j;
+	
+for(i = 0; i < sizeOfClass; i++) {
+	(*newClass)[i].lecturer = NULL;
+	(*newClass)[i].course = NULL;
+	(*newClass)[i].typeOfClass = 0;
+	(*newClass)[i].classNode = NULL;
+	(*newClass)[i].markOfViolation = 0;
+		for(j = 0 ; i < 5 ; i++){
+			(*newClass)[i].group[i] = NULL;
+		}
+}
+}
+
+/**
+ *  The purpose of this function is to copy one  particular slot in class to another
+ */
+Class copyClassSlot(Class sourceClass){
+	int i;
+	Class targetClass;
+	
+	targetClass.course = sourceClass.course;
+	targetClass.lecturer = sourceClass.lecturer;
+	targetClass.typeOfClass = sourceClass.typeOfClass;
+	targetClass.classNode = sourceClass.classNode;
+	targetClass.markOfViolation = sourceClass.markOfViolation;
+	for(i = 0 ; i < 5 ; i++){
+		targetClass.group[i] = sourceClass.group[i];
+	}
+	return targetClass;
+}
+
+void randomizeClassList(int sizeOfClassList, Class (*targetClassList)[sizeOfClassList]){
+	int i, j;
+	int r;
+
+	for(i = 0 ; i < sizeOfClassList; ){
+		j = rand()%sizeOfClassList;
+			if((*targetClassList)[j].course == NULL){
+				(*targetClassList)[j] = copyClassSlot(classList[i]);
+				i++;
+			}
+		}
+
+}
+
+void performCrossover(Class newClass[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS], Class newClass2[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS], int sizeOfClassList){
+	
+}
+
+
 
 int performMutation(Class newClass[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS]) {
   int fitnessScoreBeforeMutation = 0, fitnessScoreAfterMutation = 0;
   int venue = 0, day = 0, time = 0;
   int tempVenue = 0, tempDay = 0, tempTime = 0;
   Class *tempClass;
-
-	fillInTheChromosome(classList, sizeof(classList)/sizeof(newClass));
+	
+	/*
+		not to destroy your code, but this actually shoudn't be here, you just pick the most fit
+		among the population and do it, this part will done by create population function, sorry
+	
+	fillInTheChromosome(classList, sizeof(classList)/sizeof(Class));
   fitnessScoreBeforeMutation = calculateFitnessScore(newClass);
-  
+  */
+	
   resetNode(&node1, fitnessScoreBeforeMutation);
   
   for(venue; venue < MAX_VENUE; venue++) {

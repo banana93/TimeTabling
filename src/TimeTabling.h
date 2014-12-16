@@ -76,7 +76,7 @@ struct Course
   int hoursOfLecture;
   int hoursOfTutorial;
   int hoursOfPractical;
-  Programme *programme[20];
+  Programme *programme[5];
   int sizeOfProgramme;
 };
 
@@ -85,16 +85,9 @@ struct Class
   Course *course;
   Lecturer *lecturer;
 	char typeOfClass;
-	Group *group[20];
+	Group *group[5];
   Node *classNode;
   int markOfViolation;
-};
-
-struct Counter
-{
-	int lectureHours;
-	int tutorialHours;
-	int practicalHours;
 };
 
 extern	Class class[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS];
@@ -106,22 +99,41 @@ extern	Course course[];
 extern	Class classList[52];
 
 
-
+/***********************************************************************************
+ *  get information from class
+ ***********************************************************************************
 char *getCourseName(Course newCourse);
 char *getCourseCode(Course newCourse);
 int getTotalStudentsInCourse(Class *newClass);
 int getVenueSize(Class *newClass);
-void addDetailsIntoChromosome(Class newClass[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS], Course course[], Lecturer lecturer[], Group group[], char typeOfClass);
-Class *checkChromosomeIsEmpty(Class newClass[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS]);
-int calculateFitnessScore(Class newClass[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS]);
-void fillInTheChromosomeWithReducingViolation(Class classList[], int sizeOfClassList);
-int performMutation(Class newClass[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS]);
+// did not use
+**/
 
-//constraints
-// int checkLecturerNotInchargeOfCourse(Class newClass[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS], int venue, int day, int time);
+
+/***********************************************************************************
+ *  Constraint functions & fitness score calculator
+ ***********************************************************************************/
 int checkIfTutionOverloadedInSingleDay(Class newClass[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS], int day);
 int checkIfLecturerAppearInTwoVenue(Class newClass[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS], int day, int time);
 int determineViolationForCourseVenueSize(Class newClass[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS], int VenueNumber, int day, int time);
 int checkStudentViolation(Class newClass[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS], int day, int time);
+int calculateFitnessScore(Class newClass[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS]);
+
+/***********************************************************************************
+ *  fill in the chromosome and mutation/crossover functions
+ ***********************************************************************************/
+void addDetailsIntoChromosome(Class newClass[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS], Course course[], Lecturer lecturer[], Group group[], char typeOfClass);
+Class *checkChromosomeIsEmpty(Class newClass[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS]);
+void fillInTheChromosomeWithReducingViolation(Class classList[], int sizeOfClassList);
+int performMutation(Class newClass[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS]);
+void performCrossover(Class newClass[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS], Class newClass2[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS], int sizeOfClassList);
+
+/***********************************************************************************
+ *  Clear and copy class functions
+ ***********************************************************************************/
 void clearClassSlot(Class *newClass);
+void clearClassList(int sizeOfClass , Class (*newClass)[sizeOfClass]);
+Class copyClassSlot(Class sourceClass);
+void copyClass(Class (*newClass)[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS]);
+void randomizeClassList(int sizeOfClassList, Class (*targetClassList)[sizeOfClassList]);
 #endif // TimeTabling_H
