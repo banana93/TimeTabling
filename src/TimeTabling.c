@@ -10,6 +10,7 @@
 #include "InitNode.h"
 
 Class class[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS];
+Population populationOfClasses[100];
 Node node1, node2, node3, node4, node5, node6, node7, node8, node9, node10, node11, node12, node13, node15, node17, node18, node20, node30;
 Node *root = NULL;
 
@@ -254,7 +255,7 @@ void fillInTheChromosomeWithReducingViolation(Class classList[], int sizeOfClass
 					if(class[venue][day][time].course == NULL){
 						class[venue][day][time] = classList[i];
 						if(calculateFitnessScore(class) > violation)
-							clearClassSlot(&class[venue][day][time]);
+							class[venue][day][time] = clearClassSlot(class[venue][day][time]);
 						else
 							i++;
 					}
@@ -262,40 +263,6 @@ void fillInTheChromosomeWithReducingViolation(Class classList[], int sizeOfClass
 			}
 		}
 	}
-}
-
-/**
- *  The purpose of this function is to clear particular slot in class[][][]
- */
-void clearClassSlot(Class *newClass){
-	int i;
-	
-	newClass->lecturer = NULL;
-	newClass->course = NULL;
-	newClass->typeOfClass = 0;
-	newClass->classNode = NULL;
-	newClass->markOfViolation = 0;
-	for(i = 0 ; i < 5 ; i++){
-		newClass->group[i] = NULL;
-	}
-}
-
-/**
- *  The purpose of this function is to clear class[] for population purpose
- */
-void clearClassList(int sizeOfClass , Class (*newClass)[sizeOfClass]){
-	int i, j;
-	
-for(i = 0; i < sizeOfClass; i++) {
-	(*newClass)[i].lecturer = NULL;
-	(*newClass)[i].course = NULL;
-	(*newClass)[i].typeOfClass = 0;
-	(*newClass)[i].classNode = NULL;
-	(*newClass)[i].markOfViolation = 0;
-		for(j = 0 ; i < 5 ; i++){
-			(*newClass)[i].group[i] = NULL;
-		}
-}
 }
 
 /**
@@ -316,6 +283,75 @@ Class copyClassSlot(Class sourceClass){
 	return targetClass;
 }
 
+/**
+ *  The purpose of this function is to copy one class to another
+ */
+void copyClass(Class sourceClass[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS], Class targetClass[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS]){
+	int i, j, k;
+	
+	for( i = 0 ; i < MAX_VENUE ; i++ ){
+		for( j = 0 ; j < MAX_DAY ; j++ ){
+			for( k = 0 ; k < MAX_TIME_SLOTS ; k++ ){
+				targetClass[i][j][k] = copyClassSlot(sourceClass[i][j][k]);
+			}
+		}
+	}
+}
+
+/**
+ *  The purpose of this function is to clear particular slot in class[][][]
+ */
+Class clearClassSlot(Class sourceClass){
+	int i;
+	
+	sourceClass.lecturer = NULL;
+	sourceClass.course = NULL;
+	sourceClass.typeOfClass = 0;
+	sourceClass.classNode = NULL;
+	sourceClass.markOfViolation = 0;
+	for(i = 0 ; i < 5 ; i++){
+		sourceClass.group[i] = NULL;
+	}
+	
+	return sourceClass;
+}
+
+/**
+ *  The purpose of this function is to clear particular slot in class[][][]
+ */
+void clearClass(Class sourceClass[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS]){
+	int i, j, k;
+	
+	for( i = 0 ; i < MAX_VENUE ; i++ ){
+		for( j = 0 ; j < MAX_DAY ; j++ ){
+			for( k = 0 ; k < MAX_TIME_SLOTS ; k++ ){
+				sourceClass[i][j][k] = clearClassSlot(sourceClass[i][j][k]);
+			}
+		}
+	}
+}
+
+/**
+ *  The purpose of this function is to clear class[] for population purpose
+ */
+void clearClassList(int sizeOfClass , Class (*newClass)[sizeOfClass]){
+	int i, j;
+	
+for(i = 0; i < sizeOfClass; i++) {
+	(*newClass)[i].lecturer = NULL;
+	(*newClass)[i].course = NULL;
+	(*newClass)[i].typeOfClass = 0;
+	(*newClass)[i].classNode = NULL;
+	(*newClass)[i].markOfViolation = 0;
+		for(j = 0 ; j < 5 ; j++){
+			(*newClass)[i].group[j] = NULL;
+		}
+}
+}
+
+/**
+ *  The purpose of this function is randomize the classList before creating populations of chromosome
+ */
 void randomizeClassList(int sizeOfClassList, Class (*targetClassList)[sizeOfClassList]){
 	int i, j;
 	int r;
@@ -326,7 +362,24 @@ void randomizeClassList(int sizeOfClassList, Class (*targetClassList)[sizeOfClas
 				(*targetClassList)[j] = copyClassSlot(classList[i]);
 				i++;
 			}
-		}
+	}
+}
+
+/**
+ *  The purpose of this function is randomize the classList before creating populations of chromosome
+ */
+void createPopulationsOfChromosome(int sizeOfClassList){
+	Class randomList[sizeOfClassList];
+	int i;
+	
+	for( i = 0 ; i < 100 ; i ++){
+		clearClassList(sizeOfClassList, &randomList);
+		randomizeClassList(sizeOfClassList, &randomList);
+		clearClass(class);
+		fillInTheChromosomeWithReducingViolation(randomList, sizeOfClassList);
+		copyClass(class, populationOfClasses[i].class);
+	}
+
 
 }
 
