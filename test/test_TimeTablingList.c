@@ -114,8 +114,9 @@ void test_randomizeClassList_can_create_newList(){
  Class testList[52];
  clearClassList(sizeof(testList)/sizeof(Class) , &testList);
  randomizeClassList(sizeof(testList)/sizeof(Class),&testList);
- fillInTheChromosomeWithReducingViolation(testList, sizeof(testList)/sizeof(Class));
- TEST_ASSERT_EQUAL(104,calculateFitnessScore(class));
+
+TEST_ASSERT_NOT_NULL(testList[0].course );
+ 
 
 }
 
