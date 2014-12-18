@@ -8,9 +8,9 @@
 #include "Rotations.h"
 #include "InitNode.h"
 
+#define MAX_VENUE 4
 #define MAX_DAY 3
 #define MAX_TIME_SLOTS 5
-#define MAX_VENUE 4
 
 typedef enum
 {
@@ -115,7 +115,12 @@ int getVenueSize(Class *newClass);
 // did not use
 **/
 
-
+/***********************************************************************************
+ *  Constraint functions & fitness score calculator
+ ***********************************************************************************/
+ void indexForward(int *venue, int *day, int *time);
+ void indexBackward(int *venue, int *day, int *time);
+ 
 /***********************************************************************************
  *  Constraint functions & fitness score calculator
  ***********************************************************************************/
@@ -143,5 +148,6 @@ void copyClass(Class sourceClass[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS], Class targ
 Class clearClassSlot(Class sourceClass);
 void clearClass(Class sourceClass[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS]);
 void clearClassList(int sizeOfClass , Class (*newClass)[sizeOfClass]);
+int compareClass(Class newClass, Class newClass2);
 void randomizeClassList(int sizeOfClassList, Class (*targetClassList)[sizeOfClassList]);
 #endif // TimeTabling_H

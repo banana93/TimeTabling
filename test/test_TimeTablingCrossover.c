@@ -57,6 +57,7 @@ void test_performCrossover(){
 
  performCrossover(topFitness,topFitness2);
  
-	
-	
+ printf("%d\n",compareClass(topFitness[3][2][3],topFitness2[0][2][0]));
+ 
 }
+
