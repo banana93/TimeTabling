@@ -396,6 +396,7 @@ int performMutation(Class newClass[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS]) {
   int venue = 0, day = 0, time = 0;
   int tempVenue = 0, tempDay = 0, tempTime = 0;
   Class *tempClass;
+  Class classForCopyAndClearPurpose;
 	
   fitnessScoreBeforeMutation = calculateFitnessScore(newClass);
   resetNode(&node1, fitnessScoreBeforeMutation);
@@ -408,34 +409,24 @@ int performMutation(Class newClass[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS]) {
       for(time; time < MAX_TIME_SLOTS; time++) {
         if(newClass[venue][day][time].course != NULL) {
           newClass[venue][day][time].classNode = &node1;
-        } //else if (newClass[venue][day][time].markOfViolation == 1) {
-            // tempVenue = venue;
-            // tempDay = day;
-            // tempTime = time;
-       //   }
+         
+          if(newClass[venue][day][time].markOfViolation == 1) {
+            // swap ...
+          }
+        } 
       }
     }
   }
+  
+  fitnessScoreAfterMutation = calculateFitnessScore(newClass);
+  
+  return fitnessScoreAfterMutation;
+}
 
-  // for(venue; venue < MAX_VENUE; venue++) {
-    // for(day; day < MAX_DAY; day++) {
-      // for(time; time < MAX_TIME_SLOTS; time++) {
-        // if(newClass[venue][day][time].markOfViolation == 1) {
-          // tempVenue = venue;
-          // tempDay = day;
-          // tempTime = time;
-          // break;
-        // }
-      // }
-    // }
-  // }  
+void swapClasses(Class *newClassA, Class *newClassB) {
+  Class tempClass;
   
-  // tempClass = checkChromosomeIsEmpty(newClass);
-  // tempClass->lecturer = newClass[tempVenue][tempDay][tempTime].lecturer;
-  // tempClass->course = newClass[tempVenue][tempDay][tempTime].course;
-  // tempClass->typeOfClass = newClass[tempVenue][tempDay][tempTime].typeOfClass;
-  // tempClass->group = newClass[tempVenue][tempDay][tempTime].group;
-  
-  return fitnessScoreBeforeMutation;
-  
+  tempClass = copyClassSlot(*newClassA);
+  *newClassA = copyClassSlot(*newClassB);
+  *newClassB = tempClass;
 }

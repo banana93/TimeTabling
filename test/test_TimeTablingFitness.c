@@ -395,3 +395,25 @@ void test_calculateFitnessScore_and_genericRedBlackTreeAdd_should_be_able_to_add
   TEST_ASSERT_EQUAL(1, secondNumberOfClashes);
   TEST_ASSERT_EQUAL(5, thirdNumberOfClashes);
 }
+
+void test_swapClasses_given_both_the_newClass_should_be_able_to_swap_places(void) {
+  Class newClass[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS];
+  class[0][0][0].group[0] = &group[0];
+  class[0][0][0].lecturer = &lecturer[0];
+  class[0][0][0].typeOfClass = 'l';
+  
+  class[0][0][1].group[0]  = &group[1];
+  class[0][0][1].lecturer = &lecturer[1];
+  class[0][0][1].typeOfClass = 'p';
+  
+  swapClasses(&class[0][0][0], &class[0][0][1]);
+  TEST_ASSERT_EQUAL('p', class[0][0][0].typeOfClass);
+  TEST_ASSERT_EQUAL('l', class[0][0][1].typeOfClass);
+  TEST_ASSERT_EQUAL_STRING("A2", class[0][0][0].group[0]->groupName);
+  TEST_ASSERT_EQUAL_STRING("A1", class[0][0][1].group[0]->groupName);
+  TEST_ASSERT_EQUAL_STRING("Chan CK", class[0][0][0].lecturer->lecturerName);
+  TEST_ASSERT_EQUAL_STRING("Poh TV", class[0][0][1].lecturer->lecturerName);
+  TEST_ASSERT_EQUAL_STRING("FASC", class[0][0][0].lecturer->department);
+  TEST_ASSERT_EQUAL_STRING("FASC", class[0][0][1].lecturer->department);
+  
+}

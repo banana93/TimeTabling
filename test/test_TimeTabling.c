@@ -110,6 +110,6 @@ void test_performMutation_it_should_be_able_to_calculateFitnessScore_and_generic
   
   fillInTheChromosomeWithReducingViolation(classList, sizeof(classList)/sizeof(Class));
   resultOfMutation = performMutation(class);
-  printf("result: %d\n", resultOfMutation);
+  printf("resultOfMutation: %d\n", resultOfMutation);
 }
 

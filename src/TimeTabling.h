@@ -144,4 +144,9 @@ Class clearClassSlot(Class sourceClass);
 void clearClass(Class sourceClass[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS]);
 void clearClassList(int sizeOfClass , Class (*newClass)[sizeOfClass]);
 void randomizeClassList(int sizeOfClassList, Class (*targetClassList)[sizeOfClassList]);
+
+/************************************************************************************
+ *   Mutation Functions
+ ************************************************************************************/
+void swapClasses(Class *newClassA, Class *newClassB);
 #endif // TimeTabling_H
