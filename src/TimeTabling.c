@@ -10,7 +10,7 @@
 #include "InitNode.h"
 
 Class class[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS];
-Population populationOfClasses[100];
+Population populationOfClasses[500];
 Node node1, node2, node3, node4, node5, node6, node7, node8, node9, node10, node11, node12, node13, node15, node17, node18, node20, node30;
 Node *root = NULL;
 
@@ -372,7 +372,7 @@ void createPopulationsOfChromosome(int sizeOfClassList){
 	Class randomList[sizeOfClassList];
 	int i;
 	
-	for( i = 0 ; i < 100 ; i ++){
+	for( i = 0 ; i < sizeof(populationOfClasses)/sizeof(Population) ; i ++){
 		clearClassList(sizeOfClassList, &randomList);
 		randomizeClassList(sizeOfClassList, &randomList);
 		clearClass(class);
@@ -383,7 +383,9 @@ void createPopulationsOfChromosome(int sizeOfClassList){
 
 }
 
-void performCrossover(Class newClass[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS], Class newClass2[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS], int sizeOfClassList){
+void performCrossover(Class newClass[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS], Class newClass2[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS]){
+	
+	
 	
 }
 
