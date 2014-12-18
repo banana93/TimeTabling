@@ -63,7 +63,7 @@ int checkIfTutionOverloadedInSingleDay(Class newClass[MAX_VENUE][MAX_DAY][MAX_TI
 
   for( i = 0; i < (sizeof(group)/ sizeof(Group)) ; i++){
     if(counter[i] > 4)
-      violationCounter+= counter[i] - 4;
+      violationCounter += counter[i] - 4;
   }
   
   return violationCounter;
@@ -395,42 +395,38 @@ int performMutation(Class newClass[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS]) {
   int tempVenue = 0, tempDay = 0, tempTime = 0;
   Class *tempClass;
 	
-	/*
-		not to destroy your code, but this actually shoudn't be here, you just pick the most fit
-		among the population and do it, this part will done by create population function, sorry
-	
-	fillInTheChromosome(classList, sizeof(classList)/sizeof(Class));
   fitnessScoreBeforeMutation = calculateFitnessScore(newClass);
-  */
-	
   resetNode(&node1, fitnessScoreBeforeMutation);
+  setNode(&node1, NULL, NULL, 'b');
+  genericRedBlackTreeAdd(&root, &node1, compare);
+  removeSmallestValue(&root);
   
   for(venue; venue < MAX_VENUE; venue++) {
     for(day; day < MAX_DAY; day++) {
       for(time; time < MAX_TIME_SLOTS; time++) {
         if(newClass[venue][day][time].course != NULL) {
           newClass[venue][day][time].classNode = &node1;
-        }
+        } //else if (newClass[venue][day][time].markOfViolation == 1) {
+            // tempVenue = venue;
+            // tempDay = day;
+            // tempTime = time;
+       //   }
       }
     }
   }
-  
-  setNode(&node1, NULL, NULL, 'b');
-  genericRedBlackTreeAdd(&root, &node1, compare);
-  removeSmallestValue(&root);
 
-  for(venue; venue < MAX_VENUE; venue++) {
-    for(day; day < MAX_DAY; day++) {
-      for(time; time < MAX_TIME_SLOTS; time++) {
-        if(newClass[venue][day][time].markOfViolation == 1) {
-          tempVenue = venue;
-          tempDay = day;
-          tempTime = time;
-          break;
-        }
-      }
-    }
-  }  
+  // for(venue; venue < MAX_VENUE; venue++) {
+    // for(day; day < MAX_DAY; day++) {
+      // for(time; time < MAX_TIME_SLOTS; time++) {
+        // if(newClass[venue][day][time].markOfViolation == 1) {
+          // tempVenue = venue;
+          // tempDay = day;
+          // tempTime = time;
+          // break;
+        // }
+      // }
+    // }
+  // }  
   
   // tempClass = checkChromosomeIsEmpty(newClass);
   // tempClass->lecturer = newClass[tempVenue][tempDay][tempTime].lecturer;
