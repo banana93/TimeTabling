@@ -65,12 +65,24 @@ void test_copyClassSlot_should_able_to_copy_1_class_to_another(){
 	
 }
 
+void test_copyClass_should_able_to_copy_entire_class(){
+	fillInTheChromosome(classList, sizeof(classList)/sizeof(Class));
+	copyClass(class,populationOfClasses[0].class);
+	
+	TEST_ASSERT_EQUAL_PTR(class[0][0][0].course, populationOfClasses[0].class[0][0][0].course);
+	TEST_ASSERT_EQUAL_PTR(class[0][0][0].lecturer, populationOfClasses[0].class[0][0][0].lecturer);
+	TEST_ASSERT_EQUAL(class[0][0][0].typeOfClass, populationOfClasses[0].class[0][0][0].typeOfClass);	
+	TEST_ASSERT_EQUAL_PTR(class[1][2][3].course, populationOfClasses[0].class[1][2][3].course);
+	TEST_ASSERT_EQUAL_PTR(class[1][2][3].lecturer, populationOfClasses[0].class[1][2][3].lecturer);
+	TEST_ASSERT_EQUAL(class[1][2][3].typeOfClass, populationOfClasses[0].class[1][2][3].typeOfClass);
+}
+
 void test_clearClassSlot_should_able_to_remove_elements(){
 
 	Class testClass;
 	
 	testClass = copyClassSlot(classList[0]);
-	clearClassSlot(&testClass);
+	testClass = clearClassSlot(testClass);
 	TEST_ASSERT_EQUAL_PTR( NULL, testClass.course);
 	TEST_ASSERT_EQUAL_PTR( NULL, testClass.lecturer);
 	TEST_ASSERT_EQUAL_PTR( NULL, testClass.group[0]);
@@ -82,15 +94,42 @@ void test_clearClassSlot_should_able_to_remove_elements(){
 	
 }
 
+void test_clearClass_should_able_to_remove_elements(){
+	fillInTheChromosome(classList, sizeof(classList)/sizeof(Class));
+	clearClass(class);
+	
+	TEST_ASSERT_EQUAL_PTR( NULL, class[0][0][0].course);
+	TEST_ASSERT_EQUAL_PTR( NULL, class[0][0][0].lecturer);
+	TEST_ASSERT_EQUAL_PTR( NULL, class[0][0][0].group[0]);
+	TEST_ASSERT_EQUAL_PTR( NULL, class[0][0][0].group[1]);
+	TEST_ASSERT_EQUAL_PTR( NULL, class[0][0][0].group[2]);
+	TEST_ASSERT_EQUAL_PTR( NULL, class[0][0][0].group[3]);
+	TEST_ASSERT_EQUAL_PTR( NULL, class[0][0][0].group[4]);
+	TEST_ASSERT_EQUAL( 0, class[0][0][0].typeOfClass);
+	
+}
 
-void test_randomizeClassList(){
+
+void test_randomizeClassList_can_create_newList(){
  Class testList[52];
  clearClassList(sizeof(testList)/sizeof(Class) , &testList);
- printf("%d\n",(sizeof(testList)/sizeof(Class)));
  randomizeClassList(sizeof(testList)/sizeof(Class),&testList);
 
-	// printf("print classType : %s\n",testList[0].course->programme[0]->programmeName);
-	// printf("print classType : %s\n",classList[51].course->programme[0]->programmeName);	
-	// printf("print classType : %s\n",testList[51].lecturer->lecturerName);
-	// printf("print classType : %s\n",classList[0].lecturer->lecturerName);
+TEST_ASSERT_NOT_NULL(testList[0].course );
+ 
+
+}
+
+void test_createPopulationOfChromosome(){
+
+	createPopulationsOfChromosome(sizeof(classList)/sizeof(Class));
+	int venue = 0, day = 0, time = 0, i;
+	
+	for(venue = 0; venue < MAX_VENUE; venue++){
+		for(day = 0; day < MAX_DAY; day++) {
+			for(time = 0; time < MAX_TIME_SLOTS; time++) {
+				printf("lecturer name: %c\n", populationOfClasses[0].class[venue][day][time].typeOfClass);
+			}
+		}
+	}
 }

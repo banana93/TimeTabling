@@ -42,7 +42,7 @@ typedef struct Group Group;
 typedef struct Programme Programme;
 typedef struct Venue Venue;
 typedef struct Class Class;
-typedef struct Counter Counter;
+typedef struct Population Population;
 
 struct Venue
 {
@@ -90,7 +90,13 @@ struct Class
   int markOfViolation;
 };
 
+struct Population 
+{
+  Class class[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS];
+};
+
 extern	Class class[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS];
+extern	Population populationOfClasses[100];
 extern	Group group[];
 extern	Venue venue[];
 extern	Lecturer lecturer[];
@@ -120,20 +126,22 @@ int checkStudentViolation(Class newClass[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS], in
 int calculateFitnessScore(Class newClass[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS]);
 
 /***********************************************************************************
- *  fill in the chromosome and mutation/crossover functions
+ *  fill in the chromosome, populations and mutation/crossover functions
  ***********************************************************************************/
 void addDetailsIntoChromosome(Class newClass[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS], Course course[], Lecturer lecturer[], Group group[], char typeOfClass);
 Class *checkChromosomeIsEmpty(Class newClass[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS]);
 void fillInTheChromosomeWithReducingViolation(Class classList[], int sizeOfClassList);
 int performMutation(Class newClass[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS]);
 void performCrossover(Class newClass[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS], Class newClass2[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS], int sizeOfClassList);
+void createPopulationsOfChromosome(int sizeOfClassList);
 
 /***********************************************************************************
  *  Clear and copy class functions
  ***********************************************************************************/
-void clearClassSlot(Class *newClass);
-void clearClassList(int sizeOfClass , Class (*newClass)[sizeOfClass]);
 Class copyClassSlot(Class sourceClass);
-void copyClass(Class (*newClass)[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS]);
+void copyClass(Class sourceClass[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS], Class targetClass[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS]);
+Class clearClassSlot(Class sourceClass);
+void clearClass(Class sourceClass[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS]);
+void clearClassList(int sizeOfClass , Class (*newClass)[sizeOfClass]);
 void randomizeClassList(int sizeOfClassList, Class (*targetClassList)[sizeOfClassList]);
 #endif // TimeTabling_H
