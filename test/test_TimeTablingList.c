@@ -125,11 +125,10 @@ void test_createPopulationOfChromosome(){
 	createPopulationsOfChromosome(sizeof(classList)/sizeof(Class));
 	int venue = 0, day = 0, time = 0, i;
 	
-	for(venue = 0; venue < MAX_VENUE; venue++){
-		for(day = 0; day < MAX_DAY; day++) {
-			for(time = 0; time < MAX_TIME_SLOTS; time++) {
-				printf("lecturer name: %c\n", populationOfClasses[0].class[venue][day][time].typeOfClass);
-			}
-		}
-	}
+	TEST_ASSERT_NOT_NULL(populationOfClasses[0].class[0][0][0].course);
+	TEST_ASSERT_NOT_NULL(populationOfClasses[99].class[0][0][0].course);
+	TEST_ASSERT_NOT_NULL(populationOfClasses[199].class[0][0][0].course);
+	TEST_ASSERT_NOT_NULL(populationOfClasses[299].class[0][0][0].course);
+	TEST_ASSERT_NOT_NULL(populationOfClasses[399].class[0][0][0].course);
+	TEST_ASSERT_NOT_NULL(populationOfClasses[499].class[0][0][0].course);
 }

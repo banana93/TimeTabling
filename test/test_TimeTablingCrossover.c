@@ -33,5 +33,30 @@ void setUp(void){
 void tearDown(void){}
 
 void test_performCrossover(){
+	Class topFitness[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS];
+	Class topFitness2[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS];
+	Class testList[52];
+	int topFitnessScore, topFitnessScore2;
+	
+ clearClassList(sizeof(testList)/sizeof(Class) , &testList);
+ randomizeClassList(sizeof(testList)/sizeof(Class),&testList);
+ clearClass(topFitness);
+ fillInTheChromosomeWithReducingViolation(testList, sizeof(testList)/sizeof(Class));
+ copyClass(class, topFitness);
+ 
+ clearClass(class);
+ 
+ clearClassList(sizeof(testList)/sizeof(Class) , &testList);
+ randomizeClassList(sizeof(testList)/sizeof(Class),&testList);
+ clearClass(topFitness2);
+ fillInTheChromosomeWithReducingViolation(testList, sizeof(testList)/sizeof(Class));
+ copyClass(class, topFitness2);
+ 
+ topFitnessScore = calculateFitnessScore(topFitness);
+ topFitnessScore2 = calculateFitnessScore(topFitness2);
 
+ performCrossover(topFitness,topFitness2);
+ 
+	
+	
 }
