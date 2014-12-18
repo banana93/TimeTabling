@@ -7,6 +7,7 @@
 #include "CustomAssertions.h"
 #include "Rotations.h"
 #include "InitNode.h"
+#include "CException.h"
                     
 void setUp(void){
 	int venue = 0;
@@ -29,6 +30,93 @@ void setUp(void){
 }
 
 void tearDown(void){}
+void test_indexForward_should_throw_error_when_exceeded_index_inserted(){
+	CEXCEPTION_T e;
+	int venue = 0, day = 0, time = 6;
+	
+	Try{
+	indexForward(&venue, &day, &time);
+	}Catch(e){
+		TEST_ASSERT_EQUAL( ERR_EXCEEDED_INDEX, e);
+	}
+}
+
+void test_indexForward_should_return_0_1_0(){
+
+	int venue = 0, day = 0, time = 4;
+	
+	indexForward(&venue, &day, &time);
+	
+	TEST_ASSERT_EQUAL( 0, venue);
+	TEST_ASSERT_EQUAL( 1, day);
+	TEST_ASSERT_EQUAL( 0, time);
+}
+
+void test_indexForward_should_return_1_0_0(){
+
+	int venue = 0, day = 2, time = 4;
+	
+	indexForward(&venue, &day, &time);
+	
+	TEST_ASSERT_EQUAL( 1, venue);
+	TEST_ASSERT_EQUAL( 0, day);
+	TEST_ASSERT_EQUAL( 0, time);
+}
+
+void test_indexForward_should_return_0_0_0_for_reset(){
+
+	int venue = 3, day = 2, time = 4;
+	
+	indexForward(&venue, &day, &time);
+	
+	TEST_ASSERT_EQUAL( 0, venue);
+	TEST_ASSERT_EQUAL( 0, day);
+	TEST_ASSERT_EQUAL( 0, time);
+}
+
+void test_indexBackward_should_throw_error_when_exceeded_index_inserted(){
+	CEXCEPTION_T e;
+	int venue = 0, day = 0, time = 18;
+	
+	Try{
+	indexBackward(&venue, &day, &time);
+	}Catch(e){
+		TEST_ASSERT_EQUAL( ERR_EXCEEDED_INDEX, e);
+	}
+}
+
+void test_indexBackward_should_return_0_0_2(){
+	int venue = 0, day = 0, time = 3;
+	
+	indexBackward(&venue, &day, &time);
+	
+	TEST_ASSERT_EQUAL( 0, venue);
+	TEST_ASSERT_EQUAL( 0, day);
+	TEST_ASSERT_EQUAL( 2, time);
+	
+}
+
+void test_indexBackward_should_return_1_0_4(){
+	int venue = 1, day = 1, time = 0;
+	
+	indexBackward(&venue, &day, &time);
+	
+	TEST_ASSERT_EQUAL( 1, venue);
+	TEST_ASSERT_EQUAL( 0, day);
+	TEST_ASSERT_EQUAL( 4, time);
+
+}
+
+void test_indexBackward_should_return_3_1_4(){
+	int venue = 3, day = 2, time = 0;
+	
+	indexBackward(&venue, &day, &time);
+	
+	TEST_ASSERT_EQUAL( 3, venue);
+	TEST_ASSERT_EQUAL( 1, day);
+	TEST_ASSERT_EQUAL( 4, time);
+
+}
 
 void test_checkChromosomeIsEmpty_given_a_chromosome_that_is_not_empty_should_return_class001(void) {
  class[0][0][0].course = &course[0];
@@ -50,6 +138,7 @@ void test_checkChromosomeIsEmpty_given_a_chromosome_that_is_not_empty_should_ret
   result = checkChromosomeIsEmpty(class);
   TEST_ASSERT_EQUAL_PTR(&class[0][0][2],result);
 }
+
 
 void test_addDetailsIntoChromosome_given_the_details_should_be_able_to_add_into_the_class000(void) {
                                             

@@ -37,6 +37,47 @@ int getVenueSize(Class *newClass) {
 }
 **/
 
+ void indexForward(int *venue, int *day, int *time){
+	if(*venue < 0 || *day < 0 || *time < 0)
+		Throw(ERR_EXCEEDED_INDEX);
+	if(*venue >= MAX_VENUE || *day >= MAX_DAY || *time >= MAX_TIME_SLOTS)
+		Throw(ERR_EXCEEDED_INDEX);
+	
+	(*time)++;
+	if(*time >= MAX_TIME_SLOTS){
+		*time = 0;
+		(*day)++;
+		if(*day >= MAX_DAY){
+			(*day) = 0;
+			(*venue)++;
+			if(*venue >= MAX_VENUE)
+			*venue = 0;	
+		}
+	}
+ 
+ }
+ 
+ void indexBackward(int *venue, int *day, int *time){
+		if(*venue < 0 || *day < 0 || *time < 0)
+		Throw(ERR_EXCEEDED_INDEX);
+		if(*venue >= MAX_VENUE || *day >= MAX_DAY || *time >= MAX_TIME_SLOTS)
+		Throw(ERR_EXCEEDED_INDEX);
+	
+	(*time)--;
+	if(*time < 0){
+		*time = MAX_TIME_SLOTS-1;
+		(*day)--;
+		if(*day < 0) {
+			(*day) = MAX_DAY-1;
+			(*venue)--;
+			if(*venue < 0)
+			*venue = MAX_VENUE-1;	
+		}
+	}
+ 
+ }
+
+
 /**
  *  The purpose of this function is to check whether the number of 
  *  hours of a particular group exceed 4 hours
@@ -379,13 +420,80 @@ void createPopulationsOfChromosome(int sizeOfClassList){
 		fillInTheChromosomeWithReducingViolation(randomList, sizeOfClassList);
 		copyClass(class, populationOfClasses[i].class);
 	}
-
-
 }
 
+/**
+ *  The purpose of this function is compare 2 class
+ */
+int compareClass(Class newClass, Class newClass2){
+	int i;
+	
+	if(newClass.course == newClass2.course){
+		if(newClass.lecturer == newClass2.lecturer){
+			if(newClass.typeOfClass == newClass2.typeOfClass){
+				for(i = 0 ; i < 5 ; i++){
+					if(newClass.group[i] == newClass2.group[i]);
+					else
+						return 0;
+				}
+			}
+			else
+				return 0;
+		}
+		else
+			return 0;
+	}
+	else
+		return 0;
+		
+	return 1;
+}
+ 
 void performCrossover(Class newClass[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS], Class newClass2[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS]){
+	Class referenceClass;
+	int randomNumber;
+	int venueToLeft = MAX_VENUE-1, dayToLeft = MAX_DAY-1, timeToLeft = MAX_TIME_SLOTS-1;
+	int venueToRight = 0, dayToRight = 0, timeToRight = 0;
+	int i = 59;
 	
+	randomNumber = rand()%(sizeof(classList)/sizeof(Class));
+	referenceClass = classList[randomNumber];
 	
+	while(1){
+		if(compareClass(newClass[venueToLeft][dayToLeft][timeToLeft],classList[randomNumber]) == 1)
+			break;
+		if(venueToLeft==0 && dayToLeft==0 && timeToLeft== 0)
+			break;
+		indexBackward(&venueToLeft,&dayToLeft,&timeToLeft);	
+	}
+	
+	while(1){
+		if(compareClass(newClass2[venueToRight][dayToRight][timeToRight],classList[randomNumber]) == 1)
+			break;
+		if(venueToRight==MAX_VENUE-1 && dayToRight==MAX_DAY-1 && timeToRight==MAX_TIME_SLOTS-1)
+			break;
+		indexForward(&venueToRight,&dayToRight,&timeToRight);
+	}
+			
+	printf("Random left Num: %d\n",randomNumber);
+	printf("Venue left: %d\n",venueToLeft);
+	printf("Day left: %d\n",dayToLeft);
+	printf("Time left: %d\n",timeToLeft);
+	
+	printf("Random right Num: %d\n",randomNumber);
+	printf("Venue right: %d\n",venueToRight);
+	printf("Day right: %d\n",dayToRight);
+	printf("Time right: %d\n",timeToRight);
+	
+	printf("ClassList lecturer: %s\n", classList[28].lecturer->lecturerName);
+	printf("ClassList course: %s\n",classList[28].course->courseName);
+	printf("ClassList type: %c\n",classList[28].typeOfClass);
+	printf("newClass lecturer: %s\n",newClass[3][2][3].lecturer->lecturerName);
+	printf("newClass course: %s\n",newClass[3][2][3].course->courseName);
+	printf("newClass type: %c\n",newClass[3][2][3].typeOfClass);
+	printf("newClass2 lecturer: %s\n",newClass2[0][2][0].lecturer->lecturerName);
+	printf("newClass2 course: %s\n",newClass2[0][2][0].course->courseName);
+	printf("newClass2 type: %c\n",newClass2[0][2][0].typeOfClass);
 	
 }
 

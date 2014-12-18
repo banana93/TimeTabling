@@ -7,6 +7,7 @@
 #include "CustomAssertions.h"
 #include "Rotations.h"
 #include "InitNode.h"
+#include "CException.h"
 
 Node node1, node2, node3, node4, node5, node6, node7, node8, node9, node10, node11, node12, node13, node15, node17, node18, node20, node30;
 
@@ -132,3 +133,20 @@ void test_createPopulationOfChromosome(){
 	TEST_ASSERT_NOT_NULL(populationOfClasses[399].class[0][0][0].course);
 	TEST_ASSERT_NOT_NULL(populationOfClasses[499].class[0][0][0].course);
 }
+
+void test_compareClass_should_return_1_if_all_elements_are_same(){
+	Class test = classList[0];
+	Class test1 = classList[0];
+
+	TEST_ASSERT_EQUAL(1, compareClass(test,test1));
+}
+
+void test_compareClass_should_return_0_if_one_elements_not_same(){
+	Class test = classList[0];
+	Class test1 = classList[0];
+	test1.lecturer = &lecturer[2];
+
+	TEST_ASSERT_EQUAL(0, compareClass(test,test1));
+}
+
+
