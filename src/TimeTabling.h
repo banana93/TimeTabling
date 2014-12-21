@@ -137,7 +137,6 @@ void addDetailsIntoChromosome(Class newClass[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS]
 Class *checkChromosomeIsEmpty(Class newClass[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS]);
 void fillInTheChromosomeWithReducingViolation(Class classList[], int sizeOfClassList);
 int performMutation(Class newClass[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS]);
-void performCrossover(Class newClass[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS], Class newClass2[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS]);
 void createPopulationsOfChromosome(int sizeOfClassList);
 
 /***********************************************************************************
@@ -155,4 +154,10 @@ void randomizeClassList(int sizeOfClassList, Class (*targetClassList)[sizeOfClas
  *   Mutation Functions
  ************************************************************************************/
 void swapClasses(Class *newClassA, Class *newClassB);
+
+/************************************************************************************
+ *   Crossover Functions
+ ************************************************************************************/
+void crossoverToOffspring(Class *newClass, Class (*returnClass)[sizeof(classList)/sizeof(Class)], int *leftStop);
+void performCrossover(Class newClass[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS], Class newClass2[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS], Class (*offSpring)[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS]);
 #endif // TimeTabling_H

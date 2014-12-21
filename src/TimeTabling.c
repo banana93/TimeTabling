@@ -8,6 +8,7 @@
 #include "CustomAssertions.h"
 #include "Rotations.h"
 #include "InitNode.h"
+#include "CException.h"
 
 Class class[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS];
 Population populationOfClasses[500];
@@ -427,6 +428,8 @@ void createPopulationsOfChromosome(int sizeOfClassList){
  */
 int compareClass(Class newClass, Class newClass2){
 	int i;
+	if(newClass.course == NULL || newClass2.course == NULL)
+		return 0;
 	
 	if(newClass.course == newClass2.course){
 		if(newClass.lecturer == newClass2.lecturer){
@@ -448,55 +451,85 @@ int compareClass(Class newClass, Class newClass2){
 		
 	return 1;
 }
+
+void crossoverToOffspring(Class *newClass, Class (*returnClass)[sizeof(classList)/sizeof(Class)], int *leftStop){
+	int counter, i, retLoopVenue = 0,	retLoopDay = 0, retLoopTime = 0;
+		
+	counter = 1;
+	for( i = 0 ; i < sizeof(classList)/sizeof(Class) ; i++){
+		if(compareClass(*newClass,(*returnClass)[i]))
+			counter+=1;
+	}
+	
+	retLoopVenue = 0;
+	retLoopDay = 0;
+	retLoopTime = 0;
+	
+	for( i = 0 ; i < sizeof(classList)/sizeof(Class) ; i++){
+		if((*returnClass)[i].course == NULL){
+			if(newClass->typeOfClass == 'l'){
+				if(counter <= newClass->course->hoursOfLecture)
+					(*returnClass)[i] = copyClassSlot(*newClass);
+				else
+					*leftStop = 1;
+			}
+			else if(newClass->typeOfClass == 't'){
+				if(counter <= newClass->course->hoursOfTutorial)
+					(*returnClass)[i] = copyClassSlot(*newClass);
+				else
+					*leftStop = 1;
+			}
+			else if(newClass->typeOfClass == 'p'){
+				if(counter <= newClass->course->hoursOfPractical)
+					(*returnClass)[i] = copyClassSlot(*newClass);
+				else
+					*leftStop = 1;
+			}
+			break;
+		}
+		indexForward(&retLoopVenue, &retLoopDay, &retLoopTime);
+	}
+}
  
-void performCrossover(Class newClass[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS], Class newClass2[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS]){
-	Class referenceClass;
-	int randomNumber;
+void performCrossover(Class newClass[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS], Class newClass2[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS], Class (*offSpring)[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS]){
+
+	Class offSpringList[sizeof(classList)/sizeof(Class)];
+	int randomNumberLeft, randomNumberRight;
 	int venueToLeft = MAX_VENUE-1, dayToLeft = MAX_DAY-1, timeToLeft = MAX_TIME_SLOTS-1;
 	int venueToRight = 0, dayToRight = 0, timeToRight = 0;
-	int i = 59;
+	int i, counter = 1, leftStop = 0;
+	CEXCEPTION_T e;
 	
-	randomNumber = rand()%(sizeof(classList)/sizeof(Class));
-	referenceClass = classList[randomNumber];
+	clearClassList(sizeof(classList)/sizeof(Class), &offSpringList);
+	randomNumberLeft = rand()%(sizeof(classList)/sizeof(Class));
+	randomNumberRight = rand()%(sizeof(classList)/sizeof(Class));
 	
-	while(1){
-		if(compareClass(newClass[venueToLeft][dayToLeft][timeToLeft],classList[randomNumber]) == 1)
-			break;
-		if(venueToLeft==0 && dayToLeft==0 && timeToLeft== 0)
+	for( i = 0 ; i < (MAX_VENUE*MAX_DAY*MAX_TIME_SLOTS) ; i++){
+		if(compareClass(newClass[venueToLeft][dayToLeft][timeToLeft],classList[randomNumberLeft]) == 1)
 			break;
 		indexBackward(&venueToLeft,&dayToLeft,&timeToLeft);	
 	}
-	
-	while(1){
-		if(compareClass(newClass2[venueToRight][dayToRight][timeToRight],classList[randomNumber]) == 1)
-			break;
-		if(venueToRight==MAX_VENUE-1 && dayToRight==MAX_DAY-1 && timeToRight==MAX_TIME_SLOTS-1)
+	for( i = 0 ; i < (MAX_VENUE*MAX_DAY*MAX_TIME_SLOTS) ; i++){
+		if(compareClass(newClass2[venueToRight][dayToRight][timeToRight],classList[randomNumberRight]) == 1)
 			break;
 		indexForward(&venueToRight,&dayToRight,&timeToRight);
 	}
-			
-	printf("Random left Num: %d\n",randomNumber);
-	printf("Venue left: %d\n",venueToLeft);
-	printf("Day left: %d\n",dayToLeft);
-	printf("Time left: %d\n",timeToLeft);
 	
-	printf("Random right Num: %d\n",randomNumber);
-	printf("Venue right: %d\n",venueToRight);
-	printf("Day right: %d\n",dayToRight);
-	printf("Time right: %d\n",timeToRight);
 	
-	printf("ClassList lecturer: %s\n", classList[28].lecturer->lecturerName);
-	printf("ClassList course: %s\n",classList[28].course->courseName);
-	printf("ClassList type: %c\n",classList[28].typeOfClass);
-	printf("newClass lecturer: %s\n",newClass[3][2][3].lecturer->lecturerName);
-	printf("newClass course: %s\n",newClass[3][2][3].course->courseName);
-	printf("newClass type: %c\n",newClass[3][2][3].typeOfClass);
-	printf("newClass2 lecturer: %s\n",newClass2[0][2][0].lecturer->lecturerName);
-	printf("newClass2 course: %s\n",newClass2[0][2][0].course->courseName);
-	printf("newClass2 type: %c\n",newClass2[0][2][0].typeOfClass);
+	for( i = 0 ; i < (MAX_VENUE*MAX_DAY*MAX_TIME_SLOTS) ; i++){
+		if(leftStop != 1){
+			crossoverToOffspring(&newClass[venueToLeft][dayToLeft][timeToLeft],&offSpringList,&leftStop);
+			indexBackward(&venueToLeft,&dayToLeft,&timeToLeft);	
+		}
+		crossoverToOffspring(&newClass2[venueToRight][dayToRight][timeToRight],&offSpringList,&leftStop);
+		indexForward(&venueToRight,&dayToRight,&timeToRight);			
+	}
 	
-}
+	clearClass(class);
+	fillInTheChromosomeWithReducingViolation(offSpringList,sizeof(offSpringList)/sizeof(Class));
+	copyClass(class,*offSpring);
 
+}
 
 
 int performMutation(Class newClass[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS]) {
