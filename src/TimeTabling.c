@@ -507,6 +507,7 @@ int performMutation(Class newClass[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS]) {
   Class classForCopyAndClearPurpose;
 	
   fitnessScoreBeforeMutation = calculateFitnessScore(newClass);
+  printf("fitnessScoreBeforeMutation: %d\n", fitnessScoreBeforeMutation);
   resetNode(&node1, fitnessScoreBeforeMutation);
   setNode(&node1, NULL, NULL, 'b');
   genericRedBlackTreeAdd(&root, &node1, compare);
@@ -519,16 +520,20 @@ int performMutation(Class newClass[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS]) {
           newClass[venue][day][time].classNode = &node1;
          
           if(newClass[venue][day][time].markOfViolation == 1) {
-            // swap ...
+            tempVenue = venue;
+            tempDay = day;
+            tempTime = time;
+            
+            swapClasses(&newClass[tempVenue][tempDay][tempTime], &newClass[venue][day][time+1]);
+            fitnessScoreAfterMutation = calculateFitnessScore(newClass);
+            printf("fitnessScoreAfterMutation: %d\n", fitnessScoreAfterMutation);
+            if(fitnessScoreAfterMutation < fitnessScoreBeforeMutation)
+              break;
           }
         } 
       }
     }
   }
-  
-  fitnessScoreAfterMutation = calculateFitnessScore(newClass);
-  
-  return fitnessScoreAfterMutation;
 }
 
 void swapClasses(Class *newClassA, Class *newClassB) {
