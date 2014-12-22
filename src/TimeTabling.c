@@ -95,6 +95,7 @@ int checkIfTutionOverloadedInSingleDay(Class newClass[MAX_VENUE][MAX_DAY][MAX_TI
     for(time = 0 ; time < MAX_TIME_SLOTS ; time++){
       for(i = 0 ; newClass[venue][day][time].group[i] != NULL ; i++){
 				for(j = 0 ; j < (sizeof(group)/sizeof(Group)) ; j++){
+          newClass[venue][day][time].markOfViolation = 0;
 					if(newClass[venue][day][time].group[i] != NULL && newClass[venue][day][time].group[i] == &group[j]){
 						counter[j]++;
 					}
@@ -122,6 +123,8 @@ int determineViolationForCourseVenueSize(Class newClass[MAX_VENUE][MAX_DAY][MAX_
   int i = 0;
 	int violationCounter = 0;
 
+  // clearMarkOfViolation(newClass);
+  
 	for(i = 0 ; newClass[VenueNumber][day][time].group[i] != NULL ; i++){
 		violationCounter += newClass[VenueNumber][day][time].group[i]->groupSize;
 	}
@@ -145,7 +148,8 @@ int checkIfLecturerAppearInTwoVenue(Class newClass[MAX_VENUE][MAX_DAY][MAX_TIME_
 	int venue, i;
 	int counter[(sizeof(lecturer)/sizeof(Lecturer))] = { 0,0,0,0 };
 	int returnCounter = 0;
-	
+	// clearMarkOfViolation(newClass);
+  
 	for(venue = 0 ; venue < MAX_VENUE ; venue++){
 		for(i = 0; i < MAX_VENUE; i++){
 			if(newClass[venue][day][time].lecturer){
@@ -174,6 +178,7 @@ int checkStudentViolation(Class newClass[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS], in
   int venue, i , j;
 	int counter[(sizeof(group)/sizeof(Group))] = {0,0,0,0,0,0,0,0,0,0,0,0,0,0};
 	int returnCounter = 0;
+  // clearMarkOfViolation(newClass);
 	
   for(venue = 0; venue < MAX_VENUE; venue++){
 		for(i = 0; newClass[venue][day][time].group[i] != NULL ; i++){
@@ -536,8 +541,7 @@ int performMutation(Class newClass[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS]) {
   int fitnessScoreBeforeMutation = 0, fitnessScoreAfterMutation = 0;
   int venue = 0, day = 0, time = 0;
   int tempVenue = 0, tempDay = 0, tempTime = 0;
-  Class *tempClass;
-  Class classForCopyAndClearPurpose;
+  int counter = 0;
 	
   fitnessScoreBeforeMutation = calculateFitnessScore(newClass);
   printf("fitnessScoreBeforeMutation: %d\n", fitnessScoreBeforeMutation);
@@ -551,22 +555,28 @@ int performMutation(Class newClass[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS]) {
       for(time; time < MAX_TIME_SLOTS; time++) {
         if(newClass[venue][day][time].course != NULL) {
           newClass[venue][day][time].classNode = &node1;
-         
+           printf("markOfViolation: %d\n", newClass[venue][day][time].markOfViolation);
           if(newClass[venue][day][time].markOfViolation == 1) {
-            tempVenue = venue;
-            tempDay = day;
-            tempTime = time;
-            
+            if(counter == 0) {
+              tempVenue = venue;
+              tempDay = day;
+              tempTime = time;
+              counter++;
+              // printf("asd\n");
+            }
             swapClasses(&newClass[tempVenue][tempDay][tempTime], &newClass[venue][day][time+1]);
             fitnessScoreAfterMutation = calculateFitnessScore(newClass);
-            printf("fitnessScoreAfterMutation: %d\n", fitnessScoreAfterMutation);
-            if(fitnessScoreAfterMutation < fitnessScoreBeforeMutation)
+            // printf("fitnessScoreAfterMutation: %d\n", fitnessScoreAfterMutation);
+            if(fitnessScoreAfterMutation < fitnessScoreBeforeMutation) {
               break;
+            }
           }
         } 
       }
     }
   }
+
+  return fitnessScoreAfterMutation;
 }
 
 void swapClasses(Class *newClassA, Class *newClassB) {
@@ -575,4 +585,16 @@ void swapClasses(Class *newClassA, Class *newClassB) {
   tempClass = copyClassSlot(*newClassA);
   *newClassA = copyClassSlot(*newClassB);
   *newClassB = tempClass;
+}
+
+void clearMarkOfViolation(Class newClass[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS]) {
+  int venue = 0, day = 0, time = 0;
+  
+  for(venue; venue < MAX_VENUE; venue++) {
+    for(day; day < MAX_DAY; day++) {
+      for(time; time < MAX_TIME_SLOTS; time++) {
+        newClass[venue][day][time].markOfViolation = 0;
+      }
+    }
+  }
 }
