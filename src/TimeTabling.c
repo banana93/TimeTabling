@@ -543,6 +543,7 @@ int performMutation(Class newClass[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS]) {
   int fitnessScoreBeforeMutation = 0, fitnessScoreAfterMutation = 0;
   int venue = 0, day = 0, time = 0;
   int tempVenue = 0, tempDay = 0, tempTime = 0;
+  int randomVenue, randomDay, randomTime;
   int counter = 0;
 	
   fitnessScoreBeforeMutation = calculateFitnessScore(newClass);
@@ -564,14 +565,22 @@ int performMutation(Class newClass[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS]) {
               tempDay = day;
               tempTime = time;
               counter++;
-              // printf("asd\n");
+              printf("asd\n");
             }
-            swapClasses(&newClass[tempVenue][tempDay][tempTime], &newClass[venue][day][time]);
+            
+            randomVenue = rand()%4;
+            randomDay = rand()%3;
+            randomTime = rand()%5;
+            swapClasses(&newClass[tempVenue][tempDay][tempTime], &newClass[randomVenue][randomDay][randomTime]);
             fitnessScoreAfterMutation = calculateFitnessScore(newClass);
             // printf("fitnessScoreAfterMutation: %d\n", fitnessScoreAfterMutation);
-            if(fitnessScoreAfterMutation > fitnessScoreBeforeMutation) {
-              swapClasses(&newClass[tempVenue][tempDay][tempTime], &newClass[venue][day][time]);
-            } else if(fitnessScoreAfterMutation < fitnessScoreBeforeMutation) {
+            // if(fitnessScoreAfterMutation > fitnessScoreBeforeMutation) {
+              // randomVenue = rand()%4;
+              // randomDay = rand()%3;
+              // randomTime = rand()%5;
+              // swapClasses(&newClass[randomVenue][randomDay][randomTime], &newClass[venue][day][time]);
+            // } else 
+            if(fitnessScoreAfterMutation < fitnessScoreBeforeMutation) {
                 break;
               }
           } 
