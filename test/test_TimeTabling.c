@@ -196,7 +196,9 @@ void test_addDetailsIntoChromosome_given_the_details_should_be_able_to_add_into_
 
 void test_performMutation_it_should_be_able_to_calculateFitnessScore_and_genericRedBlackTreeAdd_into_the_redBlackTree(void) {
   int resultOfMutation = 0;
+  Class testList[52];
   
+  randomizeClassList(sizeof(classList)/sizeof(Class),&classList);
   fillInTheChromosomeWithReducingViolation(classList, sizeof(classList)/sizeof(Class));
   resultOfMutation = performMutation(class);
   printf("resultOfMutation: %d\n", resultOfMutation);

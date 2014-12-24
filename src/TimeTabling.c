@@ -78,7 +78,6 @@ int getVenueSize(Class *newClass) {
  
  }
 
-
 /**
  *  The purpose of this function is to check whether the number of 
  *  hours of a particular group exceed 4 hours
@@ -122,8 +121,6 @@ int checkIfTutionOverloadedInSingleDay(Class newClass[MAX_VENUE][MAX_DAY][MAX_TI
 int determineViolationForCourseVenueSize(Class newClass[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS], int VenueNumber, int day, int time) {
   int i = 0;
 	int violationCounter = 0;
-
-  // clearMarkOfViolation(newClass);
   
 	for(i = 0 ; newClass[VenueNumber][day][time].group[i] != NULL ; i++){
 		violationCounter += newClass[VenueNumber][day][time].group[i]->groupSize;
@@ -148,7 +145,6 @@ int checkIfLecturerAppearInTwoVenue(Class newClass[MAX_VENUE][MAX_DAY][MAX_TIME_
 	int venue, i;
 	int counter[(sizeof(lecturer)/sizeof(Lecturer))] = { 0,0,0,0 };
 	int returnCounter = 0;
-	// clearMarkOfViolation(newClass);
   
 	for(venue = 0 ; venue < MAX_VENUE ; venue++){
 		for(i = 0; i < MAX_VENUE; i++){
@@ -178,7 +174,6 @@ int checkStudentViolation(Class newClass[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS], in
   int venue, i , j;
 	int counter[(sizeof(group)/sizeof(Group))] = {0,0,0,0,0,0,0,0,0,0,0,0,0,0};
 	int returnCounter = 0;
-  // clearMarkOfViolation(newClass);
 	
   for(venue = 0; venue < MAX_VENUE; venue++){
 		for(i = 0; newClass[venue][day][time].group[i] != NULL ; i++){
@@ -562,7 +557,7 @@ int performMutation(Class newClass[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS]) {
       for(time; time < MAX_TIME_SLOTS; time++) {
         if(newClass[venue][day][time].course != NULL) {
           newClass[venue][day][time].classNode = &node1;
-           printf("markOfViolation: %d\n", newClass[venue][day][time].markOfViolation);
+
           if(newClass[venue][day][time].markOfViolation == 1) {
             if(counter == 0) {
               tempVenue = venue;
@@ -582,7 +577,7 @@ int performMutation(Class newClass[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS]) {
       }
     }
   }
-
+  
   return fitnessScoreAfterMutation;
 }
 
@@ -592,16 +587,4 @@ void swapClasses(Class *newClassA, Class *newClassB) {
   tempClass = copyClassSlot(*newClassA);
   *newClassA = copyClassSlot(*newClassB);
   *newClassB = tempClass;
-}
-
-void clearMarkOfViolation(Class newClass[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS]) {
-  int venue = 0, day = 0, time = 0;
-  
-  for(venue; venue < MAX_VENUE; venue++) {
-    for(day; day < MAX_DAY; day++) {
-      for(time; time < MAX_TIME_SLOTS; time++) {
-        newClass[venue][day][time].markOfViolation = 0;
-      }
-    }
-  }
 }

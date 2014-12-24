@@ -154,7 +154,6 @@ void randomizeClassList(int sizeOfClassList, Class (*targetClassList)[sizeOfClas
  *   Mutation Functions
  ************************************************************************************/
 void swapClasses(Class *newClassA, Class *newClassB);
-void clearMarkOfViolation(Class newClass[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS]);
 
 /************************************************************************************
  *   Crossover Functions
