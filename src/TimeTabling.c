@@ -565,7 +565,6 @@ int performMutation(Class newClass[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS]) {
               tempDay = day;
               tempTime = time;
               counter++;
-              printf("asd\n");
             }
             
             randomVenue = rand()%4;
@@ -582,7 +581,7 @@ int performMutation(Class newClass[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS]) {
             // } else 
             if(fitnessScoreAfterMutation < fitnessScoreBeforeMutation) {
                 break;
-              }
+            }
           } 
         } 
       }
@@ -597,4 +596,13 @@ void swapClasses(Class *newClassA, Class *newClassB) {
   tempClass = copyClassSlot(*newClassA);
   *newClassA = copyClassSlot(*newClassB);
   *newClassB = tempClass;
+}
+
+void solveTimeTabling() {
+  int fitnessScoreBeforeMutation = 0, fitnessScoreAfterMutation = 0;
+  
+  createPopulationsOfChromosome(sizeof(classList)/sizeof(Class));
+  
+  // crossover..
+  // fitnessScoreAfterMutation = performMutation();
 }

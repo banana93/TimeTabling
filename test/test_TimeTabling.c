@@ -159,9 +159,7 @@ void test_addDetailsIntoChromosome_given_the_details_should_be_able_to_add_into_
   TEST_ASSERT_EQUAL('l', class[0][0][0].typeOfClass);
 }
 
-void test_addDetailsIntoChromosome_given_the_details_should_be_able_to_add_into_the_class001(void) {
-
-                                            
+void test_addDetailsIntoChromosome_given_the_details_should_be_able_to_add_into_the_class001(void) {                                          
   addDetailsIntoChromosome(class, &course[0], &lecturer[0], &group[0], 'l');
   addDetailsIntoChromosome(class, &course[1], &lecturer[1], &group[1], 't');
   
@@ -192,4 +190,8 @@ void test_addDetailsIntoChromosome_given_the_details_should_be_able_to_add_into_
   TEST_ASSERT_EQUAL_STRING("Chan CK", class[0][0][1].lecturer->lecturerName);
   TEST_ASSERT_EQUAL_STRING("FASC", class[0][0][1].lecturer->department);
 	TEST_ASSERT_EQUAL('t', class[0][0][1].typeOfClass);
+}
+
+void test_solveTimeTabling_test_number_1_should_be_able_to_produce_an_offspring_with_lesser_violation(void) {
+  solveTimeTabling();
 }

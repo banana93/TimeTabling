@@ -162,4 +162,10 @@ int crossoverToOffspring(Class *newClass, Class (*returnClass)[MAX_VENUE][MAX_DA
 												 int venueIndex, int dayIndex, int timeIndex, int *leftStop);
 void performCrossover(Class newClass[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS], Class newClass2[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS], Class (*offSpring)[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS]);
 
+
+/************************************************************************************
+ *      Final Function 
+ ************************************************************************************/
+ void solveTimeTabling();
+
 #endif // TimeTabling_H
