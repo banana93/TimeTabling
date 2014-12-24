@@ -3,10 +3,12 @@
 
 #include "Node.h"
 
-void addRedBlackTree(Node **rootPtr, Node *newNode);
-void _addRedBlackTree(Node **rootPtr, Node *newNode);
+int compareViolation(Node *nodePtr, Node *newNode);
+void addRedBlackTree(Node **rootPtr, Node *newNode, int (*compare)(Node *rootPtr, Node *newNode));
+void _addRedBlackTree(Node **rootPtr, Node *newNode, int (*compare)(Node *rootPtr, Node *newNode));
 Node *delRedBlackTree(Node **rootPtr, Node *newNode);
 Node *_delRedBlackTree(Node **rootPtr, Node *newNode);
+Node *fileEqualRedBlackTree(Node **rootPtr, Node *newNode, int(*compare)(Node *rootPtr));
 
 void restructureTree(Node **rootPtr, Node *removedNode);
 void removeLeftCaseOne(Node **rootPtr);
@@ -29,5 +31,6 @@ int isDoubleBlack(Node *node, Node *removedNode);
 //To check violation and rotate if needed
 void checkViolationAndRotate(Node **rootPtr);
 
+#define addPopulation(root, newNode) addRedBlackTree(root, newNode, compareViolation)
 
 #endif // RedBlackTree_H

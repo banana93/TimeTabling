@@ -96,7 +96,7 @@ struct Population
 };
 
 extern	Class class[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS];
-extern	Population populationOfClasses[20];
+extern	Population populationOfClasses[19];
 extern	Group group[];
 extern	Venue venue[];
 extern	Lecturer lecturer[];

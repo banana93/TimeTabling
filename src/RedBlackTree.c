@@ -23,6 +23,18 @@
 #define rightLeftChild (*rootPtr)->right->left
 #define rightRightChild (*rootPtr)->right->right
 
+int compareViolation(Node *nodePtr, Node *newNode) {
+  if(nodePtr != NULL && nodePtr->data != NULL) {
+    if(nodePtr->data->violation > newNode->data->violation)
+      return -1;
+    else if(nodePtr->data->violation == newNode->data->violation)
+      return 0;
+    else if(nodePtr->data->violation < newNode->data->violation)
+      return 1;
+  } else {
+      Throw(ERR_NODE_UNAVAILABLE);
+    }
+}
 
 /**
 *	Input : root pointer / parent pointer
@@ -32,9 +44,9 @@
 *	Perform _addRedBlackTree and choose root to black after added.
 *
 */
-void addRedBlackTree(Node **rootPtr, Node *newNode){
+void addRedBlackTree(Node **rootPtr, Node *newNode, int (*compare)(Node *rootPtr, Node *newNode)){
 	
-	_addRedBlackTree(rootPtr, newNode);
+	_addRedBlackTree(rootPtr, newNode, compare);
 	
 	(*rootPtr)->color = 'b';
 }
@@ -47,7 +59,7 @@ void addRedBlackTree(Node **rootPtr, Node *newNode){
 *	Add a new node into the tree at the proper leaf location
 *
 */
-void _addRedBlackTree(Node **rootPtr, Node *newNode){
+void _addRedBlackTree(Node **rootPtr, Node *newNode, int (*compare)(Node *rootPtr, Node *newNode)){
 
 	
 	if(*rootPtr != NULL && (*rootPtr)->left != NULL && (*rootPtr)->right != NULL &&
@@ -63,19 +75,14 @@ void _addRedBlackTree(Node **rootPtr, Node *newNode){
 		(*rootPtr)->color = 'r';
 		return;
 	}
-		
-	else if(newNode->data->violation < (*rootPtr)->data->violation)
-		_addRedBlackTree(&((*rootPtr)->left), newNode);
+	else if(compare(*rootPtr, newNode) == -1)
+		_addRedBlackTree(&((*rootPtr)->left), newNode, compare);
 	
-	else if(newNode->data->violation > (*rootPtr)->data->violation)
-		_addRedBlackTree(&((*rootPtr)->right), newNode);
+	else if(compare(*rootPtr, newNode) == 1)
+		_addRedBlackTree(&((*rootPtr)->right), newNode, compare);
 	
-	else{
-	Item populationPtr;
-	populationPtr.next = NULL;
-	populationPtr.population = newNode->data;
-		// clearLinkedList(&(*rootPtr)->list);
-		addLinkedList(&(*rootPtr)->list, &populationPtr);
+	else if(compare(*rootPtr, newNode) == 0){
+		Throw(ERR_EQUIVALENT_NODE);
 	}
 		
 	checkViolationAndRotate(rootPtr);

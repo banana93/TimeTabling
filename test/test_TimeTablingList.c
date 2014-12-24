@@ -161,6 +161,7 @@ void test_createPopulationOfChromosome(){
 	}
 	Try{
 	sortPopulationsAccordingToFitness();
+	// TEST_FAIL_MESSAGE("Should thrown exception");
 	}Catch(e){
 		printf("%d\n",e);
 	}
