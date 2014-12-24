@@ -566,18 +566,19 @@ int performMutation(Class newClass[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS]) {
               counter++;
               // printf("asd\n");
             }
-            swapClasses(&newClass[tempVenue][tempDay][tempTime], &newClass[venue][day][time+1]);
+            swapClasses(&newClass[tempVenue][tempDay][tempTime], &newClass[venue][day][time]);
             fitnessScoreAfterMutation = calculateFitnessScore(newClass);
             // printf("fitnessScoreAfterMutation: %d\n", fitnessScoreAfterMutation);
-            if(fitnessScoreAfterMutation < fitnessScoreBeforeMutation) {
-              break;
-            }
-          }
+            if(fitnessScoreAfterMutation > fitnessScoreBeforeMutation) {
+              swapClasses(&newClass[tempVenue][tempDay][tempTime], &newClass[venue][day][time]);
+            } else if(fitnessScoreAfterMutation < fitnessScoreBeforeMutation) {
+                break;
+              }
+          } 
         } 
       }
     }
   }
-  
   return fitnessScoreAfterMutation;
 }
 
