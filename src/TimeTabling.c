@@ -433,8 +433,8 @@ void createPopulationsOfChromosome(int sizeOfClassList){
  */
 int compareClass(Class newClass, Class newClass2){
 	int i;
-	if(newClass.course == NULL || newClass2.course == NULL)
-		return 0;
+	if(newClass.course == NULL && newClass2.course == NULL)
+		return 1;
 	
 	if(newClass.course == newClass2.course){
 		if(newClass.lecturer == newClass2.lecturer){
@@ -457,55 +457,62 @@ int compareClass(Class newClass, Class newClass2){
 	return 1;
 }
 
-void crossoverToOffspring(Class *newClass, Class (*returnClass)[sizeof(classList)/sizeof(Class)], int *leftStop){
-	int counter, i, retLoopVenue = 0,	retLoopDay = 0, retLoopTime = 0;
+int crossoverToOffspring(Class *newClass, Class (*returnClass)[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS], 
+												 int venueIndex, int dayIndex, int timeIndex, int *leftStop){
+	int counter = 1;
+	int retLoopVenue = 0,	retLoopDay = 0, retLoopTime = 0;
 		
-	counter = 1;
-	for( i = 0 ; i < sizeof(classList)/sizeof(Class) ; i++){
-		if(compareClass(*newClass,(*returnClass)[i]))
+	while(retLoopVenue != venueIndex || retLoopDay != dayIndex || retLoopTime != timeIndex){
+		if(compareClass(*newClass,(*returnClass)[retLoopVenue][retLoopDay][retLoopTime]))
 			counter+=1;
-	}
-	
-	retLoopVenue = 0;
-	retLoopDay = 0;
-	retLoopTime = 0;
-	
-	for( i = 0 ; i < sizeof(classList)/sizeof(Class) ; i++){
-		if((*returnClass)[i].course == NULL){
-			if(newClass->typeOfClass == 'l'){
-				if(counter <= newClass->course->hoursOfLecture)
-					(*returnClass)[i] = copyClassSlot(*newClass);
-				else
-					*leftStop = 1;
-			}
-			else if(newClass->typeOfClass == 't'){
-				if(counter <= newClass->course->hoursOfTutorial)
-					(*returnClass)[i] = copyClassSlot(*newClass);
-				else
-					*leftStop = 1;
-			}
-			else if(newClass->typeOfClass == 'p'){
-				if(counter <= newClass->course->hoursOfPractical)
-					(*returnClass)[i] = copyClassSlot(*newClass);
-				else
-					*leftStop = 1;
-			}
-			break;
-		}
 		indexForward(&retLoopVenue, &retLoopDay, &retLoopTime);
 	}
+	
+	if(newClass->course == NULL){
+		if(counter <= (MAX_VENUE*MAX_DAY*MAX_TIME_SLOTS) - (sizeof(classList)/sizeof(Class))){
+			(*returnClass)[retLoopVenue][retLoopDay][retLoopTime] = copyClassSlot(*newClass);
+			return 1;
+		}
+		else
+			*leftStop = 1;
+	}
+	else if(newClass->typeOfClass == 'l'){
+		if(counter <= newClass->course->hoursOfLecture){
+			(*returnClass)[retLoopVenue][retLoopDay][retLoopTime] = copyClassSlot(*newClass);
+			return 1;
+		}
+		else
+			*leftStop = 1;
+	}
+	else if(newClass->typeOfClass == 't'){
+		if(counter <= newClass->course->hoursOfTutorial){
+			(*returnClass)[retLoopVenue][retLoopDay][retLoopTime] = copyClassSlot(*newClass);
+			return 1;
+		}
+		else
+			*leftStop = 1;
+	}
+	else if(newClass->typeOfClass == 'p'){
+		if(counter <= newClass->course->hoursOfPractical){
+			(*returnClass)[retLoopVenue][retLoopDay][retLoopTime] = copyClassSlot(*newClass);
+			return 1;
+		}
+		else
+			*leftStop = 1;
+	}
+	return 0;
 }
  
 void performCrossover(Class newClass[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS], Class newClass2[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS], Class (*offSpring)[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS]){
 
-	Class offSpringList[sizeof(classList)/sizeof(Class)];
 	int randomNumberLeft, randomNumberRight;
 	int venueToLeft = MAX_VENUE-1, dayToLeft = MAX_DAY-1, timeToLeft = MAX_TIME_SLOTS-1;
 	int venueToRight = 0, dayToRight = 0, timeToRight = 0;
+	int	 retLoopVenue = 0,	retLoopDay = 0, retLoopTime = 0;
 	int i, counter = 1, leftStop = 0;
-	CEXCEPTION_T e;
+	// CEXCEPTION_T e;
 	
-	clearClassList(sizeof(classList)/sizeof(Class), &offSpringList);
+	clearClass(*offSpring);
 	randomNumberLeft = rand()%(sizeof(classList)/sizeof(Class));
 	randomNumberRight = rand()%(sizeof(classList)/sizeof(Class));
 	
@@ -523,17 +530,17 @@ void performCrossover(Class newClass[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS], Class 
 	
 	for( i = 0 ; i < (MAX_VENUE*MAX_DAY*MAX_TIME_SLOTS) ; i++){
 		if(leftStop != 1){
-			crossoverToOffspring(&newClass[venueToLeft][dayToLeft][timeToLeft],&offSpringList,&leftStop);
+			if(crossoverToOffspring(&newClass[venueToLeft][dayToLeft][timeToLeft],offSpring, \
+															retLoopVenue, retLoopDay, retLoopTime, &leftStop))
+				indexForward(&retLoopVenue,&retLoopDay,&retLoopTime);			
 			indexBackward(&venueToLeft,&dayToLeft,&timeToLeft);	
 		}
-		crossoverToOffspring(&newClass2[venueToRight][dayToRight][timeToRight],&offSpringList,&leftStop);
+		
+		if(crossoverToOffspring(&newClass[venueToRight][dayToRight][timeToRight],offSpring, \
+													  retLoopVenue, retLoopDay, retLoopTime, &leftStop))
+				indexForward(&retLoopVenue,&retLoopDay,&retLoopTime);	
 		indexForward(&venueToRight,&dayToRight,&timeToRight);			
 	}
-	
-	clearClass(class);
-	fillInTheChromosomeWithReducingViolation(offSpringList,sizeof(offSpringList)/sizeof(Class));
-	copyClass(class,*offSpring);
-
 }
 
 
