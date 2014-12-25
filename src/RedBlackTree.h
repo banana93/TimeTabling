@@ -1,34 +1,33 @@
 #ifndef RedBlackTree_H
 #define RedBlackTree_H
 
-#include "Rotations.h"
 #include "Node.h"
-#include "InitNode.h"
 
-void addRedBlackTree(Node **nodePtr, Node *newNode);
-void _addRedBlackTree(Node **nodePtr, Node *newNode);
-void solveAddViolationForNewNodeLessThan(Node **nodePtr);
-void solveAddViolationForNewNodeMoreThan(Node **nodePtr);
-void solveAddViolationFor4NodeLessThan(Node **nodePtr);
-void solveAddViolationFor4NodeMoreThan(Node **nodePtr);
-Node *delRedBlackTree(Node **nodePtr, Node *delNode);
-Node *_delRedBlackTree(Node **nodePtr, Node *delNode);
-Node *_delRedBlackTreeX(Node **nodePtr, Node *delNode);
-int isRed(Node **nodePtr);
-int isBlack(Node **nodePtr);
-int isDoubleBlack(Node **nodePtr, Node *removeNode);
-void checkCase(Node **nodePtr, Node *removeNode);
-void solveCase1LeftRemoveViolation(Node **nodePtr, Node *removeNode);
-void solveCase1RightRemoveViolation(Node **nodePtr, Node *removeNode);
-void solveCase2LeftRemoveViolation(Node **nodePtr, Node *removeNode);
-void solveCase2RightRemoveViolation(Node **nodePtr, Node *removeNode);
-void solveCase3LeftRemoveViolation(Node **nodePtr, Node *removeNode);
-void solveCase3RightRemoveViolation(Node **nodePtr, Node *removeNode);
-Node *removeNextLargerSuccessor(Node **nodePtr);
-int compare(Node **nodePtr, Node *newNode);
-void genericRedBlackTreeAdd(Node **nodePtr, Node *newNode, int (*compare)(Node **nodePtr, Node *newNode));
-void _genericRedBlackTreeAdd(Node **nodePtr, Node *newNode, int (*Compare)(Node **nodePtr, Node *newNode));
-Node *removeLargestValue(Node **nodePtr);
-Node *removeSmallestValue(Node **nodePtr);
+void addRedBlackTree(Node **rootPtr, Node *newNode);
+void _addRedBlackTree(Node **rootPtr, Node *newNode);
+Node *delRedBlackTree(Node **rootPtr, Node *newNode);
+Node *_delRedBlackTree(Node **rootPtr, Node *newNode);
+
+void restructureTree(Node **rootPtr, Node *removedNode);
+void removeLeftCaseOne(Node **rootPtr);
+void removeRightCaseOne(Node **rootPtr);
+
+void removeLeftCaseTwo(Node **rootPtr, Node *removedNode);
+void removeRightCaseTwo(Node **rootPtr, Node *removedNode);
+
+void removeLeftCaseThree(Node **rootPtr, Node *removedNode);
+void removeRightCaseThree(Node **rootPtr, Node *removedNode);
+
+Node *removeNextLargerSuccessor(Node **rootPtr);
+
+
+int isRed(Node *node);
+int isBlack(Node *node);
+int isDoubleBlack(Node *node, Node *removedNode);
+
+
+//To check violation and rotate if needed
+void checkViolationAndRotate(Node **rootPtr);
+
 
 #endif // RedBlackTree_H

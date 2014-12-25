@@ -11,7 +11,7 @@
 #include "CException.h"
 
 Class class[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS];
-Population populationOfClasses[100];
+Population populationOfClasses[19];
 Node node1, node2, node3, node4, node5, node6, node7, node8, node9, node10, node11, node12, node13, node15, node17, node18, node20, node30;
 Node *root = NULL;
 
@@ -437,17 +437,14 @@ void sortPopulationsAccordingToFitness(){
 		setNode(&newNode[i], NULL, NULL, 'b');
 		resetNode(&newNode[i]);
 		newNode[i].data = &populationOfClasses[i];
-		genericRedBlackTreeAdd(&root, &newNode[i], compare);
+		addRedBlackTree(&root, &newNode[i]);
 	}
 	
-	// for( i = 0 ; i < 4 ; i ++){
-		// smallestValue = removeSmallestValue(&root);
-		// result[i] = *(*smallestValue).data;
-	// }
-		
-	// for(i=0;i<4;i++){
-	// printf("%d\n",result[i].violation);
-	// }
+	for( i = 0 ; i < sizeof(populationOfClasses)/sizeof(Population) ; i ++){
+		smallestValue = removeNextLargerSuccessor(&root);
+		result[i] = *(*smallestValue).data;
+		printf("%d\n",result[i].violation);
+	}
 
 }
 
