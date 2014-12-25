@@ -1,532 +1,486 @@
 #include <stdio.h>
 #include "RedBlackTree.h"
-#include "ErrorCode.h"
 #include "Rotations.h"
 #include "Node.h"
+#include "ErrorCode.h"
+#include "CException.h"
 
-void addRedBlackTree(Node **nodePtr, Node *newNode)
-{
-  _addRedBlackTree(nodePtr, newNode);
-  (*nodePtr)->color = 'b';
-}
-
-void _addRedBlackTree(Node **nodePtr, Node *newNode)
-{
-  if(*nodePtr == NULL)
-  {
-    *nodePtr = newNode;
-    return;
-  }
- 
-  if(newNode->data < (*nodePtr)->data)
-  {
-    _addRedBlackTree(&(*nodePtr)->left, newNode);
-    solveAddViolationForNewNodeLessThan(&(*nodePtr)); // this function purpose is to solve the violation for those new node data that is less than the nodePtr data
-    solveAddViolationFor4NodeLessThan(&(*nodePtr));
-  }
-  
-  else
-  {
-    _addRedBlackTree(&(*nodePtr)->right, newNode); 
-    solveAddViolationForNewNodeMoreThan(&(*nodePtr)); // this function purpose is to solve the violation for those new node data that is more than the nodePtr data
-    solveAddViolationFor4NodeMoreThan(&(*nodePtr));
-  }
-}
-
-void solveAddViolationForNewNodeLessThan(Node **nodePtr)
-{
-  if((*nodePtr)->left->left != NULL) {
-    if(((*nodePtr)->left->color == 'r' && (*nodePtr)->left->left->color == 'r' && (*nodePtr)->right == NULL) ||
-       ((*nodePtr)->left->color == 'r' && (*nodePtr)->left->left->color == 'r' && (*nodePtr)->right->color == 'b')) {
-     
-      rightRotate(&(*nodePtr));
-      (*nodePtr)->right->color = 'r';
-    
-    }
-  } else if((*nodePtr)->left->right != NULL) {
-      if(((*nodePtr)->left->color == 'r' && (*nodePtr)->left->right->color == 'r' && (*nodePtr)->right == NULL) ||
-        ((*nodePtr)->left->color == 'r' && (*nodePtr)->left->right->color == 'r' && (*nodePtr)->right->color == 'b')) {
-       
-        leftRightRotate(&(*nodePtr));
-        (*nodePtr)->right->color = 'r';
-      
-      }
-    } 
-}
-
-void solveAddViolationForNewNodeMoreThan(Node **nodePtr)
-{
-  if((*nodePtr)->right->right != NULL) {
-    if(((*nodePtr)->right->color == 'r' && (*nodePtr)->right->right->color == 'r' && (*nodePtr)->left == NULL) ||
-      ((*nodePtr)->right->color == 'r' && (*nodePtr)->right->right->color == 'r' && (*nodePtr)->left->color == 'b')){
-      
-      leftRotate(&(*nodePtr));
-      (*nodePtr)->left->color = 'r';
-    
-    } 
-  } else if ((*nodePtr)->right->left != NULL) {
-      if(((*nodePtr)->right->color == 'r' && (*nodePtr)->right->left->color == 'r' && (*nodePtr)->left == NULL) || 
-        ((*nodePtr)->right->color == 'r' && (*nodePtr)->right->left->color == 'r' && (*nodePtr)->left->color == 'b')){
-       
-        rightLeftRotate(&(*nodePtr));
-        (*nodePtr)->left->color = 'r';
-      
-      }
-   }
-}  
-
-void solveAddViolationFor4NodeLessThan(Node **nodePtr)
-{
-  if((*nodePtr)->left->left != NULL && (*nodePtr)->right != NULL) {
-    if((*nodePtr)->left->color == 'r' && (*nodePtr)->right->color == 'r' && (*nodePtr)->left->left->color == 'r') {
-     
-      (*nodePtr)->left->color = 'b';
-      (*nodePtr)->right->color = 'b';
-      (*nodePtr)->color = 'r';
-    
-    }
-  } else if((*nodePtr)->left->right != NULL && (*nodePtr)->right != NULL) {
-      if((*nodePtr)->left->color == 'r' && (*nodePtr)->right->color == 'r' && (*nodePtr)->left->right->color == 'r') {
-      
-        (*nodePtr)->left->color = 'b';
-        (*nodePtr)->right->color = 'b';
-        (*nodePtr)->color = 'r';
-      
-      }
-    }
-}
-
-void solveAddViolationFor4NodeMoreThan(Node **nodePtr)
-{
-  if((*nodePtr)->right->left != NULL && (*nodePtr)->left != NULL) {
-    if((*nodePtr)->right->color == 'r' && (*nodePtr)->left->color == 'r' && (*nodePtr)->right->left->color == 'r') {
-      
-      (*nodePtr)->left->color = 'b';
-      (*nodePtr)->right->color = 'b';
-      (*nodePtr)->color = 'r';
-    
-    } 
-  } else if((*nodePtr)->right->right != NULL && (*nodePtr)->left != NULL) {
-      if((*nodePtr)->right->color == 'r' && (*nodePtr)->left->color == 'r' && (*nodePtr)->right->right->color == 'r') {
-      
-        (*nodePtr)->left->color = 'b';
-        (*nodePtr)->right->color = 'b';
-        (*nodePtr)->color = 'r';
-        
-      }
-    }
-}
-
-Node *delRedBlackTree(Node **nodePtr, Node *delNode)
-{
-  Node *node = _delRedBlackTree(nodePtr, delNode);
-  
-  if((*nodePtr) != NULL)
-    (*nodePtr)->color = 'b';
-  
-  return node;
-}
-/*
-Node *_delRedBlackTreeX(Node **nodePtr, Node *delNode)
-{
-  Node *tempNode = *nodePtr;
-  Node *node;
-  
-  if(tempNode == NULL)
-    Throw(ERR_NODE_UNAVAILABLE);
-  
-  if(tempNode->data == delNode->data) {
-    *nodePtr = NULL;
-    return tempNode;
-  } else if(tempNode->data < delNode->data) {
-      node = _delRedBlackTree(&tempNode->right, delNode); 
-    } else if (tempNode->data > delNode->data) { 
-        node = _delRedBlackTree(&tempNode->left, delNode);
-      }
-
-    if(nodePtr != NULL) {
-      solveRemoveViolationFor3Nodes(nodePtr);
-      solveRemoveViolationFor4Nodes(nodePtr);
-    }
-    
-  return node;
-}
-
-void solveRemoveViolationFor3Nodes(Node **nodePtr)
-{
-  if((*nodePtr)->left == NULL && (*nodePtr)->right != NULL) {
-    if((*nodePtr)->right->right != NULL && (*nodePtr)->right->left != NULL) {
-     
-      leftRotate(&(*nodePtr));
-      (*nodePtr)->left->right->color = 'r';
-    
-    }
-  } else if((*nodePtr)->left != NULL && (*nodePtr)->right == NULL) {
-      if((*nodePtr)->left->left != NULL && (*nodePtr)->left->right != NULL) {
-        
-        rightRotate(&(*nodePtr));
-        (*nodePtr)->right->left->color = 'r';
-      
-      }
-    } else if((*nodePtr)->left != NULL && (*nodePtr)->right != NULL) {
-        if((*nodePtr)->left->left == NULL && (*nodePtr)->right->right != NULL && (*nodePtr)->right->left == NULL) {
-    
-          (*nodePtr)->right->color = 'b';
-          (*nodePtr)->right->right->color = 'r';
-      
-        } else if((*nodePtr)->left->left == NULL && (*nodePtr)->right->right == NULL && (*nodePtr)->right->left != NULL) {
-          
-            (*nodePtr)->right->color = 'b';
-            (*nodePtr)->right->left->color = 'r';
-        
-          } else if((*nodePtr)->right->right == NULL && (*nodePtr)->left->left == NULL && (*nodePtr)->left->right != NULL) {
-              
-              (*nodePtr)->left->color = 'b';
-              (*nodePtr)->left->right->color = 'r';
-            
-            } else if ((*nodePtr)->right->right == NULL && (*nodePtr)->left->right == NULL && (*nodePtr)->left->left != NULL) {
-                
-                (*nodePtr)->left->color = 'b';
-                (*nodePtr)->left->left->color = 'r';
-              
-              }
-      } 
-}
-
-void solveRemoveViolationFor4Nodes(Node **nodePtr)
-{
-  if((*nodePtr)->left != NULL && (*nodePtr)->right != NULL) {
-    if((*nodePtr)->right->right != NULL && (*nodePtr)->left->left == NULL && (*nodePtr)->left->right != NULL) {
-      
-      (*nodePtr)->left->color = 'b';
-      (*nodePtr)->left->right->color = 'r';
-    
-    } else if((*nodePtr)->right->right != NULL && (*nodePtr)->left->left != NULL && (*nodePtr)->left->right == NULL) {
-      
-        (*nodePtr)->left->color = 'b';
-        (*nodePtr)->left->left->color = 'r';
-      
-      } else if((*nodePtr)->left->left != NULL && (*nodePtr)->right->right != NULL && (*nodePtr)->right->left == NULL) {
-          
-          (*nodePtr)->right->color = 'b';
-          (*nodePtr)->right->right->color = 'r';
-        
-        } else if((*nodePtr)->left->left != NULL && (*nodePtr)->right->right == NULL && (*nodePtr)->right->left != NULL) {
-         
-            (*nodePtr)->right->color = 'b';
-            (*nodePtr)->right->left->color = 'r';
-          
-          }
-  }
-}
+/**
+*	Important notes / information
+*
+*	exampleFunction(Node **nodePtr)
+*	(**nodePtr).data //This is same
+*	(*nodePtr)->data //with this
+*
+*	change root method
+*	*nodePtr=&node5;
 */
+#define leftChild (*rootPtr)->left
+#define rightChild (*rootPtr)->right
+#define leftLeftChild (*rootPtr)->left->left
+#define leftRightChild (*rootPtr)->left->right
+#define rightLeftChild (*rootPtr)->right->left
+#define rightRightChild (*rootPtr)->right->right
 
-// New function for _delRedBlackTree //
-Node *_delRedBlackTree(Node **nodePtr, Node *delNode)
-{
-  Node *tempNode = *nodePtr;
-  Node *node;
-  
-  if(tempNode == NULL)
-    Throw(ERR_NODE_UNAVAILABLE);
-  
-  if(tempNode->data == delNode->data) {
-    *nodePtr = NULL;
-    return tempNode;
-  } else if(tempNode->data < delNode->data) {
-      node = _delRedBlackTree(&tempNode->right, delNode); 
-    } else if (tempNode->data > delNode->data) { 
-        node = _delRedBlackTree(&tempNode->left, delNode);
-      }
-      
-  checkCase(nodePtr, delNode);
-  
-  return node;
+
+/**
+*	Input : root pointer / parent pointer
+*	Output: void(no output)
+*
+*	Description:
+*	Perform _addRedBlackTree and choose root to black after added.
+*
+*/
+void addRedBlackTree(Node **rootPtr, Node *newNode){
+	
+	_addRedBlackTree(rootPtr, newNode);
+	
+	(*rootPtr)->color = 'b';
 }
 
-int isRed(Node **nodePtr)
-{
-  if((*nodePtr) != NULL) {
-    if((*nodePtr)->color == 'r') {
-      return 1;
-    } else {
-        return 0;
-      }
-  }
+/**
+*	Input : root pointer / parent pointer
+*	Output: void(no output)
+*
+*	Description:
+*	Add a new node into the tree at the proper leaf location
+*
+*/
+void _addRedBlackTree(Node **rootPtr, Node *newNode){
+	
+	
+	if(*rootPtr != NULL && (*rootPtr)->left != NULL && (*rootPtr)->right != NULL &&
+		(*rootPtr)->left->color == 'r' && (*rootPtr)->right->color == 'r'){
+		
+		(*rootPtr)->color = 'r';
+		(*rootPtr)->left->color = 'b';
+		(*rootPtr)->right->color = 'b';
+	}
+	
+	if(*rootPtr == NULL){
+		*rootPtr = newNode;
+		(*rootPtr)->color = 'r';
+		return;
+	}
+		
+	else if(newNode->data->violation < (*rootPtr)->data->violation)
+		_addRedBlackTree(&((*rootPtr)->left), newNode);
+	
+	else if(newNode->data->violation > (*rootPtr)->data->violation)
+		_addRedBlackTree(&((*rootPtr)->right), newNode);
+	
+	else
+		Throw(ERR_EQUIVALENT_NODE);
+		
+	checkViolationAndRotate(rootPtr);
 }
 
-int isBlack(Node **nodePtr)
-{
-  if((*nodePtr) != NULL) {
-    if((*nodePtr)->color == 'b') {
-      return 1;
-    } else if((*nodePtr)->color == 'r') {
-        return 0;
-      }
-  } else if((*nodePtr) == NULL) {
-        return 1;
-    } else {
-        return 0;
-      }
-     
+/**
+*	Input : root pointer / parent pointer
+*	Output: removed Node
+*
+*	Description:
+*	Perform _deleteRedBlackTree and when it returns, change the rootPtr to Black.
+*
+*/
+Node *delRedBlackTree(Node **rootPtr, Node *newNode){
+	Node *retNode = _delRedBlackTree(rootPtr, newNode);
+	
+	if(*rootPtr != NULL)
+		(*rootPtr)->color = 'b';
+		
+	return retNode;
+}
+
+/**
+*	Input : root pointer / parent pointer
+*	Output: removed Node
+*
+*	Description:
+*	Recursive until the value is found, remove and return it.
+*	If the value can't be found, error will be thrown
+*/
+Node *_delRedBlackTree(Node **rootPtr, Node *newNode){
+
+	Node *retNode;
+	Node *successorNode;
+	
+	if(!*rootPtr || !newNode)
+		Throw(ERR_NODE_UNAVAILABLE);
+		
+	else if((*rootPtr)->data == newNode->data){
+		Node *temporaryLeftChild = NULL;
+		Node *temporaryRightChild = NULL;
+		
+		//for retaining the color instead of being overwritten
+		Node temporarySuccessorNode; 
+		
+		char rootColor;
+		retNode = *rootPtr;
+		
+		if(rightChild){
+			successorNode = removeNextLargerSuccessor(&rightChild);
+			temporarySuccessorNode = *successorNode;
+			temporaryLeftChild = leftChild;
+			temporaryRightChild = rightChild;
+			
+			rootColor = (*rootPtr)->color;
+			*rootPtr = successorNode;
+			(*rootPtr)->color = rootColor;
+			
+			leftChild = temporaryLeftChild;
+			rightChild = temporaryRightChild;
+
+			restructureTree(rootPtr, &temporarySuccessorNode);			
+		}
+		
+		else if(leftChild){
+			successorNode = leftChild;
+			leftChild->color = (*rootPtr)->color;
+			(*rootPtr) = leftChild;
+		}
+			
+		else
+		*rootPtr = NULL;
+
+		return retNode;
+	}
+	
+	else if(newNode->data < (*rootPtr)->data)
+		retNode = _delRedBlackTree(&leftChild, newNode);
+	
+	else if(newNode->data > (*rootPtr)->data)
+		retNode = _delRedBlackTree(&rightChild, newNode);
+	
+	restructureTree(rootPtr, retNode);
+	
+	return retNode;
+}
+
+/**
+*	Input : root pointer / parent pointer
+*	Output: removed Node
+*
+*	Description:
+*	Remove the next larger successor of the node deleted, and return it.
+*/
+Node *removeNextLargerSuccessor(Node **rootPtr){
+	Node *removedNode;
+
+	if(leftChild){
+		removedNode = removeNextLargerSuccessor(&leftChild);
+		restructureTree(rootPtr, removedNode);
+	}
+	
+	else if(!rightChild){
+		removedNode = *rootPtr;
+		*rootPtr = NULL;
+		return removedNode;
+	}
+	
+	else if(rightChild){
+		removedNode = *rootPtr;
+		*rootPtr = rightChild;
+		(*rootPtr)->color = 'b';
+		return removedNode;
+	}
+	
+	return removedNode;
+
+}
+
+/**
+*	Input : root pointer / parent pointer, removedNode
+*	Output: void(no output)
+*
+*	Description:
+*	Condition checking before choosing to perform case1, case2 or case3
+*/
+void restructureTree(Node **rootPtr, Node *removedNode){		
+		("hi");
+
+	if(isDoubleBlack(leftChild, removedNode)){
+		("hi left");
+		if(isBlack(rightChild)){
+			if(isRed(rightLeftChild) || isRed(rightRightChild))
+				removeLeftCaseOne(rootPtr);
+			else if(isBlack(rightLeftChild) && isBlack(rightRightChild))
+				removeLeftCaseTwo(rootPtr, removedNode);
+		}
+		else if(isRed(rightChild))
+			removeLeftCaseThree(rootPtr, removedNode);
+	}
+	else if(isDoubleBlack(rightChild, removedNode)){
+		("hi right");
+		if(isBlack(leftChild)){
+			if(isRed(leftRightChild) || isRed(leftLeftChild))
+				removeRightCaseOne(rootPtr);
+			else if(isBlack(leftLeftChild) && isBlack(leftRightChild))
+				removeRightCaseTwo(rootPtr, removedNode);
+		}
+		else if(isRed(leftChild))
+			removeRightCaseThree(rootPtr, removedNode);
+	}
+}
+
+/**
+*	Input : root pointer / parent pointer
+*	Output: void(no output)
+*
+*	Description:
+*	To perform case 1 for left case
+*/
+void removeLeftCaseOne(Node **rootPtr){
+	char rootColor = (*rootPtr)->color;
+	
+	if(isRed(rightRightChild))
+		leftRotate(rootPtr);
+	
+	else if(isRed(rightLeftChild))
+		rightLeftRotate(rootPtr);
+		
+	if((*rootPtr)->left)
+		leftChild->color = 'b';
+	if((*rootPtr)->right)
+		rightChild->color = 'b';
+		
+	(*rootPtr)->color = rootColor;
+
+}
+
+/**
+*	Input : root pointer / parent pointer
+*	Output: void(no output)
+*
+*	Description:
+*	To perform case 1 for right case
+*/
+void removeRightCaseOne(Node **rootPtr){
+	char rootColor = (*rootPtr)->color;
+	
+	if(isRed(leftLeftChild))
+		rightRotate(rootPtr);
+	
+	else if(isRed(leftRightChild))
+		leftRightRotate(rootPtr);
+		
+	if((*rootPtr)->left)
+		leftChild->color = 'b';
+	if((*rootPtr)->right)
+		rightChild->color = 'b';
+		
+	(*rootPtr)->color = rootColor;
+
+}
+
+/**
+*	Input : root pointer / parent pointer, removedNode
+*	Output: void(no output)
+*
+*	Description:
+*	To perform case 2 for left case
+*/
+void removeLeftCaseTwo(Node **rootPtr, Node *removedNode){
+	
+	if(isBlack(*rootPtr))
+		(*rootPtr)->color = 'd';
+	else if(isRed(*rootPtr))
+		(*rootPtr)->color = 'b';
+
+	if(isDoubleBlack(leftChild, removedNode) && leftChild)
+		leftChild->color = 'b';
+		
+	if(rightChild)
+		rightChild->color = 'r';
+}
+
+/**
+*	Input : root pointer / parent pointer, removedNode
+*	Output: void(no output)
+*
+*	Description:
+*	To perform case 2 for right case
+*/
+void removeRightCaseTwo(Node **rootPtr, Node *removedNode){
+	
+	if(isBlack(*rootPtr))
+		(*rootPtr)->color = 'd';
+	else if(isRed(*rootPtr))
+		(*rootPtr)->color = 'b';
+
+	if(isDoubleBlack(rightChild, removedNode) && rightChild)
+		rightChild->color = 'b';
+		
+	if(leftChild)
+		leftChild->color = 'r';
+}
+
+/**
+*	Input : root pointer / parent pointer, removedNode
+*	Output: void(no output)
+*
+*	Description:
+*	To perform case 3 for left case
+*/
+void removeLeftCaseThree(Node **rootPtr, Node *removedNode){
+
+	leftRotate(rootPtr);
+	(*rootPtr)->color = 'b';
+	leftChild->color = 'r';
+	
+	if(isDoubleBlack(leftLeftChild, removedNode) && isBlack(leftRightChild)){
+		if(isRed(leftRightChild->left) || isRed(leftRightChild->right))
+			removeLeftCaseOne(&leftChild);
+		else if(isBlack(leftRightChild->left) && isBlack(leftRightChild->right))
+			removeLeftCaseTwo(&leftChild, removedNode);
+	}
+
+}
+
+/**
+*	Input : root pointer / parent pointer, removedNode
+*	Output: void(no output)
+*
+*	Description:
+*	To perform case 3 for right case
+*/
+void removeRightCaseThree(Node **rootPtr, Node *removedNode){
+	
+	rightRotate(rootPtr);
+	(*rootPtr)->color = 'b';
+	rightChild->color = 'r';
+	
+	if(isDoubleBlack(rightRightChild, removedNode) && isBlack(rightLeftChild)){
+		if(isRed(rightLeftChild->left) || isRed(rightLeftChild->right))
+			removeRightCaseOne(&rightChild);
+		else if(isBlack(rightLeftChild->left) && isBlack(rightLeftChild->right))
+			removeRightCaseTwo(&rightChild, removedNode);
+	}
+
+}
+
+int isRed(Node *node){
+	if(node && node->color == 'r')
+		return 1;
+	else
+		return 0;
+}
+int isBlack(Node *node){
+	if(!node)
+		return 1;
+	if(node && node->color == 'b')
+		return 1;
+	else
+		return 0;
 }
 
 /**
 * Note: x == not possible
-*	node          removed node        return
-*	-----------------------------------------
-*	NULL            NULL                x
-*	NULL            red                 0
-*	NULL            black               1
-*	NULL            double black        x
-*	red             NULL                x
-*	red             red                 0
-*	red             black               0
-*	red             double black        x
-*	black           NULL                x
-*	black           red                 0
-*	black           black               0
-*	black           double black        x
-*	double black    NULL                x
-*	double black    red                 1
-*	double black    black               1
-*	double black    double black        x
+*	node		removed node		return
+*	---------------------------------------
+*	NULL			NULL			  x
+*	NULL			red			  	  0
+*	NULL			black			  1
+*	NULL			double black	  x
+*	red				NULL			  x
+*	red				red			  	  0
+*	red				black			  0
+*	red				double black	  x
+*	black			NULL			  x
+*	black			red			  	  0
+*	black			black			  0
+*	black			double black	  x
+*	double black	NULL			  x
+*	double black	red			  	  1
+*	double black	black			  1
+*	double black	double black	  x
 */
-int isDoubleBlack(Node **nodePtr, Node *removeNode) 
-{
-  if(((*nodePtr) != NULL && (*nodePtr)->color == 'd' && removeNode->color == 'r') ||
-     ((*nodePtr) != NULL && (*nodePtr)->color == 'd' && removeNode->color == 'b')){
-      return 1;
-  } else if((*nodePtr) == NULL && removeNode->color == 'b'){
-        return 1;
-    } else {
-        return 0;
-      }  
-}
-
-void checkCase(Node **nodePtr, Node *removeNode)
-{
-  if((*nodePtr)->left != NULL || (*nodePtr)->right != NULL) {
-    // Solve Case Right Hand Side 
-    if(isDoubleBlack((&(*nodePtr)->left), removeNode)){
-      // Case 1
-      if((isBlack(&(*nodePtr)->right) && isRed(&(*nodePtr)->right->right)) ||
-        (isBlack(&(*nodePtr)->right) && isRed(&(*nodePtr)->right->left)))
-          solveCase1RightRemoveViolation(nodePtr, removeNode);
-      // Case 2
-      else if(isBlack(&(*nodePtr)->right) && isBlack(&(*nodePtr)->right->right) && isBlack(&(*nodePtr)->right->left))
-          solveCase2RightRemoveViolation(nodePtr, removeNode);
-      // Case 3
-      else if(isRed(&(*nodePtr)->right))
-          solveCase3RightRemoveViolation(nodePtr, removeNode);
-    }
-    // Solve Case Left Hand Side
-    else if(isDoubleBlack((&(*nodePtr)->right), removeNode)){
-      // Case 1
-      if((isBlack(&(*nodePtr)->left) && isRed(&(*nodePtr)->left->left)) ||
-        (isBlack(&(*nodePtr)->left) && isRed(&(*nodePtr)->left->right)))
-            solveCase1LeftRemoveViolation(nodePtr, removeNode);
-      // Case 2
-      else if(isBlack(&(*nodePtr)->left) && isBlack(&(*nodePtr)->left->left) && isBlack(&(*nodePtr)->left->right))
-            solveCase2LeftRemoveViolation(nodePtr, removeNode);
-      // Case 3
-      else if(isRed(&(*nodePtr)->left)) 
-            solveCase3LeftRemoveViolation(nodePtr, removeNode);
-    }
-  }
-}
-
-void solveCase1LeftRemoveViolation(Node **nodePtr, Node *removeNode)
-{
-  Node *tempNode = *nodePtr;
-  
-  if(isRed(&(*nodePtr)->left->left)) {
-    rightRotate(&(*nodePtr));
-  } else if(isRed(&(*nodePtr)->left->right)) {
-      leftRightRotate(&(*nodePtr));
-    }
-    
-  (*nodePtr)->color = tempNode->color;
-  (*nodePtr)->left->color = 'b';
-  (*nodePtr)->right->color = 'b';
-}
-void solveCase1RightRemoveViolation(Node **nodePtr, Node *removeNode)
-{
-  Node *tempNode = *nodePtr;
-  
-  if((*nodePtr)->right->right != NULL) {
-    leftRotate(&(*nodePtr));
-  } else if((*nodePtr)->right->left != NULL) {
-      rightLeftRotate(&(*nodePtr));
-    }
-  
-  (*nodePtr)->color = tempNode->color;
-  (*nodePtr)->left->color = 'b';
-  (*nodePtr)->right->color = 'b';
-}
-
-void solveCase2LeftRemoveViolation(Node **nodePtr, Node *removeNode)
-{
-  if(isBlack(&(*nodePtr)->left->left) && isBlack(&(*nodePtr)->left->right) && (*nodePtr)->color == 'b') {
-    (*nodePtr)->color = 'd';
-    (*nodePtr)->left->color = 'r';
-  } else if(isBlack(&(*nodePtr)->left->left) && isBlack(&(*nodePtr)->left->right) && (*nodePtr)->color == 'r') {
-      (*nodePtr)->left->color = 'r';
-      (*nodePtr)->color = 'b';
-    }
-}
-
-void solveCase2RightRemoveViolation(Node **nodePtr, Node *removeNode)
-{
-  if(isBlack(&(*nodePtr)->right->right) && isBlack(&(*nodePtr)->right->left) && (*nodePtr)->color == 'b') {
-    (*nodePtr)->color = 'd';
-    (*nodePtr)->right->color = 'r';
-    
-    // new condition added due to promotion of double black and the nodePtr->left is not NULL
-    if((*nodePtr)->left != NULL) 
-      (*nodePtr)->left->color = 'b';
-  } else if(isBlack(&(*nodePtr)->right->right) && isBlack(&(*nodePtr)->right->left) && (*nodePtr)->color == 'r') {
-      (*nodePtr)->right->color = 'r';
-      (*nodePtr)->color = 'b';
-    }
-}
-
-void solveCase3LeftRemoveViolation(Node **nodePtr, Node *removeNode)
-{
-  rightRotate(&(*nodePtr));
-  (*nodePtr)->right->color = 'r';
-  (*nodePtr)->color = 'b';
-  
-  checkCase((&(*nodePtr)->right), removeNode);
-}
-
-void solveCase3RightRemoveViolation(Node **nodePtr, Node *removeNode)
-{
-  leftRotate(&(*nodePtr));
-  (*nodePtr)->left->color = 'r';
-  (*nodePtr)->color = 'b';
-  
-  checkCase((&(*nodePtr)->left), removeNode);
-}
-
-Node *removeNextLargerSuccessor(Node **nodePtr)
-{
-  Node *leftNode, *rightNode;
-  Node *node = *nodePtr;
-  
-  if(node->left == NULL && node->right == NULL) {
-    node = (*nodePtr);
-    (*nodePtr) = NULL;
-    return node;
-  } else {
-      if(node->left != NULL) {
-        node = removeNextLargerSuccessor(&node->left);
-      } else if(node->right != NULL) {
-          (*nodePtr) = (*nodePtr)->right;
-          (*nodePtr)->right = NULL;
-          (*nodePtr)->color = 'b';
-        }
-    } 
-    
-  checkCase(&(*nodePtr), node);
-  
-  return node;
+int isDoubleBlack(Node *node, Node *removedNode){
+	if(node  && node->color == 'd')
+		return 1;
+	if(!node && isBlack(removedNode))
+		return 1;
+	return 0;
+	
 }
 
 /**
- *  Basically this function is comparing the newNode that is going to
- *  be added into this redBlackTree and the nodePtr that is pointing
- *  at the root whether the fitness score is larger or smaller or equal
- *
- *  Output:
- *  return -1, if the newNode fitness score is smaller than the nodePtr data
- *
- *  return 0, if the newNode fitness score is equal as the nodePtr data
- *
- *  return 1, if the newNode fitness score is larger than the nodePtr data
- */
-int compare(Node **nodePtr, Node *newNode) {
-  if((*nodePtr) != NULL && (*nodePtr)->data != NULL) {
-    if((*nodePtr)->data->violation > newNode->data->violation)
-      return -1;
-    else if((*nodePtr)->data->violation == newNode->data->violation)
-      return 0;
-    else if((*nodePtr)->data->violation < newNode->data->violation)
-      return 1;
-  } else {
-      Throw(ERR_NODE_UNAVAILABLE);
-    }
+*	Note:	Version that made by student (still have error)
+*
+*	Input : root pointer / parent pointer
+*	Output: void(no output)
+*
+*	Description:
+*	To check simple violation and rotate. 
+*	Only used in addRedBlackTree because the requirements are sufficient for add, but not delete
+*	New functions implemented to fulfill delRedBlackTree requirement.
+*/
+void checkViolationAndRotate(Node **rootPtr){
+
+		
+	if((*rootPtr)->left != NULL && (*rootPtr)->left->color == 'r'){
+		if((*rootPtr)->left->left != NULL || (*rootPtr)->left->right != NULL){
+			if((*rootPtr)->left->left != NULL &&(*rootPtr)->left->left->color == 'r')
+				rightRotate(rootPtr);
+		
+			else if((*rootPtr)->left->right != NULL && (*rootPtr)->left->right->color == 'r')
+				leftRightRotate(rootPtr);
+				
+			else 
+				return;
+				
+			(*rootPtr)->right->color = 'r';
+		}
+	}
+	
+	else if((*rootPtr)->right != NULL && (*rootPtr)->right->color == 'r'){
+		if((*rootPtr)->right->right != NULL || (*rootPtr)->right->left != NULL){
+			if((*rootPtr)->right->right != NULL &&(*rootPtr)->right->right->color == 'r')
+				leftRotate(rootPtr);
+				
+			else if((*rootPtr)->right->left != NULL &&(*rootPtr)->right->left->color == 'r')
+				rightLeftRotate(rootPtr);
+			
+			else 
+				return;
+				
+			(*rootPtr)->left->color = 'r';
+		}
+	}
 }
 
-void genericRedBlackTreeAdd(Node **nodePtr, Node *newNode, int (*compare)(Node **nodePtr, Node *newNode)) {
-  _genericRedBlackTreeAdd(nodePtr, newNode, compare);
-  (*nodePtr)->color = 'b';
-}
+/*
+	Note:	Version that made ourself
 
-void _genericRedBlackTreeAdd(Node **nodePtr, Node *newNode, int (*Compare)(Node **nodePtr, Node *newNode)) {
-  if((*nodePtr) == NULL) {
-    *nodePtr = newNode;
-    return;
-  }
-  
-  if(Compare(nodePtr, newNode) == -1) {
-    _genericRedBlackTreeAdd(&(*nodePtr)->left, newNode, Compare);
-    solveAddViolationForNewNodeLessThan(&(*nodePtr)); 
-    solveAddViolationFor4NodeLessThan(&(*nodePtr));
-  } else if(Compare(nodePtr, newNode) == 1) {
-      _genericRedBlackTreeAdd(&(*nodePtr)->right, newNode, Compare);
-      solveAddViolationForNewNodeMoreThan(&(*nodePtr)); 
-      solveAddViolationFor4NodeMoreThan(&(*nodePtr));
-    } else if(Compare(nodePtr, newNode) == 0) {
-			  // solveAddViolationForNewNodeLessThan(&(*nodePtr)); 
-				// solveAddViolationFor4NodeLessThan(&(*nodePtr));
-				Throw(ERR_EQUIVALENT_NODE);
-      }
-}
+Node *_delRedBlackTree(Node **rootPtr, Node *newNode){
 
-Node *removeLargestValue(Node **nodePtr)
-{
-  Node *node = *nodePtr;
-  
-  if(node->left == NULL && node->right == NULL) {
-    node = (*nodePtr);
-    (*nodePtr) = NULL;
-    return node;
-  } else {
-      if(node->right != NULL) {
-        node = removeNextLargerSuccessor(&node->right);
-      } else if(node->left != NULL) {
-          (*nodePtr) = (*nodePtr)->left;
-          (*nodePtr)->left = NULL;
-          (*nodePtr)->color = 'b';
-        }
-    } 
-    
-  checkCase(&(*nodePtr), node);
-  
-  return node;
-}
+	Node *retNode;
+	
+	if(*rootPtr != NULL && (*rootPtr)->left != NULL && (*rootPtr)->right != NULL &&
+		(*rootPtr)->left->color == 'b' && (*rootPtr)->right->color == 'b'){
+		
+		(*rootPtr)->color = 'b';
+		(*rootPtr)->left->color = 'r';
+		(*rootPtr)->right->color = 'r';
+	}
+	
+	if(*rootPtr == NULL || newNode == NULL)
+		Throw(ERROR_NO_NODE);
+		
+	else if((*rootPtr)->data == newNode->data){
+		 retNode = *rootPtr;
+		*rootPtr = NULL;
+		return retNode;
+	}
+	
+	else if(newNode->data < (*rootPtr)->data)
+		retNode = _delRedBlackTree(&((*rootPtr)->left), newNode);
+	
+	else if(newNode->data > (*rootPtr)->data)
+		retNode = _delRedBlackTree(&((*rootPtr)->right), newNode);
+	
+	checkViolationAndRotate(rootPtr);
+	return retNode;
 
-Node *removeSmallestValue(Node **nodePtr)
-{
-  Node *leftNode, *rightNode;
-  Node *node = *nodePtr;
-  
-  if(node->left == NULL && node->right == NULL) {
-    node = (*nodePtr);
-    (*nodePtr) = NULL;
-    return node;
-  } else {
-      if(node->left != NULL) {
-        node = removeNextLargerSuccessor(&node->left);
-      } else if(node->right != NULL) {
-          (*nodePtr) = (*nodePtr)->right;
-          (*nodePtr)->right = NULL;
-          (*nodePtr)->color = 'b';
-        }
-    } 
-    
-  checkCase(&(*nodePtr), node);
-  
-  return node;
 }
+*/
