@@ -1,5 +1,6 @@
 #include "unity.h"
 #include <stdio.h>
+#include "LinkedList.h"
 #include "TimeTabling.h"
 #include "Node.h"
 #include "RedBlackTree.h"
@@ -155,15 +156,15 @@ void test_createPopulationOfChromosome(){
 	CEXCEPTION_T e;
 	createPopulationsOfChromosome(sizeof(classList)/sizeof(Class));
 	
-	// for(i=0;i<sizeof(populationOfClasses)/sizeof(Population);i++){
-		// printf("test: %d\n",populationOfClasses[i].violation);
-	// }
+	for(i=0;i<sizeof(populationOfClasses)/sizeof(Population);i++){
+		printf("test: %d\n",populationOfClasses[i].violation);
+	}
 	Try{
 	sortPopulationsAccordingToFitness();
 	}Catch(e){
 		printf("%d\n",e);
 	}
-	// int venue = 0, day = 0, time = 0, i;
+
 	
 	// TEST_ASSERT_NOT_NULL(populationOfClasses[0].class[0][0][0].course);
 	// TEST_ASSERT_NOT_NULL(populationOfClasses[99].class[0][0][0].course);

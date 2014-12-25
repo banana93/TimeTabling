@@ -53,3 +53,133 @@ void test_addLinkedList_should_able_to_add_data_into_list(){
 	TEST_ASSERT_EQUAL_PTR(&population, list->tail->population);
 	TEST_ASSERT_NULL(list->head->next);
 }
+
+void test_addLinkedList_should_able_to_add_2data_into_list(){
+	Item data, data2;
+	LinkedList *list = create_linkedList();
+	
+	Population population, population2;
+	fillInTheChromosome(classList, sizeof(classList)/sizeof(Class));
+	copyClass(class,population.class);
+	population.violation = calculateFitnessScore(population.class);
+	
+	data.next = NULL;
+	data.population = &population;
+	
+	addLinkedList(list, &data);
+	
+	clearClass(class);
+	fillInTheChromosomeWithReducingViolation(classList, sizeof(classList)/sizeof(Class));
+	copyClass(class,population2.class);
+	population2.violation = calculateFitnessScore(population2.class);
+	
+	data2.next = NULL;
+	data2.population = &population2;
+	
+	addLinkedList(list, &data2);
+	
+	TEST_ASSERT_NOT_NULL(list->head);
+	TEST_ASSERT_NOT_NULL(list->tail);
+	TEST_ASSERT_EQUAL_PTR(&population, list->head->population);
+	TEST_ASSERT_EQUAL_PTR(&population2, list->head->next->population);
+	TEST_ASSERT_EQUAL_PTR(&population2, list->tail->population);
+
+}
+
+void test_addLinkedList_should_able_to_add_3data_into_list(){
+	Item data, data2,data3;
+	Population population, population2,population3;
+	
+	LinkedList *list = create_linkedList();
+	fillInTheChromosome(classList, sizeof(classList)/sizeof(Class));
+	copyClass(class,population.class);
+	population.violation = calculateFitnessScore(population.class);
+	
+	data.next = NULL;
+	data.population = &population;
+	
+	addLinkedList(list, &data);
+	
+	clearClass(class);
+	fillInTheChromosomeWithReducingViolation(classList, sizeof(classList)/sizeof(Class));
+	copyClass(class,population2.class);
+	population2.violation = calculateFitnessScore(population2.class);
+	
+	data2.next = NULL;
+	data2.population = &population2;
+	
+	addLinkedList(list, &data2);
+	population3.violation = 100;
+	
+	data3.next = NULL;
+	data3.population = &population3;
+	
+	addLinkedList(list, &data3);
+	
+	
+	TEST_ASSERT_NOT_NULL(list->head);
+	TEST_ASSERT_NOT_NULL(list->tail);
+	TEST_ASSERT_EQUAL_PTR(&population, list->head->population);
+	TEST_ASSERT_EQUAL_PTR(&population2, list->head->next->population);
+	TEST_ASSERT_EQUAL_PTR(&population3, list->tail->population);
+
+}
+
+void test_removeFromHeadLinkedList_should_able_to_remove_into_list(){
+	Item data, *populationReturn;
+	LinkedList *list = create_linkedList();
+	
+	Population population;
+	fillInTheChromosomeWithReducingViolation(classList, sizeof(classList)/sizeof(Class));
+	copyClass(class,population.class);
+	population.violation = calculateFitnessScore(population.class);
+	
+	data.next = NULL;
+	data.population = &population;
+	
+	addLinkedList(list, &data);
+	
+	populationReturn = removeFromHeadLinkedList(list);
+	
+	TEST_ASSERT_EQUAL_PTR(&population, populationReturn->population);
+}
+
+void test_removeFromHeadLinkedList_should_able_to_remove3_into_list(){
+	Item data, data2,data3, *populationReturn1, *populationReturn2, *populationReturn3;
+	Population population, population2,population3;
+	
+	LinkedList *list = create_linkedList();
+	fillInTheChromosome(classList, sizeof(classList)/sizeof(Class));
+	copyClass(class,population.class);
+	population.violation = calculateFitnessScore(population.class);
+	
+	data.next = NULL;
+	data.population = &population;
+	
+	addLinkedList(list, &data);
+	
+	clearClass(class);
+	fillInTheChromosomeWithReducingViolation(classList, sizeof(classList)/sizeof(Class));
+	copyClass(class,population2.class);
+	population2.violation = calculateFitnessScore(population2.class);
+	
+	data2.next = NULL;
+	data2.population = &population2;
+	
+	addLinkedList(list, &data2);
+	population3.violation = 100;
+	
+	data3.next = NULL;
+	data3.population = &population3;
+	
+	addLinkedList(list, &data3);
+	
+	
+	populationReturn1 = removeFromHeadLinkedList(list);
+	populationReturn2 = removeFromHeadLinkedList(list);
+	populationReturn3 = removeFromHeadLinkedList(list);
+	
+	TEST_ASSERT_EQUAL_PTR(&population, populationReturn1->population);
+	TEST_ASSERT_EQUAL_PTR(&population2, populationReturn2->population);
+	TEST_ASSERT_EQUAL_PTR(&population3, populationReturn3->population);
+}

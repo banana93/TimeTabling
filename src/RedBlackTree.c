@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include "RedBlackTree.h"
+#include "LinkedList.h"
 #include "Rotations.h"
 #include "Node.h"
 #include "ErrorCode.h"
@@ -47,7 +48,7 @@ void addRedBlackTree(Node **rootPtr, Node *newNode){
 *
 */
 void _addRedBlackTree(Node **rootPtr, Node *newNode){
-	
+
 	
 	if(*rootPtr != NULL && (*rootPtr)->left != NULL && (*rootPtr)->right != NULL &&
 		(*rootPtr)->left->color == 'r' && (*rootPtr)->right->color == 'r'){
@@ -69,8 +70,13 @@ void _addRedBlackTree(Node **rootPtr, Node *newNode){
 	else if(newNode->data->violation > (*rootPtr)->data->violation)
 		_addRedBlackTree(&((*rootPtr)->right), newNode);
 	
-	else
-		Throw(ERR_EQUIVALENT_NODE);
+	else{
+	Item populationPtr;
+	populationPtr.next = NULL;
+	populationPtr.population = newNode->data;
+		// clearLinkedList(&(*rootPtr)->list);
+		addLinkedList(&(*rootPtr)->list, &populationPtr);
+	}
 		
 	checkViolationAndRotate(rootPtr);
 }

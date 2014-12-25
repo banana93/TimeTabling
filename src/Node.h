@@ -2,12 +2,14 @@
 #define Node_H
 
 #include "TimeTabling.h"
+#include "LinkedList.h"
 typedef struct Node Node;
 struct Node {
 	Node *left;
 	Node *right;
 	char color; // 'b' or 'r'(black or red)
 	Population *data;
+	LinkedList list;
 };
 
 #endif // Node_H
