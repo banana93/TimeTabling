@@ -7,9 +7,9 @@ void setNode(Node *target, Node *left, Node *right, char color) {
 	target->color = color;
 }
 
-void resetNode(Node *target, int data) {
+void resetNode(Node *target) {
 	target->left = NULL;
 	target->right = NULL;
 	target->color = 'b';
-	target->data = data;
+	target->data = NULL;
 }

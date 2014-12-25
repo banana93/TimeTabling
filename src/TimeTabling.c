@@ -11,7 +11,7 @@
 #include "CException.h"
 
 Class class[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS];
-Population populationOfClasses[500];
+Population populationOfClasses[100];
 Node node1, node2, node3, node4, node5, node6, node7, node8, node9, node10, node11, node12, node13, node15, node17, node18, node20, node30;
 Node *root = NULL;
 
@@ -268,6 +268,8 @@ void fillInTheChromosome(Class classList[], int sizeOfClassList){
 	int venue, day, time;
 	int i = 0, violation;
 	
+		if(sizeOfClassList > (MAX_VENUE*MAX_DAY*MAX_TIME_SLOTS))
+			Throw(ERR_EXCEEDED_INDEX);
 		for(venue = 0; venue < MAX_VENUE; venue++) {
 			for(day = 0; day < MAX_DAY; day++) {
 				for(time = 0; i < sizeOfClassList && time < MAX_TIME_SLOTS; time++) {
@@ -289,7 +291,8 @@ void fillInTheChromosome(Class classList[], int sizeOfClassList){
 void fillInTheChromosomeWithReducingViolation(Class classList[], int sizeOfClassList){
 	int venue, day, time;
 	int i = 0, violation;
-	
+	if(sizeOfClassList > (MAX_VENUE*MAX_DAY*MAX_TIME_SLOTS))
+		Throw(ERR_EXCEEDED_INDEX);
 	for(violation = 0 ; violation < 1000; violation+=1){
 		for(venue = 0; venue < MAX_VENUE; venue++){
 			for(day = 0; day < MAX_DAY; day++) {
@@ -317,7 +320,6 @@ Class copyClassSlot(Class sourceClass){
 	targetClass.course = sourceClass.course;
 	targetClass.lecturer = sourceClass.lecturer;
 	targetClass.typeOfClass = sourceClass.typeOfClass;
-	targetClass.classNode = sourceClass.classNode;
 	targetClass.markOfViolation = sourceClass.markOfViolation;
 	for(i = 0 ; i < 5 ; i++){
 		targetClass.group[i] = sourceClass.group[i];
@@ -349,7 +351,6 @@ Class clearClassSlot(Class sourceClass){
 	sourceClass.lecturer = NULL;
 	sourceClass.course = NULL;
 	sourceClass.typeOfClass = 0;
-	sourceClass.classNode = NULL;
 	sourceClass.markOfViolation = 0;
 	for(i = 0 ; i < 5 ; i++){
 		sourceClass.group[i] = NULL;
@@ -383,7 +384,6 @@ for(i = 0; i < sizeOfClass; i++) {
 	(*newClass)[i].lecturer = NULL;
 	(*newClass)[i].course = NULL;
 	(*newClass)[i].typeOfClass = 0;
-	(*newClass)[i].classNode = NULL;
 	(*newClass)[i].markOfViolation = 0;
 		for(j = 0 ; j < 5 ; j++){
 			(*newClass)[i].group[j] = NULL;
@@ -421,6 +421,34 @@ void createPopulationsOfChromosome(int sizeOfClassList){
 		fillInTheChromosomeWithReducingViolation(randomList, sizeOfClassList);
 		copyClass(class, populationOfClasses[i].class);
 	}
+	for( i = 0 ; i < sizeof(populationOfClasses)/sizeof(Population) ; i ++){
+		populationOfClasses[i].violation = calculateFitnessScore(populationOfClasses[i].class);
+	}
+	
+}
+
+void sortPopulationsAccordingToFitness(){
+	
+	Node newNode[sizeof(populationOfClasses)/sizeof(Population)], newNode2, *smallestValue;
+	Population result[sizeof(populationOfClasses)/sizeof(Population)];
+	int i;
+	
+	for( i = 0 ; i < sizeof(populationOfClasses)/sizeof(Population) ; i ++){
+		setNode(&newNode[i], NULL, NULL, 'b');
+		resetNode(&newNode[i]);
+		newNode[i].data = &populationOfClasses[i];
+		genericRedBlackTreeAdd(&root, &newNode[i], compare);
+	}
+	
+	// for( i = 0 ; i < 4 ; i ++){
+		// smallestValue = removeSmallestValue(&root);
+		// result[i] = *(*smallestValue).data;
+	// }
+		
+	// for(i=0;i<4;i++){
+	// printf("%d\n",result[i].violation);
+	// }
+
 }
 
 /**
@@ -548,16 +576,25 @@ int performMutation(Class newClass[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS]) {
 	
   fitnessScoreBeforeMutation = calculateFitnessScore(newClass);
   printf("fitnessScoreBeforeMutation: %d\n", fitnessScoreBeforeMutation);
-  resetNode(&node1, fitnessScoreBeforeMutation);
-  setNode(&node1, NULL, NULL, 'b');
-  genericRedBlackTreeAdd(&root, &node1, compare);
-  removeSmallestValue(&root);
+	
+/* Sorry for editing your code, I will fix the redBlackTree for proper purpose,
+*  And class[][][].classNode should not exist.
+*
+*	resetNode(&node1, fitnessScoreBeforeMutation);
+*	setNode(&node1, NULL, NULL, 'b');
+*	genericRedBlackTreeAdd(&root, &node1, compare);
+*	removeSmallestValue(&root);
+*/
   
   for(venue; venue < MAX_VENUE; venue++) {
     for(day; day < MAX_DAY; day++) {
       for(time; time < MAX_TIME_SLOTS; time++) {
         if(newClass[venue][day][time].course != NULL) {
-          newClass[venue][day][time].classNode = &node1;
+          /*	I'll remove this as well, please let me know if it really has it's purpose
+							please refer to the latest Node structure I modified to sort the Populations,
+							by the time, the ultimate function will automatically choose the right class[][][] to this function
+							newClass[venue][day][time].classNode = &node1;
+					*/
 
           if(newClass[venue][day][time].markOfViolation == 1) {
             if(counter == 0) {

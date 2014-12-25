@@ -22,7 +22,6 @@ void setUp(void){
 				class[venue][day][time].lecturer = NULL;
 				class[venue][day][time].course = NULL;
 				class[venue][day][time].typeOfClass = 0;
-				class[venue][day][time].classNode = NULL;
 				for(i = 0 ; i < 5 ; i++){
 					class[venue][day][time].group[i] = NULL;
 				}
