@@ -22,7 +22,6 @@ void setUp(void){
 				class[venue][day][time].lecturer = NULL;
 				class[venue][day][time].course = NULL;
 				class[venue][day][time].typeOfClass = 0;
-				class[venue][day][time].classNode = NULL;
 				for(i = 0 ; i < 5 ; i++){
 					class[venue][day][time].group[i] = NULL;
 				}
@@ -33,8 +32,22 @@ void setUp(void){
 
 void tearDown(void){}
 
+void test_fillInTheChromosome_should_throw_when_list_oversized(){
+
+	Class list[100];
+	CEXCEPTION_T e;
+	
+	Try{
+	fillInTheChromosome(list, sizeof(list)/sizeof(Class));}
+	Catch(e){
+		TEST_ASSERT_EQUAL(ERR_EXCEEDED_INDEX,e);
+	}
+	
+}
+
 void test_fillInTheChromosomeWithReducingViolation_should_less_violation_than_normal_fillInTheChromosome(){
 	int normalFill, reducedViolationFill;
+	int compare;
 	
 	fillInTheChromosome(classList, sizeof(classList)/sizeof(Class));
 	normalFill = calculateFitnessScore(class);
@@ -45,8 +58,24 @@ void test_fillInTheChromosomeWithReducingViolation_should_less_violation_than_no
 	reducedViolationFill = calculateFitnessScore(class);
 	
 	//proofed that fillInTheChromosomeWithReducingViolation is better
-	TEST_ASSERT_EQUAL(309 , normalFill);
-	TEST_ASSERT_EQUAL(171, reducedViolationFill);
+	if( normalFill > reducedViolationFill)
+		compare = 1;
+	else
+		compare = 0;
+	 
+	TEST_ASSERT_EQUAL(1 , compare);
+}
+
+void test_fillInTheChromosomeWithReducingViolation_should_throw_when_list_oversized(){
+	Class list[100];
+	CEXCEPTION_T e;
+	
+	Try{
+	fillInTheChromosomeWithReducingViolation(list, sizeof(list)/sizeof(Class));}
+	Catch(e){
+		TEST_ASSERT_EQUAL(ERR_EXCEEDED_INDEX,e);
+	}
+	
 }
 
 void test_copyClassSlot_should_able_to_copy_1_class_to_another(){
@@ -122,17 +151,21 @@ TEST_ASSERT_NOT_NULL(testList[0].course );
 }
 
 void test_createPopulationOfChromosome(){
-
-	createPopulationsOfChromosome(sizeof(classList)/sizeof(Class));
-	int venue = 0, day = 0, time = 0, i;
+	int i;
 	
-	TEST_ASSERT_NOT_NULL(populationOfClasses[0].class[0][0][0].course);
-	TEST_ASSERT_NOT_NULL(populationOfClasses[99].class[0][0][0].course);
-	TEST_ASSERT_NOT_NULL(populationOfClasses[199].class[0][0][0].course);
-	TEST_ASSERT_NOT_NULL(populationOfClasses[299].class[0][0][0].course);
-	TEST_ASSERT_NOT_NULL(populationOfClasses[399].class[0][0][0].course);
-	TEST_ASSERT_NOT_NULL(populationOfClasses[499].class[0][0][0].course);
-}
+	createPopulationsOfChromosome(sizeof(classList)/sizeof(Class));
+	
+	// sortPopulationsAccordingToFitness();
+	// int venue = 0, day = 0, time = 0, i;
+	
+	// TEST_ASSERT_NOT_NULL(populationOfClasses[0].class[0][0][0].course);
+	// TEST_ASSERT_NOT_NULL(populationOfClasses[99].class[0][0][0].course);
+	// TEST_ASSERT_NOT_NULL(populationOfClasses[199].class[0][0][0].course);
+	// TEST_ASSERT_NOT_NULL(populationOfClasses[299].class[0][0][0].course);
+	// TEST_ASSERT_NOT_NULL(populationOfClasses[399].class[0][0][0].course);
+	// TEST_ASSERT_NOT_NULL(populationOfClasses[499].class[0][0][0].course);
+	TEST_ASSERT_EQUAL(populationOfClasses[0].violation , calculateFitnessScore(populationOfClasses[0].class));
+	}
 
 void test_compareClass_should_return_1_if_all_elements_are_same(){
 	Class test = classList[0];

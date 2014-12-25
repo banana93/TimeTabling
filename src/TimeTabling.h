@@ -1,12 +1,12 @@
 #ifndef TimeTabling_H
 #define TimeTabling_H
 #include <stdio.h>
-#include "Node.h"
-#include "RedBlackTree.h"
-#include "ErrorCode.h"
-#include "CustomAssertions.h"
-#include "Rotations.h"
-#include "InitNode.h"
+// #include "Node.h"
+// #include "RedBlackTree.h"
+// #include "ErrorCode.h"
+// #include "CustomAssertions.h"
+// #include "Rotations.h"
+// #include "InitNode.h"
 
 #define MAX_VENUE 4
 #define MAX_DAY 3
@@ -86,17 +86,17 @@ struct Class
   Lecturer *lecturer;
 	char typeOfClass;
 	Group *group[5];
-  Node *classNode;
   int markOfViolation;
 };
 
 struct Population 
 {
   Class class[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS];
+	int violation;
 };
 
 extern	Class class[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS];
-extern	Population populationOfClasses[500];
+extern	Population populationOfClasses[100];
 extern	Group group[];
 extern	Venue venue[];
 extern	Lecturer lecturer[];
@@ -138,6 +138,7 @@ Class *checkChromosomeIsEmpty(Class newClass[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS]
 void fillInTheChromosomeWithReducingViolation(Class classList[], int sizeOfClassList);
 int performMutation(Class newClass[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS]);
 void createPopulationsOfChromosome(int sizeOfClassList);
+void sortPopulationsAccordingToFitness();
 
 /***********************************************************************************
  *  Clear and copy class functions

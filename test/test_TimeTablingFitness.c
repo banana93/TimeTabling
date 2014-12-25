@@ -242,23 +242,26 @@ void test_calculateFitnessScore_should_return_13_when_violates_all(){
  *           v          score 1        v
  *          NULL    ------------->     1
  */
-void test_calculateFitnessScore_and_genericRedBlackTreeAdd_should_be_able_to_add_fitness_score_2_into_the_redBlackTree(void) {
+void xtest_calculateFitnessScore_and_genericRedBlackTreeAdd_should_be_able_to_add_fitness_score_2_into_the_redBlackTree(void) {
   int numberOfClashes = 0;
-  //lecturerAppearInTwoVenue() Violation
+  // lecturerAppearInTwoVenue() Violation
   class[0][0][0].lecturer = &lecturer[0];
   class[3][0][0].lecturer = &lecturer[0];
-  
-  numberOfClashes = calculateFitnessScore(class);
-  resetNode(&node1, numberOfClashes);
-  class[0][0][0].classNode = &node1;
+	
+	Population pop1;
+	copyClass(class, pop1.class);
+	
+  numberOfClashes = calculateFitnessScore(pop1.class);
+	pop1.violation = numberOfClashes;
+
   setNode(&node1, NULL, NULL, 'b');
+	node1.data = &pop1;
   Node *root = NULL;
   
   genericRedBlackTreeAdd(&root, &node1, compare);
   TEST_ASSERT_EQUAL(1, numberOfClashes);
   TEST_ASSERT_EQUAL_PTR(&node1, root);
   TEST_ASSERT_EQUAL_NODE(NULL, NULL, 'b', &node1);
-  TEST_ASSERT_EQUAL(1, class[0][0][0].classNode->data);
 }
 
 /**
@@ -269,7 +272,7 @@ void test_calculateFitnessScore_and_genericRedBlackTreeAdd_should_be_able_to_add
  *                                                       /
  *                                                      1
  */
-void test_calculateFitnessScore_and_genericRedBlackTreeAdd_should_be_able_to_add_fitness_score_2_1_into_redBlackTree(void) {
+void xtest_calculateFitnessScore_and_genericRedBlackTreeAdd_should_be_able_to_add_fitness_score_2_1_into_redBlackTree(void) {
   int firstNumberOfClashes = 0, secondNumberOfClashes = 0;
 
   // determineViolationForCourseVenueSize() Violation
@@ -279,32 +282,37 @@ void test_calculateFitnessScore_and_genericRedBlackTreeAdd_should_be_able_to_add
 																			 //total = 	43
   class[0][0][0].group[3] = NULL;			 //venue = 	40
 																			 //violate = 3
+	Population pop1;
+	copyClass(class, pop1.class);
+	
+  firstNumberOfClashes = calculateFitnessScore(pop1.class);
+	pop1.violation = firstNumberOfClashes;
 
-  firstNumberOfClashes = calculateFitnessScore(class);
-  resetNode(&node3, firstNumberOfClashes);
-  class[0][0][0].classNode = &node3;
   setNode(&node3, NULL, NULL, 'b');
+  node1.data = &pop1;
   Node *root = NULL;
   
   genericRedBlackTreeAdd(&root, &node3, compare);
   setUp();
-  
+	
   // lecturerAppearInTwoVenue() Violation
   class[0][0][0].lecturer = &lecturer[0];
   class[3][0][0].lecturer = &lecturer[0];
   
-  secondNumberOfClashes = calculateFitnessScore(class);
-  resetNode(&node1, secondNumberOfClashes);
-  class[0][0][1].classNode = &node1;
+  Population pop2;
+	copyClass(class, pop2.class);
+  secondNumberOfClashes = calculateFitnessScore(pop2.class);
+	
+	pop2.violation = secondNumberOfClashes;
+
+
   setNode(&node1, NULL, NULL, 'b');
-  root = &node3;
+  node2.data = &pop2;
   
   genericRedBlackTreeAdd(&root, &node1, compare);
   TEST_ASSERT_EQUAL_PTR(&node3, root);
   TEST_ASSERT_EQUAL_NODE(&node1, NULL, 'b', &node3);
   TEST_ASSERT_EQUAL_NODE(NULL, NULL, 'b', &node1);
-  TEST_ASSERT_EQUAL(3, class[0][0][0].classNode->data);
-  TEST_ASSERT_EQUAL(1, class[0][0][1].classNode->data);
 }
 
 /**
@@ -315,7 +323,7 @@ void test_calculateFitnessScore_and_genericRedBlackTreeAdd_should_be_able_to_add
  *                                                    /                     /   \
  *                                                   1                     1     6
  */
-void test_calculateFitnessScore_and_genericRedBlackTreeAdd_should_be_able_to_add_fitness_score_2_1_8_into_redBlackTree(void) {
+void xtest_calculateFitnessScore_and_genericRedBlackTreeAdd_should_be_able_to_add_fitness_score_2_1_8_into_redBlackTree(void) {
   int firstNumberOfClashes = 0, secondNumberOfClashes = 0, thirdNumberOfClashes;
 
   // determineViolationForCourseVenueSize() Violation
@@ -326,10 +334,13 @@ void test_calculateFitnessScore_and_genericRedBlackTreeAdd_should_be_able_to_add
   class[0][0][0].group[3] = NULL;			 //venue = 	40
 																			 //violate = 3
 
-  firstNumberOfClashes = calculateFitnessScore(class);
-  resetNode(&node3, firstNumberOfClashes);
-  class[0][0][0].classNode = &node3;
+	Population pop3;
+	copyClass(class, pop3.class);
+	
+  firstNumberOfClashes = calculateFitnessScore(pop3.class);
+	pop3.violation = firstNumberOfClashes;
   setNode(&node3, NULL, NULL, 'b');
+	node3.data = &pop3;
   Node *root = NULL;
   
   genericRedBlackTreeAdd(&root, &node3, compare);
@@ -338,12 +349,15 @@ void test_calculateFitnessScore_and_genericRedBlackTreeAdd_should_be_able_to_add
   // lecturerAppearInTwoVenue() Violation
   class[0][0][0].lecturer = &lecturer[0];
   class[3][0][0].lecturer = &lecturer[0];
-  
+	
+  Population pop1;
+	copyClass(class, pop1.class);
+	
   secondNumberOfClashes = calculateFitnessScore(class);
-  resetNode(&node1, secondNumberOfClashes);
-  class[0][0][1].classNode = &node1;
+	pop1.violation = secondNumberOfClashes;
+
   setNode(&node1, NULL, NULL, 'b');
-  root = &node3;
+	node1.data = &pop1;
   
   genericRedBlackTreeAdd(&root, &node1, compare);
   setUp();
@@ -376,21 +390,21 @@ void test_calculateFitnessScore_and_genericRedBlackTreeAdd_should_be_able_to_add
 	class[3][0][3].group[1] = NULL;
   class[3][0][3].lecturer = &lecturer[0];
   
+	Population pop6;
+	copyClass(class, pop6.class);
+	
   thirdNumberOfClashes = calculateFitnessScore(class);
-  resetNode(&node5, thirdNumberOfClashes);
-  class[0][0][2].classNode = &node5;
-  setNode(&node5, NULL, NULL, 'b');
-  root = &node3;
+	pop6.violation = thirdNumberOfClashes;
+
+  setNode(&node6, NULL, NULL, 'b');
+  node6.data = &pop6;
   
-  genericRedBlackTreeAdd(&root, &node5, compare);
+  genericRedBlackTreeAdd(&root, &node6, compare);
   
   TEST_ASSERT_EQUAL_PTR(&node3, root);
-  TEST_ASSERT_EQUAL_NODE(&node1, &node5, 'b', &node3);
+  TEST_ASSERT_EQUAL_NODE(&node1, &node6, 'b', &node3);
   TEST_ASSERT_EQUAL_NODE(NULL, NULL, 'b', &node1);
-  TEST_ASSERT_EQUAL_NODE(NULL, NULL, 'b', &node5);
-  TEST_ASSERT_EQUAL(3, class[0][0][0].classNode->data);
-  TEST_ASSERT_EQUAL(1, class[0][0][1].classNode->data);
-  TEST_ASSERT_EQUAL(5, class[0][0][2].classNode->data);
+  TEST_ASSERT_EQUAL_NODE(NULL, NULL, 'b', &node6);
   TEST_ASSERT_EQUAL(3, firstNumberOfClashes);
   TEST_ASSERT_EQUAL(1, secondNumberOfClashes);
   TEST_ASSERT_EQUAL(5, thirdNumberOfClashes);
