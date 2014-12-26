@@ -18,6 +18,7 @@ struct LinkedList {
 };
 
 LinkedList *create_linkedList();
+void clearLinkedList(LinkedList *list);
 void addLinkedList(LinkedList *list, Item *data);
 void *removeFromHeadLinkedList(LinkedList *list);
 

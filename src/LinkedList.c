@@ -11,6 +11,11 @@ LinkedList *create_linkedList(){
 		return list;
 }
 
+void clearLinkedList(LinkedList *list){
+		list->head = NULL;
+		list->tail = NULL;
+}
+
 void addLinkedList(LinkedList *list, Item *data){
   Item *itemPointer = list->head;
   Item *previousItem;
@@ -34,7 +39,7 @@ void addLinkedList(LinkedList *list, Item *data){
 	}
 }
 
-void *removeFromHeadPriorityLinkedList(LinkedList *list) {
+void *removeFromHeadLinkedList(LinkedList *list) {
   Item *itemPointer = list->head;
   if(itemPointer != NULL) {
     list->head = itemPointer->next;
