@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <math.h>
 #include "TimeTabling.h"
 #include "Node.h"
 #include "TimeTablingClassList.h"
@@ -8,6 +9,7 @@
 #include "CustomAssertions.h"
 #include "Rotations.h"
 #include "InitNode.h"
+#include "Random.h"
 #include "CException.h"
 
 Class class[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS];
@@ -427,6 +429,20 @@ void createPopulationsOfChromosome(int sizeOfClassList){
 	
 }
 
+void createPopulationsOfChromosomeNotRandomize(int sizeOfClassList) {
+  int i;
+  
+  for( i = 0 ; i < sizeof(populationOfClasses)/sizeof(Population) ; i ++){
+		clearClass(class);
+		fillInTheChromosome(classList, sizeOfClassList);
+		copyClass(class, populationOfClasses[i].class);
+	}
+	for( i = 0 ; i < sizeof(populationOfClasses)/sizeof(Population) ; i ++){
+		populationOfClasses[i].violation = calculateFitnessScore(populationOfClasses[i].class);
+	}
+	
+}
+  
 void sortPopulationsAccordingToFitness(){
 	
 	Node newNode[sizeof(populationOfClasses)/sizeof(Population)], newNode2, *smallestValue;
@@ -577,26 +593,15 @@ int performMutation(Class newClass[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS]) {
 	
   fitnessScoreBeforeMutation = calculateFitnessScore(newClass);
   printf("fitnessScoreBeforeMutation: %d\n", fitnessScoreBeforeMutation);
-	
-/* Sorry for editing your code, I will fix the redBlackTree for proper purpose,
-*  And class[][][].classNode should not exist.
-*
-*	resetNode(&node1, fitnessScoreBeforeMutation);
-*	setNode(&node1, NULL, NULL, 'b');
-*	genericRedBlackTreeAdd(&root, &node1, compare);
-*	removeSmallestValue(&root);
-*/
+
+  // randomVenue = random(MAX_VENUE);
+  // randomDay = random(MAX_DAY);
+  // randomTime = random(MAX_TIME_SLOTS);
   
   for(venue; venue < MAX_VENUE; venue++) {
     for(day; day < MAX_DAY; day++) {
       for(time; time < MAX_TIME_SLOTS; time++) {
         if(newClass[venue][day][time].course != NULL) {
-          /*	I'll remove this as well, please let me know if it really has it's purpose
-							please refer to the latest Node structure I modified to sort the Populations,
-							by the time, the ultimate function will automatically choose the right class[][][] to this function
-							newClass[venue][day][time].classNode = &node1;
-					*/
-
           if(newClass[venue][day][time].markOfViolation == 1) {
             if(counter == 0) {
               tempVenue = venue;
@@ -605,18 +610,12 @@ int performMutation(Class newClass[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS]) {
               counter++;
             }
             
-            randomVenue = rand()%4;
-            randomDay = rand()%3;
-            randomTime = rand()%5;
+            // randomVenue = rand()%4;
+            // randomDay = rand()%3;
+            // randomTime = rand()%5;
             swapClasses(&newClass[tempVenue][tempDay][tempTime], &newClass[randomVenue][randomDay][randomTime]);
             fitnessScoreAfterMutation = calculateFitnessScore(newClass);
-            // printf("fitnessScoreAfterMutation: %d\n", fitnessScoreAfterMutation);
-            // if(fitnessScoreAfterMutation > fitnessScoreBeforeMutation) {
-              // randomVenue = rand()%4;
-              // randomDay = rand()%3;
-              // randomTime = rand()%5;
-              // swapClasses(&newClass[randomVenue][randomDay][randomTime], &newClass[venue][day][time]);
-            // } else 
+
             if(fitnessScoreAfterMutation < fitnessScoreBeforeMutation) {
                 break;
             }
@@ -636,10 +635,58 @@ void swapClasses(Class *newClassA, Class *newClassB) {
   *newClassB = tempClass;
 }
 
+/*
+    The purpose of this function is to check after the specific inside the
+    class slot is swapped whether it will violates or not, if it violates it
+    will return 1, else it will return 0.
+  */
+int checkViolationWhenSwapClasses(Class newClass[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS]) {
+	int venue = 0;
+  int day = 0, time = 0;
+	int violation = 0;
+	
+		
+  for(venue = 0; venue < MAX_VENUE; venue++) {
+    for(day = 0; day < MAX_DAY; day++) {
+			if(venue == 0) {
+				violation += checkIfTutionOverloadedInSingleDay(newClass, day);
+        if(violation > 0)
+          return 1;
+      }
+      for(time = 0; time < MAX_TIME_SLOTS; time++) {
+				violation += determineViolationForCourseVenueSize(newClass,venue,day,time);
+				if(violation > 0) 
+          return 1;
+          
+        if(venue == 0){
+					violation += checkIfLecturerAppearInTwoVenue(newClass, day, time);
+					violation += checkStudentViolation(newClass, day, time);
+          if(violation > 0) 
+            return 1;
+           
+        }
+      }
+    }
+  }
+   
+	return 0;
+}
+
+int calculateHeightOfTree(double numberOfNodes) {
+  int heightOfTree = 0;
+  double logBase2Result = 0;
+  double logBase2 = 2;
+  
+  logBase2Result = log10(numberOfNodes) / log10(logBase2);
+  heightOfTree = 2 * logBase2Result;
+  
+  return heightOfTree;
+  
+}
 void solveTimeTabling() {
   int fitnessScoreBeforeMutation = 0, fitnessScoreAfterMutation = 0;
   
-  createPopulationsOfChromosome(sizeof(classList)/sizeof(Class));
+  // createPopulationsOfChromosome(sizeof(classList)/sizeof(Class));
   
   // crossover..
   // fitnessScoreAfterMutation = performMutation();

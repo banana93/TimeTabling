@@ -8,183 +8,66 @@
 #include "CustomAssertions.h"
 #include "Rotations.h"
 #include "InitNode.h"
+#include "mock_Random.h"
 #include "CException.h"
 
-void setUp(void)
-{
-}
-
-void tearDown(void)
-{
-}
-
-void test_performMutation_test_number_1_it_should_be_able_to_calculateFitnessScore_and_genericRedBlackTreeAdd_into_the_redBlackTree(void) {
-  int resultOfMutation = 0;
-  Class topFitness[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS];
-  Class testList[52];
+void setUp(void){
+	int venue = 0;
+  int day = 0, time = 0;
+	int i;
   
-  printf("Test number 1 for performMutation result:\n");
-  printf("-------------------------------------------\n");
-  clearClassList(sizeof(testList)/sizeof(Class) , &testList);
-  randomizeClassList(sizeof(testList)/sizeof(Class),&testList);
-  clearClass(topFitness);
-  fillInTheChromosomeWithReducingViolation(testList, sizeof(testList)/sizeof(Class));
-  resultOfMutation = performMutation(class);
-  printf("resultOfMutation: %d\n", resultOfMutation);
-  printf("-------------------------------------------\n");
-  printf("\n");
+  for(venue = 0; venue < MAX_VENUE; venue++) {
+    for(day = 0; day < MAX_DAY; day++) {
+      for(time = 0; time < MAX_TIME_SLOTS; time++) {
+				class[venue][day][time].lecturer = NULL;
+				class[venue][day][time].course = NULL;
+				class[venue][day][time].typeOfClass = 0;
+				for(i = 0 ; i < 5 ; i++){
+					class[venue][day][time].group[i] = NULL;
+				}
+			}
+		}
+	}
 }
 
-void test_performMutation_test_number_2_it_should_be_able_to_calculateFitnessScore_and_genericRedBlackTreeAdd_into_the_redBlackTree(void) {
-  int resultOfMutation = 0;
-  Class topFitness[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS];
-  Class testList[52];
+void tearDown(void){}
+
+void test_checkViolationWhenSwapClasses_should_return_1_when_it_detects_there_is_still_violation_if_it_swaps(void) {
+  int result = 0;
+  class[0][0][0].lecturer = &lecturer[0];
+  class[3][0][0].lecturer = &lecturer[0];
   
-  printf("Test number 2 for performMutation result:\n");
-  printf("-------------------------------------------\n");
-  clearClassList(sizeof(testList)/sizeof(Class) , &testList);
-  randomizeClassList(sizeof(testList)/sizeof(Class),&testList);
-  clearClass(topFitness);
-  fillInTheChromosomeWithReducingViolation(testList, sizeof(testList)/sizeof(Class));
-  resultOfMutation = performMutation(class);
-  printf("resultOfMutation: %d\n", resultOfMutation);
-  printf("-------------------------------------------\n");
-  printf("\n");
+  result = checkViolationWhenSwapClasses(class);
+  TEST_ASSERT_EQUAL(1, result);
 }
 
-void test_performMutation_test_number_3_it_should_be_able_to_calculateFitnessScore_and_genericRedBlackTreeAdd_into_the_redBlackTree(void) {
-  int resultOfMutation = 0;
-  Class topFitness[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS];
-  Class testList[52];
+void test_checkViolationWhenSwapClasses_should_return_0_when_it_does_not_detect_any_violation_after_swap(void) {
+  int result = 0;
+  class[0][0][0].lecturer = &lecturer[0];
+  class[0][0][0].course = &course[0];
   
-  printf("Test number 3 for performMutation result:\n");
-  printf("-------------------------------------------\n");
-  clearClassList(sizeof(testList)/sizeof(Class) , &testList);
-  randomizeClassList(sizeof(testList)/sizeof(Class),&testList);
-  clearClass(topFitness);
-  fillInTheChromosomeWithReducingViolation(testList, sizeof(testList)/sizeof(Class));
-  resultOfMutation = performMutation(class);
-  printf("resultOfMutation: %d\n", resultOfMutation);
-  printf("-------------------------------------------\n");
-  printf("\n");
+  result = checkViolationWhenSwapClasses(class);
+  TEST_ASSERT_EQUAL(0, result);
 }
 
-void test_performMutation_test_number_4_it_should_be_able_to_calculateFitnessScore_and_genericRedBlackTreeAdd_into_the_redBlackTree(void) {
-  int resultOfMutation = 0;
-  Class topFitness[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS];
-  Class testList[52];
+void test_createPopulationsOfChromosomeNotRandomize_should_be_able_to_create_populations_that_follows_the_order_of_classList(void) {
+  createPopulationsOfChromosomeNotRandomize(sizeof(classList)/sizeof(Class));
+
+  TEST_ASSERT_EQUAL(1, compareClass(populationOfClasses[0].class[0][0][0], classList[0]));
+  TEST_ASSERT_EQUAL(1, compareClass(populationOfClasses[5].class[0][0][0], classList[0]));
+  TEST_ASSERT_EQUAL(1, compareClass(populationOfClasses[19].class[0][0][1], classList[1]));
+}
+
+void test_calculateHeightOfTree_should_be_able_to_return_the_result_of_the_height_of_the_rbt(void) {
+  int heightOfTree = 0;
+  double numberOfNodes = 6;
   
-  printf("Test number 4 for performMutation result:\n");
-  printf("-------------------------------------------\n");
-  clearClassList(sizeof(testList)/sizeof(Class) , &testList);
-  randomizeClassList(sizeof(testList)/sizeof(Class),&testList);
-  clearClass(topFitness);
-  fillInTheChromosomeWithReducingViolation(testList, sizeof(testList)/sizeof(Class));
-  resultOfMutation = performMutation(class);
-  printf("resultOfMutation: %d\n", resultOfMutation);
-  printf("-------------------------------------------\n");
-  printf("\n");
+  heightOfTree = calculateHeightOfTree(numberOfNodes);
+  TEST_ASSERT_EQUAL(5, heightOfTree);
 }
 
-void test_performMutation_test_number_5_it_should_be_able_to_calculateFitnessScore_and_genericRedBlackTreeAdd_into_the_redBlackTree(void) {
-  int resultOfMutation = 0;
-  Class topFitness[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS];
-  Class testList[52];
+// void test_performMutation_should_be_able_to_choose_the_specific_class_number_1_from_the_population_due_to_mock_random_function(void) {
+  // createPopulationsOfChromosomeNotRandomize(sizeof(classList)/sizeof(Class));
   
-  printf("Test number 5 for performMutation result:\n");
-  printf("-------------------------------------------\n");
-  clearClassList(sizeof(testList)/sizeof(Class) , &testList);
-  randomizeClassList(sizeof(testList)/sizeof(Class),&testList);
-  clearClass(topFitness);
-  fillInTheChromosomeWithReducingViolation(testList, sizeof(testList)/sizeof(Class));
-  resultOfMutation = performMutation(class);
-  printf("resultOfMutation: %d\n", resultOfMutation);
-  printf("-------------------------------------------\n");
-  printf("\n");
-}
-
-void test_performMutation_test_number_6_it_should_be_able_to_calculateFitnessScore_and_genericRedBlackTreeAdd_into_the_redBlackTree(void) {
-  int resultOfMutation = 0;
-  Class topFitness[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS];
-  Class testList[52];
   
-  printf("Test number 6 for performMutation result:\n");
-  printf("-------------------------------------------\n");
-  clearClassList(sizeof(testList)/sizeof(Class) , &testList);
-  randomizeClassList(sizeof(testList)/sizeof(Class),&testList);
-  clearClass(topFitness);
-  fillInTheChromosomeWithReducingViolation(testList, sizeof(testList)/sizeof(Class));
-  resultOfMutation = performMutation(class);
-  printf("resultOfMutation: %d\n", resultOfMutation);
-  printf("-------------------------------------------\n");
-  printf("\n");
-}
-
-void test_performMutation_test_number_7_it_should_be_able_to_calculateFitnessScore_and_genericRedBlackTreeAdd_into_the_redBlackTree(void) {
-  int resultOfMutation = 0;
-  Class topFitness[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS];
-  Class testList[52];
-  
-  printf("Test number 7 for performMutation result:\n");
-  printf("-------------------------------------------\n");
-  clearClassList(sizeof(testList)/sizeof(Class) , &testList);
-  randomizeClassList(sizeof(testList)/sizeof(Class),&testList);
-  clearClass(topFitness);
-  fillInTheChromosomeWithReducingViolation(testList, sizeof(testList)/sizeof(Class));
-  resultOfMutation = performMutation(class);
-  printf("resultOfMutation: %d\n", resultOfMutation);
-  printf("-------------------------------------------\n");
-  printf("\n");
-}
-
-void test_performMutation_test_number_8_it_should_be_able_to_calculateFitnessScore_and_genericRedBlackTreeAdd_into_the_redBlackTree(void) {
-  int resultOfMutation = 0;
-  Class topFitness[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS];
-  Class testList[52];
-  
-  printf("Test number 8 for performMutation result:\n");
-  printf("-------------------------------------------\n");
-  clearClassList(sizeof(testList)/sizeof(Class) , &testList);
-  randomizeClassList(sizeof(testList)/sizeof(Class),&testList);
-  clearClass(topFitness);
-  fillInTheChromosomeWithReducingViolation(testList, sizeof(testList)/sizeof(Class));
-  resultOfMutation = performMutation(class);
-  printf("resultOfMutation: %d\n", resultOfMutation);
-  printf("-------------------------------------------\n");
-  printf("\n");
-}
-
-void test_performMutation_test_number_9_it_should_be_able_to_calculateFitnessScore_and_genericRedBlackTreeAdd_into_the_redBlackTree(void) {
-  int resultOfMutation = 0;
-  Class topFitness[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS];
-  Class testList[52];
-  
-  printf("Test number 9 for performMutation result:\n");
-  printf("-------------------------------------------\n");
-  clearClassList(sizeof(testList)/sizeof(Class) , &testList);
-  randomizeClassList(sizeof(testList)/sizeof(Class),&testList);
-  clearClass(topFitness);
-  fillInTheChromosomeWithReducingViolation(testList, sizeof(testList)/sizeof(Class));
-  resultOfMutation = performMutation(class);
-  printf("resultOfMutation: %d\n", resultOfMutation);
-  printf("-------------------------------------------\n");
-  printf("\n");
-}
-
-void test_performMutation_test_number_10_it_should_be_able_to_calculateFitnessScore_and_genericRedBlackTreeAdd_into_the_redBlackTree(void) {
-  int resultOfMutation = 0;
-  Class topFitness[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS];
-  Class testList[52];
-  
-  printf("Test number 10 for performMutation result:\n");
-  printf("-------------------------------------------\n");
-  clearClassList(sizeof(testList)/sizeof(Class) , &testList);
-  randomizeClassList(sizeof(testList)/sizeof(Class),&testList);
-  clearClass(topFitness);
-  fillInTheChromosomeWithReducingViolation(testList, sizeof(testList)/sizeof(Class));
-  resultOfMutation = performMutation(class);
-  printf("resultOfMutation: %d\n", resultOfMutation);
-  printf("-------------------------------------------\n");
-  printf("\n");
-}
-
+// }

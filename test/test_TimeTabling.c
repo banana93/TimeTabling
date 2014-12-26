@@ -9,7 +9,8 @@
 #include "Rotations.h"
 #include "InitNode.h"
 #include "CException.h"
-                    
+// #include "mock_Random.h"   
+    
 void setUp(void){
 	int venue = 0;
   int day = 0, time = 0;
@@ -38,7 +39,7 @@ void test_indexForward_should_throw_error_when_exceeded_index_inserted(){
 	indexForward(&venue, &day, &time);
 	}Catch(e){
 		TEST_ASSERT_EQUAL( ERR_EXCEEDED_INDEX, e);
-	}
+    }
 }
 
 void test_indexForward_should_return_0_1_0(){
