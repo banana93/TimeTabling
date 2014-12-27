@@ -1,16 +1,8 @@
 #include "unity.h"
 #include <stdio.h>
 #include "TimeTabling.h"
-#include "LinkedList.h"
-#include "Node.h"
-#include "RedBlackTree.h"
 #include "ErrorCode.h"
-#include "CustomAssertions.h"
-#include "Rotations.h"
-#include "InitNode.h"
 #include "CException.h"
-
-Node node1, node2, node3, node4, node5, node6, node7, node8, node9, node10, node11, node12, node13, node15, node17, node18, node20, node30;
 
 void setUp(void){
 	int venue = 0;
@@ -40,7 +32,7 @@ void test_crossoverToOffspring_should_copy_to_target_class(){
 	Class targetClass[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS];
 	clearClass(targetClass);
 	
-	crossoverToOffspring((&classList)[0], &targetClass, 0, 0, 0, &leftStop);
+	crossoverToOffspring(classList[0], targetClass, 0, 0, 0, &leftStop);
 	
 	TEST_ASSERT_EQUAL(1, compareClass(classList[0], targetClass[0][0][0]));
 	TEST_ASSERT_EQUAL(0, leftStop);
@@ -54,7 +46,7 @@ void test_crossoverToOffspring_should_not_copy_and_update_leftStop(){
 	targetClass[0][0][0] = copyClassSlot(classList[0]);
 	targetClass[0][0][1] = copyClassSlot(classList[0]);
 	
-	crossoverToOffspring((&classList)[0], &targetClass, 0, 0, 2, &leftStop);
+	crossoverToOffspring(classList[0], targetClass, 0, 0, 2, &leftStop);
 	
 	TEST_ASSERT_EQUAL(1, compareClass(classList[0], targetClass[0][0][0]));
 	TEST_ASSERT_EQUAL(1, compareClass(classList[0], targetClass[0][0][1]));
@@ -70,10 +62,10 @@ void test_performCrossover_should_fill_in_offSpring(){
 	Class topFitness2[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS];
 	Class testList[52];
 	int topFitnessScore, topFitnessScore2;
-	clearClassList(sizeof(testList)/sizeof(Class) , &testList);
+	clearClassList(sizeof(testList)/sizeof(Class) , testList);
 	
 	//randomizeClassList (assume this is top 1 fitness among the population)
-	randomizeClassList(sizeof(testList)/sizeof(Class),&testList);
+	randomizeClassList(sizeof(testList)/sizeof(Class),testList);
 	clearClass(topFitness);
 	fillInTheChromosomeWithReducingViolation(testList, sizeof(testList)/sizeof(Class));
 	copyClass(class, topFitness);
@@ -81,8 +73,8 @@ void test_performCrossover_should_fill_in_offSpring(){
 	clearClass(class);
  
  	//randomizeClassList (assume this is top 2 fitness among the population)
-	clearClassList(sizeof(testList)/sizeof(Class) , &testList);
-	randomizeClassList(sizeof(testList)/sizeof(Class),&testList);
+	clearClassList(sizeof(testList)/sizeof(Class) , testList);
+	randomizeClassList(sizeof(testList)/sizeof(Class),testList);
 	clearClass(topFitness2);
 	fillInTheChromosomeWithReducingViolation(testList, sizeof(testList)/sizeof(Class));
 	copyClass(class, topFitness2);
@@ -94,7 +86,7 @@ void test_performCrossover_should_fill_in_offSpring(){
 	//offSpring result (class[][][])
 	Class offSpring[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS];
 	
-	performCrossover(topFitness,topFitness2,&offSpring);
+	performCrossover(topFitness,topFitness2,offSpring);
 	TEST_ASSERT_EQUAL(sizeof(topFitness)/sizeof(Class), sizeof(offSpring)/sizeof(Class));
 	
 	

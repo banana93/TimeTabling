@@ -96,7 +96,7 @@ struct Population
 };
 
 extern	Class class[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS];
-extern	Population populationOfClasses[19];
+extern	Population populationOfClasses[6];
 extern	Group group[];
 extern	Venue venue[];
 extern	Lecturer lecturer[];
@@ -147,9 +147,10 @@ Class copyClassSlot(Class sourceClass);
 void copyClass(Class sourceClass[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS], Class targetClass[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS]);
 Class clearClassSlot(Class sourceClass);
 void clearClass(Class sourceClass[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS]);
-void clearClassList(int sizeOfClass , Class (*newClass)[sizeOfClass]);
+void clearClassList(int sizeOfClass , Class newClass[sizeOfClass]);
+void clearPopulation(Population *population);
 int compareClass(Class newClass, Class newClass2);
-void randomizeClassList(int sizeOfClassList, Class (*targetClassList)[sizeOfClassList]);
+void randomizeClassList(int sizeOfClassList, Class targetClassList[sizeOfClassList]);
 
 /************************************************************************************
  *   Mutation Functions
@@ -159,9 +160,9 @@ void swapClasses(Class *newClassA, Class *newClassB);
 /************************************************************************************
  *   Crossover Functions
  ************************************************************************************/
-int crossoverToOffspring(Class *newClass, Class (*returnClass)[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS], 
+int crossoverToOffspring(Class newClass, Class returnClass[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS], 
 												 int venueIndex, int dayIndex, int timeIndex, int *leftStop);
-void performCrossover(Class newClass[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS], Class newClass2[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS], Class (*offSpring)[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS]);
+void performCrossover(Class newClass[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS], Class newClass2[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS], Class offSpring[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS]);
 
 
 /************************************************************************************

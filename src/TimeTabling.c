@@ -1,21 +1,14 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "TimeTabling.h"
-#include "Node.h"
 #include "TimeTablingClassList.h"
-#include "RedBlackTree.h"
 #include "ErrorCode.h"
-#include "CustomAssertions.h"
-#include "Rotations.h"
-#include "InitNode.h"
 #include "CException.h"
 
 
 
 Class class[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS];
-Population populationOfClasses[19];
-Node node1, node2, node3, node4, node5, node6, node7, node8, node9, node10, node11, node12, node13, node15, node17, node18, node20, node30;
-Node *root = NULL;
+Population populationOfClasses[6];
 
 /**
 char *getCourseName(Course newCourse){
@@ -379,31 +372,38 @@ void clearClass(Class sourceClass[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS]){
 /**
  *  The purpose of this function is to clear class[] for population purpose
  */
-void clearClassList(int sizeOfClass , Class (*newClass)[sizeOfClass]){
+void clearClassList(int sizeOfClass , Class newClass[sizeOfClass]){
 	int i, j;
 	
 for(i = 0; i < sizeOfClass; i++) {
-	(*newClass)[i].lecturer = NULL;
-	(*newClass)[i].course = NULL;
-	(*newClass)[i].typeOfClass = 0;
-	(*newClass)[i].markOfViolation = 0;
+	newClass[i].lecturer = NULL;
+	newClass[i].course = NULL;
+	newClass[i].typeOfClass = 0;
+	newClass[i].markOfViolation = 0;
 		for(j = 0 ; j < 5 ; j++){
-			(*newClass)[i].group[j] = NULL;
+			newClass[i].group[j] = NULL;
 		}
 }
+}
+
+void clearPopulation(Population *population){
+	int i;
+	for( i = 0 ; i < sizeof(populationOfClasses)/sizeof(Population) ; i++){
+		clearClass(population[i].class);
+	}
 }
 
 /**
  *  The purpose of this function is randomize the classList before creating populations of chromosome
  */
-void randomizeClassList(int sizeOfClassList, Class (*targetClassList)[sizeOfClassList]){
+void randomizeClassList(int sizeOfClassList, Class targetClassList[sizeOfClassList]){
 	int i, j;
 	int r;
 
 	for(i = 0 ; i < sizeOfClassList; ){
 		j = rand()%sizeOfClassList;
-			if((*targetClassList)[j].course == NULL){
-				(*targetClassList)[j] = copyClassSlot(classList[i]);
+			if(targetClassList[j].course == NULL){
+				targetClassList[j] = copyClassSlot(classList[i]);
 				i++;
 			}
 	}
@@ -414,42 +414,21 @@ void randomizeClassList(int sizeOfClassList, Class (*targetClassList)[sizeOfClas
  */
 void createPopulationsOfChromosome(int sizeOfClassList){
 	Class randomList[sizeOfClassList];
+	clearPopulation(populationOfClasses);
 	int i;
 	
 	for( i = 0 ; i < sizeof(populationOfClasses)/sizeof(Population) ; i ++){
-		clearClassList(sizeOfClassList, &randomList);
-		randomizeClassList(sizeOfClassList, &randomList);
+		clearClassList(sizeOfClassList, randomList);
+		randomizeClassList(sizeOfClassList, randomList);
 		clearClass(class);
 		fillInTheChromosomeWithReducingViolation(randomList, sizeOfClassList);
 		copyClass(class, populationOfClasses[i].class);
-	}
-	for( i = 0 ; i < sizeof(populationOfClasses)/sizeof(Population) ; i ++){
 		populationOfClasses[i].violation = calculateFitnessScore(populationOfClasses[i].class);
 	}
 	
 }
 
 void sortPopulationsAccordingToFitness(){
-	
-	Node newNode[sizeof(populationOfClasses)/sizeof(Population)], newNode2, *smallestValue;
-	Population result[sizeof(populationOfClasses)/sizeof(Population)];
-	int i;
-	
-	for( i = 0 ; i < sizeof(populationOfClasses)/sizeof(Population) ; i ++){
-		setNode(&newNode[i], NULL, NULL, 'b');
-		resetNode(&newNode[i]);
-		newNode[i].data = &populationOfClasses[i];
-		//find
-		//!null > add to linkedlist
-		//null addPopulation
-		addPopulation(&root, &newNode[i]);
-	}
-
-	for( i = 0 ; i < sizeof(populationOfClasses)/sizeof(Population) ; i ++){
-		smallestValue = removeNextLargerSuccessor(&root);
-		result[i] = *(*smallestValue).data;
-		printf("%d\n",result[i].violation);
-	}
 
 }
 
@@ -482,44 +461,44 @@ int compareClass(Class newClass, Class newClass2){
 	return 1;
 }
 
-int crossoverToOffspring(Class *newClass, Class (*returnClass)[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS], 
+int crossoverToOffspring(Class newClass, Class returnClass[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS], 
 												 int venueIndex, int dayIndex, int timeIndex, int *leftStop){
 	int counter = 1;
 	int retLoopVenue = 0,	retLoopDay = 0, retLoopTime = 0;
 		
 	while(retLoopVenue != venueIndex || retLoopDay != dayIndex || retLoopTime != timeIndex){
-		if(compareClass(*newClass,(*returnClass)[retLoopVenue][retLoopDay][retLoopTime]))
+		if(compareClass(newClass,returnClass[retLoopVenue][retLoopDay][retLoopTime]))
 			counter+=1;
 		indexForward(&retLoopVenue, &retLoopDay, &retLoopTime);
 	}
 	
-	if(newClass->course == NULL){
+	if(newClass.course == NULL){
 		if(counter <= (MAX_VENUE*MAX_DAY*MAX_TIME_SLOTS) - (sizeof(classList)/sizeof(Class))){
-			(*returnClass)[retLoopVenue][retLoopDay][retLoopTime] = copyClassSlot(*newClass);
+			returnClass[retLoopVenue][retLoopDay][retLoopTime] = copyClassSlot(newClass);
 			return 1;
 		}
 		else
 			*leftStop = 1;
 	}
-	else if(newClass->typeOfClass == 'l'){
-		if(counter <= newClass->course->hoursOfLecture){
-			(*returnClass)[retLoopVenue][retLoopDay][retLoopTime] = copyClassSlot(*newClass);
+	else if(newClass.typeOfClass == 'l'){
+		if(counter <= newClass.course->hoursOfLecture){
+			returnClass[retLoopVenue][retLoopDay][retLoopTime] = copyClassSlot(newClass);
 			return 1;
 		}
 		else
 			*leftStop = 1;
 	}
-	else if(newClass->typeOfClass == 't'){
-		if(counter <= newClass->course->hoursOfTutorial){
-			(*returnClass)[retLoopVenue][retLoopDay][retLoopTime] = copyClassSlot(*newClass);
+	else if(newClass.typeOfClass == 't'){
+		if(counter <= newClass.course->hoursOfTutorial){
+			returnClass[retLoopVenue][retLoopDay][retLoopTime] = copyClassSlot(newClass);
 			return 1;
 		}
 		else
 			*leftStop = 1;
 	}
-	else if(newClass->typeOfClass == 'p'){
-		if(counter <= newClass->course->hoursOfPractical){
-			(*returnClass)[retLoopVenue][retLoopDay][retLoopTime] = copyClassSlot(*newClass);
+	else if(newClass.typeOfClass == 'p'){
+		if(counter <= newClass.course->hoursOfPractical){
+			returnClass[retLoopVenue][retLoopDay][retLoopTime] = copyClassSlot(newClass);
 			return 1;
 		}
 		else
@@ -528,7 +507,7 @@ int crossoverToOffspring(Class *newClass, Class (*returnClass)[MAX_VENUE][MAX_DA
 	return 0;
 }
  
-void performCrossover(Class newClass[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS], Class newClass2[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS], Class (*offSpring)[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS]){
+void performCrossover(Class newClass[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS], Class newClass2[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS], Class offSpring[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS]){
 
 	int randomNumberLeft, randomNumberRight;
 	int venueToLeft = MAX_VENUE-1, dayToLeft = MAX_DAY-1, timeToLeft = MAX_TIME_SLOTS-1;
@@ -537,7 +516,7 @@ void performCrossover(Class newClass[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS], Class 
 	int i, counter = 1, leftStop = 0;
 	// CEXCEPTION_T e;
 	
-	clearClass(*offSpring);
+	clearClass(offSpring);
 	randomNumberLeft = rand()%(sizeof(classList)/sizeof(Class));
 	randomNumberRight = rand()%(sizeof(classList)/sizeof(Class));
 	
@@ -555,13 +534,13 @@ void performCrossover(Class newClass[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS], Class 
 	
 	for( i = 0 ; i < (MAX_VENUE*MAX_DAY*MAX_TIME_SLOTS) ; i++){
 		if(leftStop != 1){
-			if(crossoverToOffspring(&newClass[venueToLeft][dayToLeft][timeToLeft],offSpring, \
+			if(crossoverToOffspring(newClass[venueToLeft][dayToLeft][timeToLeft],offSpring, \
 															retLoopVenue, retLoopDay, retLoopTime, &leftStop))
 				indexForward(&retLoopVenue,&retLoopDay,&retLoopTime);			
 			indexBackward(&venueToLeft,&dayToLeft,&timeToLeft);	
 		}
 		
-		if(crossoverToOffspring(&newClass[venueToRight][dayToRight][timeToRight],offSpring, \
+		if(crossoverToOffspring(newClass[venueToRight][dayToRight][timeToRight],offSpring, \
 													  retLoopVenue, retLoopDay, retLoopTime, &leftStop))
 				indexForward(&retLoopVenue,&retLoopDay,&retLoopTime);	
 		indexForward(&venueToRight,&dayToRight,&timeToRight);			
