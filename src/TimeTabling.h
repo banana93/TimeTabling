@@ -96,7 +96,7 @@ struct Population
 };
 
 extern	Class class[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS];
-extern	Population populationOfClasses[6];
+extern	Population populationOfClasses[50];
 extern	Group group[];
 extern	Venue venue[];
 extern	Lecturer lecturer[];
@@ -138,7 +138,7 @@ Class *checkChromosomeIsEmpty(Class newClass[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS]
 void fillInTheChromosomeWithReducingViolation(Class classList[], int sizeOfClassList);
 int performMutation(Class newClass[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS]);
 void createPopulationsOfChromosome(int sizeOfClassList);
-void sortPopulationsAccordingToFitness();
+void sortPopulationsAccordingToFitness(Population *population, int sizeOfPopulation);
 
 /***********************************************************************************
  *  Clear and copy class functions
@@ -148,6 +148,7 @@ void copyClass(Class sourceClass[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS], Class targ
 Class clearClassSlot(Class sourceClass);
 void clearClass(Class sourceClass[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS]);
 void clearClassList(int sizeOfClass , Class newClass[sizeOfClass]);
+Population copyPopulation(Population sourcePopulation);
 void clearPopulation(Population *population);
 int compareClass(Class newClass, Class newClass2);
 void randomizeClassList(int sizeOfClassList, Class targetClassList[sizeOfClassList]);

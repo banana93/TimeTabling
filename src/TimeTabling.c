@@ -9,7 +9,7 @@
 
 
 Class class[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS];
-Population populationOfClasses[6];
+Population populationOfClasses[50];
 
 /**
 char *getCourseName(Course newCourse){
@@ -394,6 +394,15 @@ void clearPopulation(Population *population){
 	}
 }
 
+Population copyPopulation(Population sourcePopulation){
+	Population populationReturn;
+	
+	copyClass( sourcePopulation.class, populationReturn.class);
+	populationReturn.violation = sourcePopulation.violation;
+
+	return populationReturn;
+}
+
 /**
  *  The purpose of this function is randomize the classList before creating populations of chromosome
  */
@@ -443,8 +452,22 @@ void createPopulationsOfChromosomeNotRandomize(int sizeOfClassList) {
 	
 }
   
-void sortPopulationsAccordingToFitness(){
+void sortPopulationsAccordingToFitness(Population *population, int sizeOfPopulation){
+	Population tempPopulation = {0};
+	int i, j, counter = 0;
 
+	for( j = 0 ; j < sizeOfPopulation-1 ; j++){
+		for( counter = 0, i = 0 ; i+1 < sizeOfPopulation ; i++){
+			if(population[i].violation > population[i+1].violation){
+				tempPopulation = copyPopulation(population[i]);
+				population[i] = copyPopulation(population[i+1]);
+				population[i+1] = copyPopulation(tempPopulation);
+				counter++;
+			}
+		}
+		if(counter == 0)
+			break;
+	}
 }
 
 /**
