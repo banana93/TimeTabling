@@ -1,6 +1,5 @@
 #include "unity.h"
 #include <stdio.h>
-
 #include "TimeTabling.h"
 #include "ErrorCode.h"
 #include "CException.h"

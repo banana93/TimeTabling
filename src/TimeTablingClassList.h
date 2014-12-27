@@ -228,7 +228,7 @@
  *  Class list 
  *	- The total class for each course, programme and group
  ***********************************************************************************/
-Class classList[52] = {{	.course = &course[0],
+Class classList[52] = {{.course = &course[0],
 												.lecturer = &lecturer[4],
 												.typeOfClass = 'l',
 												.group[0] = &group[0],

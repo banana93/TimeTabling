@@ -156,6 +156,9 @@ void randomizeClassList(int sizeOfClassList, Class targetClassList[sizeOfClassLi
  *   Mutation Functions
  ************************************************************************************/
 void swapClasses(Class *newClassA, Class *newClassB);
+int checkViolationWhenSwapClasses(Class newClass[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS]);
+int performMutation(Class newClass[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS]);
+int calculateHeightOfTree(double numberOfNodes);
 
 /************************************************************************************
  *   Crossover Functions
