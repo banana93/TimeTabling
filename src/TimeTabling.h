@@ -96,7 +96,7 @@ struct Population
 };
 
 extern	Class class[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS];
-extern	Population populationOfClasses[20];
+extern	Population populationOfClasses[50];
 extern	Group group[];
 extern	Venue venue[];
 extern	Lecturer lecturer[];
@@ -138,7 +138,7 @@ Class *checkChromosomeIsEmpty(Class newClass[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS]
 void fillInTheChromosomeWithReducingViolation(Class classList[], int sizeOfClassList);
 int performMutation(Class newClass[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS]);
 void createPopulationsOfChromosome(int sizeOfClassList);
-void sortPopulationsAccordingToFitness();
+void sortPopulationsAccordingToFitness(Population *population, int sizeOfPopulation);
 
 /***********************************************************************************
  *  Clear and copy class functions
@@ -147,9 +147,11 @@ Class copyClassSlot(Class sourceClass);
 void copyClass(Class sourceClass[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS], Class targetClass[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS]);
 Class clearClassSlot(Class sourceClass);
 void clearClass(Class sourceClass[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS]);
-void clearClassList(int sizeOfClass , Class (*newClass)[sizeOfClass]);
+void clearClassList(int sizeOfClass , Class newClass[sizeOfClass]);
+Population copyPopulation(Population sourcePopulation);
+void clearPopulation(Population *population);
 int compareClass(Class newClass, Class newClass2);
-void randomizeClassList(int sizeOfClassList, Class (*targetClassList)[sizeOfClassList]);
+void randomizeClassList(int sizeOfClassList, Class targetClassList[sizeOfClassList]);
 
 /************************************************************************************
  *   Mutation Functions
@@ -162,9 +164,9 @@ int calculateHeightOfTree(double numberOfNodes);
 /************************************************************************************
  *   Crossover Functions
  ************************************************************************************/
-int crossoverToOffspring(Class *newClass, Class (*returnClass)[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS], 
+int crossoverToOffspring(Class newClass, Class returnClass[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS], 
 												 int venueIndex, int dayIndex, int timeIndex, int *leftStop);
-void performCrossover(Class newClass[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS], Class newClass2[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS], Class (*offSpring)[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS]);
+void performCrossover(Class newClass[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS], Class newClass2[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS], Class offSpring[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS]);
 
 
 /************************************************************************************

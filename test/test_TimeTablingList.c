@@ -1,16 +1,8 @@
 #include "unity.h"
 #include <stdio.h>
-#include "LinkedList.h"
 #include "TimeTabling.h"
-#include "Node.h"
-#include "RedBlackTree.h"
 #include "ErrorCode.h"
-#include "CustomAssertions.h"
-#include "Rotations.h"
-#include "InitNode.h"
 #include "CException.h"
-
-Node node1, node2, node3, node4, node5, node6, node7, node8, node9, node10, node11, node12, node13, node15, node17, node18, node20, node30;
 
 void setUp(void){
 	int venue = 0;
@@ -58,7 +50,7 @@ void test_fillInTheChromosomeWithReducingViolation_should_less_violation_than_no
 	fillInTheChromosomeWithReducingViolation(classList, sizeof(classList)/sizeof(Class));
 	reducedViolationFill = calculateFitnessScore(class);
 	
-	//proofed that fillInTheChromosomeWithReducingViolation is better
+	// proofed that fillInTheChromosomeWithReducingViolation is better
 	if( normalFill > reducedViolationFill)
 		compare = 1;
 	else
@@ -143,8 +135,8 @@ void test_clearClass_should_able_to_remove_elements(){
 
 void test_randomizeClassList_can_create_newList(){
  Class testList[52];
- clearClassList(sizeof(testList)/sizeof(Class) , &testList);
- randomizeClassList(sizeof(testList)/sizeof(Class),&testList);
+ clearClassList(sizeof(testList)/sizeof(Class) , testList);
+ randomizeClassList(sizeof(testList)/sizeof(Class),testList);
 
 TEST_ASSERT_NOT_NULL(testList[0].course );
  
@@ -153,28 +145,69 @@ TEST_ASSERT_NOT_NULL(testList[0].course );
 
 void test_createPopulationOfChromosome(){
 	int i;
-	CEXCEPTION_T e;
+	
+	clearPopulation(populationOfClasses);
+	createPopulationsOfChromosome(sizeof(classList)/sizeof(Class));
+
+	TEST_ASSERT_NOT_NULL(populationOfClasses[0].class[0][0][0].course);
+
+	TEST_ASSERT_EQUAL(populationOfClasses[0].violation , calculateFitnessScore(populationOfClasses[0].class));
+}
+
+void test_copyPopulation_should_copy_population_over(){
+	int i;
+	clearPopulation(populationOfClasses);
 	createPopulationsOfChromosome(sizeof(classList)/sizeof(Class));
 	
-	for(i=0;i<sizeof(populationOfClasses)/sizeof(Population);i++){
-		printf("test: %d\n",populationOfClasses[i].violation);
-	}
-	Try{
-	sortPopulationsAccordingToFitness();
-	}Catch(e){
-		printf("%d\n",e);
-	}
-
+	Population resultPop = copyPopulation(populationOfClasses[0]);
 	
-	// TEST_ASSERT_NOT_NULL(populationOfClasses[0].class[0][0][0].course);
-	// TEST_ASSERT_NOT_NULL(populationOfClasses[99].class[0][0][0].course);
-	// TEST_ASSERT_NOT_NULL(populationOfClasses[199].class[0][0][0].course);
-	// TEST_ASSERT_NOT_NULL(populationOfClasses[299].class[0][0][0].course);
-	// TEST_ASSERT_NOT_NULL(populationOfClasses[399].class[0][0][0].course);
-	// TEST_ASSERT_NOT_NULL(populationOfClasses[499].class[0][0][0].course);
-	TEST_ASSERT_EQUAL(populationOfClasses[0].violation , calculateFitnessScore(populationOfClasses[0].class));
-	}
+	TEST_ASSERT_EQUAL(populationOfClasses[0].violation, resultPop.violation);
+	
+}
 
+void test_sortPopulationsAccordingToFitness_should_swap_population_fitness_in_ascending_order(){
+	clearPopulation(populationOfClasses);
+	int pop0Violation, pop1Violation;
+	Population pop[2];
+	
+	fillInTheChromosome(classList, sizeof(classList)/sizeof(Class));
+	copyClass(class, pop[0].class);
+	pop[0].violation = calculateFitnessScore(pop[0].class);
+	pop0Violation = pop[0].violation;
+	
+	clearClass(class);
+	
+	fillInTheChromosomeWithReducingViolation(classList, sizeof(classList)/sizeof(Class));
+	copyClass(class, pop[1].class);
+	pop[1].violation = calculateFitnessScore(pop[1].class);
+	pop1Violation = pop[1].violation;
+	clearClass(class);
+	
+	sortPopulationsAccordingToFitness(pop, sizeof(pop)/sizeof(Population));
+	
+	TEST_ASSERT_EQUAL(pop1Violation, pop[0].violation);
+	TEST_ASSERT_EQUAL(pop0Violation, pop[1].violation);
+	
+}
+
+
+void test_sortPopulationsAccordingToFitness_should_sort_fitness_in_ascending_order(){
+	int i, compareResult;
+	clearPopulation(populationOfClasses);
+	createPopulationsOfChromosome(sizeof(classList)/sizeof(Class));
+	
+	sortPopulationsAccordingToFitness(populationOfClasses, sizeof(populationOfClasses)/sizeof(Population));
+	
+	for(i= 0 ; i+1 < sizeof(populationOfClasses)/sizeof(Population) ; i++){
+		if(populationOfClasses[i].violation <= populationOfClasses[i+1].violation)
+			compareResult = 1;
+		else
+			compareResult = 0;
+			
+			TEST_ASSERT_EQUAL(1, compareResult);
+	}
+}
+	
 void test_compareClass_should_return_1_if_all_elements_are_same(){
 	Class test = classList[0];
 	Class test1 = classList[0];

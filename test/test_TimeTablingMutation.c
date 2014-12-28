@@ -1,13 +1,7 @@
 #include "unity.h"
 #include <stdio.h>
 #include "TimeTabling.h"
-#include "LinkedList.h"
-#include "Node.h"
-#include "RedBlackTree.h"
 #include "ErrorCode.h"
-#include "CustomAssertions.h"
-#include "Rotations.h"
-#include "InitNode.h"
 #include "mock_Random.h"
 #include "CException.h"
 
@@ -32,6 +26,7 @@ void setUp(void){
 
 void tearDown(void){}
 
+
 void test_checkViolationWhenSwapClasses_should_return_1_when_it_detects_there_is_still_violation_if_it_swaps(void) {
   int result = 0;
   class[0][0][0].lecturer = &lecturer[0];
@@ -39,6 +34,7 @@ void test_checkViolationWhenSwapClasses_should_return_1_when_it_detects_there_is
   
   result = checkViolationWhenSwapClasses(class);
   TEST_ASSERT_EQUAL(1, result);
+
 }
 
 void test_checkViolationWhenSwapClasses_should_return_0_when_it_does_not_detect_any_violation_after_swap(void) {
@@ -56,6 +52,7 @@ void test_createPopulationsOfChromosomeNotRandomize_should_be_able_to_create_pop
   TEST_ASSERT_EQUAL(1, compareClass(populationOfClasses[0].class[0][0][0], classList[0]));
   TEST_ASSERT_EQUAL(1, compareClass(populationOfClasses[5].class[0][0][0], classList[0]));
   TEST_ASSERT_EQUAL(1, compareClass(populationOfClasses[19].class[0][0][1], classList[1]));
+
 }
 
 void test_calculateHeightOfTree_should_be_able_to_return_the_result_of_the_height_of_the_rbt(void) {
@@ -68,6 +65,5 @@ void test_calculateHeightOfTree_should_be_able_to_return_the_result_of_the_heigh
 
 // void test_performMutation_should_be_able_to_choose_the_specific_class_number_1_from_the_population_due_to_mock_random_function(void) {
   // createPopulationsOfChromosomeNotRandomize(sizeof(classList)/sizeof(Class));
-  
-  
 // }
+

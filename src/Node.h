@@ -8,6 +8,7 @@ struct Node {
 	Node *left;
 	Node *right;
 	char color; // 'b' or 'r'(black or red)
+	int data1;
 	Population *data;
 	LinkedList list;
 };

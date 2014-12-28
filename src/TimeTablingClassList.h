@@ -1,12 +1,7 @@
 #ifndef TimeTablingClassList_H
 #define TimeTablingClassList_H
 #include <stdio.h>
-#include "Node.h"
-#include "RedBlackTree.h"
 #include "ErrorCode.h"
-#include "CustomAssertions.h"
-#include "Rotations.h"
-#include "InitNode.h"
 #include "TimeTabling.h"
 
 
