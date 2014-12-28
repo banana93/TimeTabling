@@ -189,6 +189,6 @@ void performCrossover(Class newClass[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS], Class 
 /************************************************************************************
  *      Final Function 
  ************************************************************************************/
- void solveTimeTabling();
+void solveTimeTabling(int timesOfCycle, int percentageToRemove);
 
 #endif // TimeTabling_H

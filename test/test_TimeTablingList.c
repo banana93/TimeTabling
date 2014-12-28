@@ -156,14 +156,17 @@ void test_createPopulationOfChromosome(){
 }
 
 void test_copyPopulation_should_copy_population_over(){
-	int i;
+	int i = 0 ,j = 0, k = 0, l;
 	clearPopulation(populationOfClasses);
 	createPopulationsOfChromosome(sizeof(classList)/sizeof(Class));
 	
 	Population resultPop = copyPopulation(populationOfClasses[0]);
 	
 	TEST_ASSERT_EQUAL(populationOfClasses[0].violation, resultPop.violation);
-	
+	for( l = 0 ; l < (MAX_VENUE*MAX_DAY*MAX_TIME_SLOTS) ; l++){
+		TEST_ASSERT_EQUAL(populationOfClasses[0].class[i][j][k].typeOfClass, resultPop.class[i][j][k].typeOfClass);
+		indexForward(&i,&j,&k);
+	}
 }
 
 void test_sortPopulationsAccordingToFitness_should_swap_population_fitness_in_ascending_order(){

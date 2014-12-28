@@ -785,11 +785,34 @@ void performMutation(Population populationOfClasses[50]) {
   
 }
 
-void solveTimeTabling() {
+void solveTimeTabling(int timesOfCycle, int percentageToRemove) {
+	int i, j, k;
   int fitnessScoreBeforeMutation = 0, fitnessScoreAfterMutation = 0;
-  
-  // createPopulationsOfChromosome(sizeof(classList)/sizeof(Class));
-  
-  // crossover..
-  // fitnessScoreAfterMutation = performMutation();
+	int sizeOfPopulation = sizeof(populationOfClasses)/sizeof(Population);
+  int populationToRemove = sizeOfPopulation*(percentageToRemove/100);
+	Population offSpring[populationToRemove];
+	
+	clearPopulation(populationOfClasses);
+	clearPopulation(offSpring);
+  createPopulationsOfChromosome(sizeof(classList)/sizeof(Class));
+	sortPopulationsAccordingToFitness(populationOfClasses, sizeOfPopulation);
+	
+	for( k = 0, i = sizeOfPopulation - populationToRemove ; i < sizeOfPopulation ; i++, k++){
+		j = i+1;
+		if( j >= sizeOfPopulation)
+			j = sizeOfPopulation - populationToRemove ;
+		//EG, got 5 candidates, 0,1,2,3,4
+		//this logic will perform crossover with (0,1) (1,2) (2,3) (3,4) (4,0) to offspring[k]
+		performCrossover( populationOfClasses[i].class, populationOfClasses[j].class, offSpring[k].class);
+		performMutation(offSpring);
+		offSpring[k].violation = calculateFitnessScore(offSpring[k].class);
+		populationOfClasses[i] = copyPopulation(offSpring[k]);
+	}
+	
+  //Sam try to compare the whole population de average fitness before and after,
+	//see got improvement or not
+	//and add timesOfCycle that user want to do hw many times
+	//and test code, and double check my logic
+	//i go eat sin, lol
+		
 }
