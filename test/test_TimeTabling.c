@@ -188,5 +188,5 @@ void test_addDetailsIntoChromosome_given_the_details_should_be_able_to_add_into_
 }
 
 void xtest_solveTimeTabling_test_number_1_should_be_able_to_produce_an_offspring_with_lesser_violation(void) {
-  solveTimeTabling();
+  // solveTimeTabling();
 }
