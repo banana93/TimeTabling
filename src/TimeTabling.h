@@ -1,17 +1,14 @@
 #ifndef TimeTabling_H
 #define TimeTabling_H
 #include <stdio.h>
-// #include "Node.h"
-// #include "RedBlackTree.h"
-// #include "ErrorCode.h"
-// #include "CustomAssertions.h"
-// #include "Rotations.h"
-// #include "InitNode.h"
 
 #define MAX_VENUE 4
 #define MAX_DAY 3
 #define MAX_TIME_SLOTS 5
 
+/************************************************************************
+ *	The enum used to indicates the DAY int the timetable
+ ************************************************************************/
 typedef enum
 {
   SUNDAY,
@@ -23,6 +20,9 @@ typedef enum
   SATURDAY
 } TotalDays;
 
+/************************************************************************
+ *	The enum used to indicates the TIME_SLOTS in the timetable
+ ************************************************************************/
 typedef enum
 {
   _8_to_9,
@@ -35,7 +35,10 @@ typedef enum
   _3_to_4,
   _4_to_5
 } TotalTimeSlot;
-       
+
+/************************************************************************
+ *	type define for each structure of the elements of timetable
+ ************************************************************************/
 typedef struct Course Course;
 typedef struct Lecturer Lecturer;
 typedef struct Group Group;
@@ -44,6 +47,9 @@ typedef struct Venue Venue;
 typedef struct Class Class;
 typedef struct Population Population;
 
+/************************************************************************
+ *	Struct of Venue
+ ************************************************************************/
 struct Venue
 {
   char *nameOfVenue;
@@ -51,24 +57,36 @@ struct Venue
   char venueType;
 };
 
+/************************************************************************
+ *	Struct of Lecturer
+ ************************************************************************/
 struct Lecturer
 {
 	char *lecturerName;
   char *department;
 };
 
+/************************************************************************
+ *	Struct of Group
+ ************************************************************************/
 struct Group
 {
   char *groupName;
 	int groupSize;
 };
 
+/************************************************************************
+ *	Struct of Programme
+ ************************************************************************/
 struct Programme
 {
   char *programmeName;
   Group *group[5];
 };
 
+/************************************************************************
+ *	Struct of Course
+ ************************************************************************/
 struct Course
 {
 	char *courseCode;
@@ -80,6 +98,9 @@ struct Course
   int sizeOfProgramme;
 };
 
+/************************************************************************
+ *	Struct of Class
+ ************************************************************************/
 struct Class 
 {
   Course *course;
@@ -89,12 +110,18 @@ struct Class
   int markOfViolation;
 };
 
+/************************************************************************
+ *	Struct of Population
+ ************************************************************************/
 struct Population 
 {
   Class class[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS];
 	int violation;
 };
 
+/************************************************************************
+ *	extern all the elements to share among the functions
+ ************************************************************************/
 extern	Class class[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS];
 extern	Population populationOfClasses[50];
 extern	Group group[];
@@ -104,19 +131,11 @@ extern	Programme programme[];
 extern	Course course[];
 extern	Class classList[52];
 
-
+/************************************************************************
+ *	Function prototype
+ ************************************************************************/
 /***********************************************************************************
- *  get information from class
- ***********************************************************************************
-char *getCourseName(Course newCourse);
-char *getCourseCode(Course newCourse);
-int getTotalStudentsInCourse(Class *newClass);
-int getVenueSize(Class *newClass);
-// did not use
-**/
-
-/***********************************************************************************
- *  Constraint functions & fitness score calculator
+ *  Index increment and decrement of 3D array of [venue][day][time]
  ***********************************************************************************/
  void indexForward(int *venue, int *day, int *time);
  void indexBackward(int *venue, int *day, int *time);
@@ -131,24 +150,24 @@ int checkStudentViolation(Class newClass[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS], in
 int calculateFitnessScore(Class newClass[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS]);
 
 /***********************************************************************************
- *  fill in the chromosome, populations and mutation/crossover functions
+ *  Edit functions for chromosome and Populations
  ***********************************************************************************/
 void addDetailsIntoChromosome(Class newClass[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS], Course course[], Lecturer lecturer[], Group group[], char typeOfClass);
 Class *checkChromosomeIsEmpty(Class newClass[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS]);
 void fillInTheChromosomeWithReducingViolation(Class classList[], int sizeOfClassList);
 void createPopulationsOfChromosome(int sizeOfClassList);
 void sortPopulationsAccordingToFitness(Population *population, int sizeOfPopulation);
+Population copyPopulation(Population sourcePopulation);
+void clearPopulation(Population *population);
 
 /***********************************************************************************
- *  Clear and copy class functions
+ *  Edit functions for Class
  ***********************************************************************************/
 Class copyClassSlot(Class sourceClass);
 void copyClass(Class sourceClass[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS], Class targetClass[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS]);
 Class clearClassSlot(Class sourceClass);
 void clearClass(Class sourceClass[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS]);
 void clearClassList(int sizeOfClass , Class newClass[sizeOfClass]);
-Population copyPopulation(Population sourcePopulation);
-void clearPopulation(Population *population);
 int compareClass(Class newClass, Class newClass2);
 void randomizeClassList(int sizeOfClassList, Class targetClassList[sizeOfClassList]);
 

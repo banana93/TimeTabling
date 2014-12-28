@@ -4,6 +4,29 @@
 #include "ErrorCode.h"
 #include "TimeTabling.h"
 
+/******************************************************************************************************
+ *  This file contains the List of every element in the TimeTabling, (List from Management)
+ *	-	Group List
+ *	-	Programme List
+ *	-	Course List
+ *	- Venue List
+ *	-	Lecturer List
+ *	- Class List
+ *
+ *	Group list			- The list of all groups from each particular Programmes
+ *
+ *	Programme list	- The list of programmes in a college/institute, each programme 
+ *										contains 1 or more group(s)
+ *
+ *	Course list			-	The list of all courses, contains the programme(s) that taking the course
+ *
+ *	Venue list			- The list of all venues, contains size for each venue
+ *
+ *	Leturer list		- The list of lecturers, contains name and department
+ *
+ *	Class list			- The list of each class(combination of venue, course and lecturer in an hour slot).
+ *										to fit into the Timetable.
+ *******************************************************************************************************/
 
 /***********************************************************************************
  *  Group list 

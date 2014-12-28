@@ -8,33 +8,24 @@
 #include "CException.h"
 
 
-
+/************************************************************************
+ *	class general purpose class / temporary class slot for data transfer
+ ************************************************************************/
 Class class[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS];
+/************************************************************************
+ *	Global populationOfClasses to be used in all function
+ ************************************************************************/
 Population populationOfClasses[50];
 
-/**
-char *getCourseName(Course newCourse){
-	if(newCourse.courseName != NULL)
-    return newCourse.courseName;
-}
 
-char *getCourseCode(Course newCourse){
-
-	if(newCourse.courseCode != NULL)
-    return newCourse.courseCode;
-}
-
-int getTotalStudentsInCourse(Class *newClass) {
-  if(newClass->group->groupSize != 0)
-      return newClass->group->groupSize;  
-}
-
-int getVenueSize(Class *newClass) {
-  if(newClass->venue->sizeOfVenue != 0)
-    return newClass->venue->sizeOfVenue;
-}
-**/
-
+/****************************************************************************
+ *	Function name	:	indexForward
+ *	Inputs				:	int *venue, *day, *time
+ *	Output/return	:	NONE
+ *	Destroy				:	NONE
+ *	Description		:	To increment the index of 3D array 
+ *									by updating pointer of int
+ *****************************************************************************/
  void indexForward(int *venue, int *day, int *time){
 	if(*venue < 0 || *day < 0 || *time < 0)
 		Throw(ERR_EXCEEDED_INDEX);
@@ -55,6 +46,14 @@ int getVenueSize(Class *newClass) {
  
  }
  
+/****************************************************************************
+ *	Function name	:	indexBackward
+ *	Inputs				:	int *venue, *day, *time
+ *	Output/return	:	NONE
+ *	Destroy				:	NONE
+ *	Description		:	To decrement the index of 3D array
+ *									by updating the pointer of int
+ *****************************************************************************/
  void indexBackward(int *venue, int *day, int *time){
 		if(*venue < 0 || *day < 0 || *time < 0)
 		Throw(ERR_EXCEEDED_INDEX);
@@ -72,16 +71,16 @@ int getVenueSize(Class *newClass) {
 			*venue = MAX_VENUE-1;	
 		}
 	}
- 
  }
 
-/**
- *  The purpose of this function is to check whether the number of 
- *  hours of a particular group exceed 4 hours
- *  
- *  return number of exceeded (the size of student in the class exceeded)
- *  return 0 (the size did not exceed)
- */
+/****************************************************************************
+ *	Function name	:	checkIfTutionOverloadedInSingleDay
+ *	Inputs				: Class newClass[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS], int day
+ *	Output/return	: int number of violation
+ *	Destroy				:	NONE
+ *	Description		:	The purpose of this function is to check whether the number of 
+ *  								hours of a particular group exceed 4 hours
+ *****************************************************************************/
 int checkIfTutionOverloadedInSingleDay(Class newClass[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS], int day){
 	
 	int time, venue, i, j, violationCounter = 0;
@@ -108,13 +107,15 @@ int checkIfTutionOverloadedInSingleDay(Class newClass[MAX_VENUE][MAX_DAY][MAX_TI
   return violationCounter;
 }
 
-/**
- *  The purpose of this function is to check whether the number of 
- *  students in the class exceed the venue size or not
- *  
- *  return number of exceeded (the size of student in the class exceeded)
- *  return 0 (the size did not exceed)
- */
+/****************************************************************************
+ *	Function name	:	determineViolationForCourseVenueSize
+ *	Inputs				: Class newClass[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS], 
+ *									int VenueNumber, int day, int time
+ *	Output/return	: int number of violation
+ *	Destroy				:	NONE
+ *	Description		:	The purpose of this function is to check whether the number of 
+ *  								students in the class exceed the venue size
+ *****************************************************************************/
 int determineViolationForCourseVenueSize(Class newClass[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS], int VenueNumber, int day, int time) {
   int i = 0;
 	int violationCounter = 0;
@@ -131,13 +132,15 @@ int determineViolationForCourseVenueSize(Class newClass[MAX_VENUE][MAX_DAY][MAX_
   return violationCounter;
 }
 
-/**
- *  This function is to check whether the same lecturer appear at 
- *  different venue or not
- *  
- *  return number of exceeded (got violation)
- *  return 0 (no violation)
- */
+/****************************************************************************
+ *	Function name	:	checkIfLecturerAppearInTwoVenue
+ *	Inputs				: Class newClass[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS], 
+ *									int day, int time
+ *	Output/return	: int number of violation
+ *	Destroy				:	NONE
+ *	Description		:	This function is to check whether the same lecturer appear at 
+ * 									different venue.
+ *****************************************************************************/
 int checkIfLecturerAppearInTwoVenue(Class newClass[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS], int day, int time){
 	int venue, i;
 	int counter[(sizeof(lecturer)/sizeof(Lecturer))] = { 0,0,0,0 };
@@ -160,13 +163,16 @@ int checkIfLecturerAppearInTwoVenue(Class newClass[MAX_VENUE][MAX_DAY][MAX_TIME_
   return returnCounter;
 }
 
-/**
- *  This function is to check whether the same programme and same group 
- *  appears at different venue or not
- * 
- *  return value of exceeding (got violation)
- *  return 0 (no violation)
- */
+
+/****************************************************************************
+ *	Function name	:	checkStudentViolation
+ *	Inputs				: Class newClass[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS], 
+ *									int day, int time
+ *	Output/return	: int number of violation
+ *	Destroy				:	NONE
+ *	Description		:	This function is to check whether the same programme and same group 
+ *  								appears at different venue
+ *****************************************************************************/
 int checkStudentViolation(Class newClass[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS], int day, int time) {
   int venue, i , j;
 	int counter[(sizeof(group)/sizeof(Group))] = {0,0,0,0,0,0,0,0,0,0,0,0,0,0};
@@ -191,13 +197,16 @@ int checkStudentViolation(Class newClass[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS], in
 }
 
 
-
-/**
- *  The purpose of this function is to check whether the chromosome
- *  have empty slots or not, if it has empty slots it will return the address 
- *  of the chromosome
- */
-Class *checkChromosomeIsEmpty(Class newClass[4][MAX_DAY][MAX_TIME_SLOTS]) {
+/****************************************************************************
+ *	Function name	:	checkChromosomeIsEmpty
+ *	Inputs				: Class newClass[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS]
+ *	Output/return	: Class (addressOfTheClassSlot)
+ *	Destroy				:	NONE
+ *	Description		:	The purpose of this function is to check whether the chromosome
+ *  								have empty slots, if it has empty slots it will return the address 
+ *  								of the chromosome
+ *****************************************************************************/
+Class *checkChromosomeIsEmpty(Class newClass[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS]) {
   int venue = 0;
   int day = 0, time = 0;
   
@@ -211,10 +220,16 @@ Class *checkChromosomeIsEmpty(Class newClass[4][MAX_DAY][MAX_TIME_SLOTS]) {
   }
 }
 
-/**
- *  The purpose of this function is to add
- *	information of class into one particular slot of class
- */
+/****************************************************************************
+ *	Function name	:	addDetailsIntoChromosome
+ *	Inputs				: Class newClass[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS], 
+ *									Course course[], Lecturer lecturer[], Group group[], 
+ *									char typeOfClass
+ *	Output/return	: NONE
+ *	Destroy				:	NONE
+ *	Description		:	The purpose of this function is to add
+ *									information of class into one particular slot of class
+ *****************************************************************************/
 void addDetailsIntoChromosome(Class newClass[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS], Course course[], Lecturer lecturer[], Group group[], char typeOfClass){
 	int i;
 	Class *addIntoClass = checkChromosomeIsEmpty(newClass);
@@ -227,12 +242,14 @@ void addDetailsIntoChromosome(Class newClass[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS]
 	}
 }
 
-/**
- *  This function is to calculate the number / points of violation of the entire class[][][]
- *
- *  return value of exceeding (got violation)
- *  return 0 (no violation)
- */
+/****************************************************************************
+ *	Function name	:	calculateFitnessScore
+ *	Inputs				: Class newClass[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS]
+ *	Output/return	: (int) number of violation of the whole class
+ *	Destroy				:	NONE
+ *	Description		:	This function is to calculate the number / points 
+ *									of violation of the entire class[][][]
+ *****************************************************************************/
 int calculateFitnessScore(Class newClass[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS]){
 	int venue = 0;
   int day = 0, time = 0;
@@ -256,11 +273,15 @@ int calculateFitnessScore(Class newClass[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS]){
 	return violation;
 }
 
-/**
- *  The purpose of this function is to add
- *	information from classList (entire amount of classes)
- *	into the venue, day and time slot (class[][][])
- */
+/****************************************************************************
+ *	Function name	:	fillInTheChromosome
+ *	Inputs				: Class classList[], int sizeOfClassList
+ *	Output/return	: NONE
+ *	Destroy				:	NONE
+ *	Description		:	The purpose of this function is to add information from 
+ *									classList (entire amount of classes) in ascending order
+ *									into the venue, day and time slot (class[][][])
+ *****************************************************************************/
 void fillInTheChromosome(Class classList[], int sizeOfClassList){
 	int venue, day, time;
 	int i = 0, violation;
@@ -279,12 +300,17 @@ void fillInTheChromosome(Class classList[], int sizeOfClassList){
 		}
 }
 
-/**
- *  The purpose of this function is to add
- *	information from classList (entire amount of classes)
- *	into the venue, day and time slot (class[][][])
- *	with some logic to reduce the violation to reduce the burden of crossover / mutation
- */
+/****************************************************************************
+ *	Function name	:	fillInTheChromosomeWithReducingViolation
+ *	Inputs				: Class classList[], int sizeOfClassList
+ *	Output/return	: NONE
+ *	Destroy				:	NONE
+ *	Description		:	The purpose of this function is to add
+ *									information from classList (entire amount of classes)
+ *									into the venue, day and time slot (class[][][])
+ *									with some logic to reduce the violation 
+ *									to reduce the burden of crossover / mutation
+ *****************************************************************************/
 void fillInTheChromosomeWithReducingViolation(Class classList[], int sizeOfClassList){
 	int venue, day, time;
 	int i = 0, violation;
@@ -307,9 +333,14 @@ void fillInTheChromosomeWithReducingViolation(Class classList[], int sizeOfClass
 	}
 }
 
-/**
- *  The purpose of this function is to copy one  particular slot in class to another
- */
+/****************************************************************************
+ *	Function name	:	copyClassSlot
+ *	Inputs				: Class sourceClass
+ *	Output/return	: (Class) a copy of sourceClass
+ *	Destroy				:	NONE
+ *	Description		:	The purpose of this function is to copy one  
+ *									particular slot in class to another
+ *****************************************************************************/
 Class copyClassSlot(Class sourceClass){
 	int i;
 	Class targetClass;
@@ -324,9 +355,14 @@ Class copyClassSlot(Class sourceClass){
 	return targetClass;
 }
 
-/**
- *  The purpose of this function is to copy one class to another
- */
+/****************************************************************************
+ *	Function name	:	copyClass
+ *	Inputs				: Class sourceClass[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS],
+ *									Class targetClass[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS]
+ *	Output/return	: NONE
+ *	Destroy				:	NONE
+ *	Description		:	The purpose of this function is to copy one whole class to another
+ *****************************************************************************/
 void copyClass(Class sourceClass[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS], Class targetClass[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS]){
 	int i, j, k;
 	
@@ -339,9 +375,13 @@ void copyClass(Class sourceClass[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS], Class targ
 	}
 }
 
-/**
- *  The purpose of this function is to clear particular slot in class[][][]
- */
+/****************************************************************************
+ *	Function name	:	clearClassSlot
+ *	Inputs				: Class sourceClass
+ *	Output/return	: NONE
+ *	Destroy				:	Class sourceClass
+ *	Description		:	The purpose of this function is to clear particular slot in class[][][]
+ *****************************************************************************/
 Class clearClassSlot(Class sourceClass){
 	int i;
 	
@@ -356,9 +396,13 @@ Class clearClassSlot(Class sourceClass){
 	return sourceClass;
 }
 
-/**
- *  The purpose of this function is to clear particular slot in class[][][]
- */
+/****************************************************************************
+ *	Function name	:	clearClass
+ *	Inputs				: Class sourceClass[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS]
+ *	Output/return	: NONE
+ *	Destroy				:	Class sourceClass[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS]
+ *	Description		:	The purpose of this function is to a class[][][]
+ *****************************************************************************/
 void clearClass(Class sourceClass[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS]){
 	int i, j, k;
 	
@@ -371,9 +415,14 @@ void clearClass(Class sourceClass[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS]){
 	}
 }
 
-/**
- *  The purpose of this function is to clear class[] for population purpose
- */
+/****************************************************************************
+ *	Function name	:	clearClassList
+ *	Inputs				: int sizeOfClass , Class newClass[sizeOfClass]
+ *	Output/return	: NONE
+ *	Destroy				:	Class newClass[sizeOfClass]
+ *	Description		:	The purpose of this function is to clear classList[] 
+ *									for population purpose
+ *****************************************************************************/
 void clearClassList(int sizeOfClass , Class newClass[sizeOfClass]){
 	int i, j;
 	
@@ -388,6 +437,13 @@ for(i = 0; i < sizeOfClass; i++) {
 }
 }
 
+/****************************************************************************
+ *	Function name	:	clearPopulation
+ *	Inputs				: Population *population
+ *	Output/return	: NONE
+ *	Destroy				:	Population population[]
+ *	Description		:	To clear all the populations created previously
+ *****************************************************************************/
 void clearPopulation(Population *population){
 	int i;
 	for( i = 0 ; i < sizeof(populationOfClasses)/sizeof(Population) ; i++){
@@ -395,6 +451,13 @@ void clearPopulation(Population *population){
 	}
 }
 
+/****************************************************************************
+ *	Function name	:	copyPopulation
+ *	Inputs				: Population sourcePopulation
+ *	Output/return	: (Population) a copy of sourcePopulation
+ *	Destroy				:	NONE
+ *	Description		:	To copy one population and return
+ *****************************************************************************/
 Population copyPopulation(Population sourcePopulation){
 	Population populationReturn;
 	
@@ -404,9 +467,14 @@ Population copyPopulation(Population sourcePopulation){
 	return populationReturn;
 }
 
-/**
- *  The purpose of this function is randomize the classList before creating populations of chromosome
- */
+/****************************************************************************
+ *	Function name	:	randomizeClassList
+ *	Inputs				: int sizeOfClassList, Class targetClassList[sizeOfClassList]
+ *	Output/return	: NONE
+ *	Destroy				:	Class targetClassList[]
+ *	Description		:	The purpose of this function is randomize the classList 
+ *									before creating populations of chromosome
+ *****************************************************************************/
 void randomizeClassList(int sizeOfClassList, Class targetClassList[sizeOfClassList]){
 	int i, j;
 	int r;
@@ -420,9 +488,14 @@ void randomizeClassList(int sizeOfClassList, Class targetClassList[sizeOfClassLi
 	}
 }
 
-/**
- *  The purpose of this function is randomize the classList before creating populations of chromosome
- */
+/****************************************************************************
+ *	Function name	:	createPopulationsOfChromosome
+ *	Inputs				: int sizeOfClassList
+ *	Output/return	: NONE
+ *	Destroy				:	NONE
+ *	Description		:	The purpose of this function is randomize the classList 
+ *									before creating populations of chromosome
+ *****************************************************************************/
 void createPopulationsOfChromosome(int sizeOfClassList){
 	Class randomList[sizeOfClassList];
 	clearPopulation(populationOfClasses);
@@ -439,6 +512,13 @@ void createPopulationsOfChromosome(int sizeOfClassList){
 	
 }
 
+/****************************************************************************
+ *	Function name	:	createPopulationsOfChromosomeNotRandomize
+ *	Inputs				: int sizeOfClassList
+ *	Output/return	: NONE
+ *	Destroy				:	NONE
+ *	Description		:	For test purpose
+ *****************************************************************************/
 void createPopulationsOfChromosomeNotRandomize(int sizeOfClassList) {
   int i;
   
@@ -452,7 +532,14 @@ void createPopulationsOfChromosomeNotRandomize(int sizeOfClassList) {
 	}
 	
 }
-  
+ 
+/****************************************************************************
+ *	Function name	:	sortPopulationsAccordingToFitness
+ *	Inputs				: Population *population, int sizeOfPopulation
+ *	Output/return	: NONE
+ *	Destroy				:	population[]
+ *	Description		: Restructure the population in ascending fitness ranking
+ *****************************************************************************/
 void sortPopulationsAccordingToFitness(Population *population, int sizeOfPopulation){
 	Population tempPopulation = {0};
 	int i, j, counter = 0;
@@ -471,9 +558,13 @@ void sortPopulationsAccordingToFitness(Population *population, int sizeOfPopulat
 	}
 }
 
-/**
- *  The purpose of this function is compare 2 class
- */
+/****************************************************************************
+ *	Function name	:	compareClass
+ *	Inputs				: Class newClass, Class newClass2
+ *	Output/return	: 0 if not equal, 1 if equal
+ *	Destroy				:	NONE
+ *	Description		: The purpose of this function is compare 2 class slot
+ *****************************************************************************/
 int compareClass(Class newClass, Class newClass2){
 	int i;
 	if(newClass.course == NULL && newClass2.course == NULL)
@@ -500,6 +591,16 @@ int compareClass(Class newClass, Class newClass2){
 	return 1;
 }
 
+/****************************************************************************
+ *	Function name	:	crossoverToOffspring
+ *	Inputs				: Class newClass, Class returnClass[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS], 
+ *									int venueIndex, int dayIndex, int timeIndex, int *leftStop
+ *	Output/return	: return 1 if successfully added, else 0
+ *	Destroy				:	Class returnClass[][][]
+ *									int venueIndex, dayIndex, timeIndex, *leftStop
+ *	Description		: To fill in the the Offspring by selecting unrepeated element 
+ *									from parents
+ *****************************************************************************/
 int crossoverToOffspring(Class newClass, Class returnClass[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS], 
 												 int venueIndex, int dayIndex, int timeIndex, int *leftStop){
 	int counter = 1;
@@ -546,6 +647,16 @@ int crossoverToOffspring(Class newClass, Class returnClass[MAX_VENUE][MAX_DAY][M
 	return 0;
 }
  
+/****************************************************************************
+ *	Function name	:	performCrossover
+ *	Inputs				: Class newClass[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS], 
+ *									Class newClass2[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS], 
+ *									Class offSpring[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS]
+ *	Output/return	: NONE
+ *	Destroy				:	Class offSpring[][][]
+ *	Description		: To mark a starting point for both Crossover parent, 
+ *									perform crossover
+ *****************************************************************************/
 void performCrossover(Class newClass[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS], Class newClass2[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS], Class offSpring[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS]){
 
 	int randomNumberLeft, randomNumberRight;
