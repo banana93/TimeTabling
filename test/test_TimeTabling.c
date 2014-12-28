@@ -3,7 +3,7 @@
 #include "TimeTabling.h"
 #include "ErrorCode.h"
 #include "CException.h"
-// #include "mock_Random.h"   
+#include "mock_Random.h"   
     
 void setUp(void){
 	int venue = 0;

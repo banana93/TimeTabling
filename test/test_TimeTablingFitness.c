@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include "TimeTabling.h"
 #include "ErrorCode.h"
+#include "mock_Random.h"  
 
 void setUp(void){
 	int venue = 0;
