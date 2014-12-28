@@ -1,6 +1,6 @@
 #ifndef Random_H
 #define Random_H
 
-int random(int MAX_SIZE);
+int random(int size);
 
 #endif // Random_H

@@ -136,7 +136,6 @@ int calculateFitnessScore(Class newClass[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS]);
 void addDetailsIntoChromosome(Class newClass[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS], Course course[], Lecturer lecturer[], Group group[], char typeOfClass);
 Class *checkChromosomeIsEmpty(Class newClass[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS]);
 void fillInTheChromosomeWithReducingViolation(Class classList[], int sizeOfClassList);
-int performMutation(Class newClass[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS]);
 void createPopulationsOfChromosome(int sizeOfClassList);
 void sortPopulationsAccordingToFitness(Population *population, int sizeOfPopulation);
 
@@ -158,8 +157,7 @@ void randomizeClassList(int sizeOfClassList, Class targetClassList[sizeOfClassLi
  ************************************************************************************/
 void swapClasses(Class *newClassA, Class *newClassB);
 int checkViolationWhenSwapClasses(Class newClass[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS]);
-int performMutation(Class newClass[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS]);
-int calculateHeightOfTree(double numberOfNodes);
+void performMutation(Population populationOfClasses[50]);
 
 /************************************************************************************
  *   Crossover Functions

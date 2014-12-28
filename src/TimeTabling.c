@@ -4,6 +4,7 @@
 #include "TimeTabling.h"
 #include "TimeTablingClassList.h"
 #include "ErrorCode.h"
+#include "Random.h"
 #include "CException.h"
 
 
@@ -585,50 +586,6 @@ void performCrossover(Class newClass[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS], Class 
 	}
 }
 
-
-int performMutation(Class newClass[MAX_VENUE][MAX_DAY][MAX_TIME_SLOTS]) {
-  int fitnessScoreBeforeMutation = 0, fitnessScoreAfterMutation = 0;
-  int venue = 0, day = 0, time = 0;
-  int tempVenue = 0, tempDay = 0, tempTime = 0;
-  int randomVenue, randomDay, randomTime;
-  int counter = 0;
-	
-  fitnessScoreBeforeMutation = calculateFitnessScore(newClass);
-  printf("fitnessScoreBeforeMutation: %d\n", fitnessScoreBeforeMutation);
-
-  // randomVenue = random(MAX_VENUE);
-  // randomDay = random(MAX_DAY);
-  // randomTime = random(MAX_TIME_SLOTS);
-  
-  for(venue; venue < MAX_VENUE; venue++) {
-    for(day; day < MAX_DAY; day++) {
-      for(time; time < MAX_TIME_SLOTS; time++) {
-        if(newClass[venue][day][time].course != NULL) {
-          if(newClass[venue][day][time].markOfViolation == 1) {
-            if(counter == 0) {
-              tempVenue = venue;
-              tempDay = day;
-              tempTime = time;
-              counter++;
-            }
-            
-            // randomVenue = rand()%4;
-            // randomDay = rand()%3;
-            // randomTime = rand()%5;
-            swapClasses(&newClass[tempVenue][tempDay][tempTime], &newClass[randomVenue][randomDay][randomTime]);
-            fitnessScoreAfterMutation = calculateFitnessScore(newClass);
-
-            if(fitnessScoreAfterMutation < fitnessScoreBeforeMutation) {
-                break;
-            }
-          } 
-        } 
-      }
-    }
-  }
-  return fitnessScoreAfterMutation;
-}
-
 void swapClasses(Class *newClassA, Class *newClassB) {
   Class tempClass;
   
@@ -674,17 +631,49 @@ int checkViolationWhenSwapClasses(Class newClass[MAX_VENUE][MAX_DAY][MAX_TIME_SL
 	return 0;
 }
 
-int calculateHeightOfTree(double numberOfNodes) {
-  int heightOfTree = 0;
-  double logBase2Result = 0;
-  double logBase2 = 2;
+void performMutation(Population populationOfClasses[50]) {
+  int fitnessScoreBeforeMutation = 0, fitnessScoreAfterMutation = 0;
+  int venue = 0, day = 0, time = 0, counter = 0, tempVenue = 0, tempDay = 0, tempTime = 0;
+  int randomNumber = 0, randomVenue = 0, randomDay = 0, randomTime = 0;
   
-  logBase2Result = log10(numberOfNodes) / log10(logBase2);
-  heightOfTree = 2 * logBase2Result;
+  randomNumber = random(49);
   
-  return heightOfTree;
+  for(venue; venue < MAX_VENUE; venue++) {
+    for(day; day < MAX_DAY; day++) {
+      for(time; time < MAX_TIME_SLOTS; time++) {
+        if(populationOfClasses[randomNumber].class[venue][day][time].course != NULL) {
+          fitnessScoreBeforeMutation = calculateFitnessScore(populationOfClasses[randomNumber].class);
+          printf("fitnessScoreBeforeMutation: %d\n", fitnessScoreBeforeMutation);
+          
+          if(populationOfClasses[randomNumber].class[venue][day][time].markOfViolation == 1) {
+             if(counter == 0) {
+              tempVenue = venue;
+              tempDay = day;
+              tempTime = time;
+              counter++;
+            }
+            
+            randomVenue = rand()%4;
+            randomDay = rand()%3;
+            randomTime = rand()%5;
+            swapClasses(&populationOfClasses[randomNumber].class[tempVenue][tempDay][tempTime], &populationOfClasses[randomNumber].class[randomVenue][randomDay][randomTime]);
+            fitnessScoreAfterMutation = calculateFitnessScore(populationOfClasses[randomNumber].class);
+            printf("fitnessScoreAfterMutation: %d\n", fitnessScoreAfterMutation);
+            
+            if(fitnessScoreAfterMutation >= fitnessScoreBeforeMutation)
+              swapClasses(&populationOfClasses[randomNumber].class[tempVenue][tempDay][tempTime], &populationOfClasses[randomNumber].class[randomVenue][randomDay][randomTime]);
+            else if(fitnessScoreAfterMutation < fitnessScoreBeforeMutation) {
+              break;
+            }
+          }
+        }
+      }
+    }
+  }
+  populationOfClasses[randomNumber].violation = fitnessScoreAfterMutation;
   
 }
+
 void solveTimeTabling() {
   int fitnessScoreBeforeMutation = 0, fitnessScoreAfterMutation = 0;
   

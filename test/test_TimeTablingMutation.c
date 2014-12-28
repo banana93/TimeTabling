@@ -55,15 +55,28 @@ void test_createPopulationsOfChromosomeNotRandomize_should_be_able_to_create_pop
 
 }
 
-void test_calculateHeightOfTree_should_be_able_to_return_the_result_of_the_height_of_the_rbt(void) {
-  int heightOfTree = 0;
-  double numberOfNodes = 6;
+void test_performMutation_test_number_1_should_be_able_to_swapClasses_and_reduce_the_violation(void) {
+  int randomNumber = 0;
+  createPopulationsOfChromosomeNotRandomize(sizeof(classList)/sizeof(Class));
   
-  heightOfTree = calculateHeightOfTree(numberOfNodes);
-  TEST_ASSERT_EQUAL(5, heightOfTree);
+  printf(" performMutation test number 1\n");
+  printf("----------------------------------------------\n");
+  random_ExpectAndReturn(49, 3);
+  performMutation(populationOfClasses);
+  printf("----------------------------------------------\n");
+  printf("\n");
+  TEST_ASSERT_EQUAL(291, populationOfClasses[3].violation);
 }
 
-// void test_performMutation_should_be_able_to_choose_the_specific_class_number_1_from_the_population_due_to_mock_random_function(void) {
-  // createPopulationsOfChromosomeNotRandomize(sizeof(classList)/sizeof(Class));
-// }
-
+void test_performMutation_test_number_2_should_be_able_to_swapClasses_and_reduce_the_violation(void) {
+  int randomNumber = 0;
+  createPopulationsOfChromosomeNotRandomize(sizeof(classList)/sizeof(Class));
+  
+  printf(" performMutation test number 2\n");
+  printf("----------------------------------------------\n");
+  random_ExpectAndReturn(49, 1);
+  performMutation(populationOfClasses);
+  printf("----------------------------------------------\n");
+  printf("\n");
+  TEST_ASSERT_EQUAL(301, populationOfClasses[1].violation);
+}
