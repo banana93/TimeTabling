@@ -747,7 +747,7 @@ void performMutation(Population populationOfClasses[50]) {
   int venue = 0, day = 0, time = 0, counter = 0, tempVenue = 0, tempDay = 0, tempTime = 0;
   int randomNumber = 0, randomVenue = 0, randomDay = 0, randomTime = 0;
   
-  randomNumber = random(49);
+  // randomNumber = random(49);
   
   for(venue; venue < MAX_VENUE; venue++) {
     for(day; day < MAX_DAY; day++) {
@@ -787,16 +787,22 @@ void performMutation(Population populationOfClasses[50]) {
 
 void solveTimeTabling(int timesOfCycle, int percentageToRemove) {
 	int i, j, k;
-  int fitnessScoreBeforeMutation = 0, fitnessScoreAfterMutation = 0;
+  int counter = 0, fitnessCountingBefore = 0, fitnessCountingAfter = 0;
+  int fitnessScoreBefore = 0, fitnessScoreAfter = 0;
 	int sizeOfPopulation = sizeof(populationOfClasses)/sizeof(Population);
   int populationToRemove = sizeOfPopulation*(percentageToRemove/100);
 	Population offSpring[populationToRemove];
 	
 	clearPopulation(populationOfClasses);
-	clearPopulation(offSpring);
+	// clearPopulation(offSpring);
   createPopulationsOfChromosome(sizeof(classList)/sizeof(Class));
 	sortPopulationsAccordingToFitness(populationOfClasses, sizeOfPopulation);
 	
+  for(fitnessCountingBefore; fitnessCountingBefore < 50; fitnessCountingBefore++) {
+    fitnessScoreBefore += populationOfClasses[fitnessCountingBefore].violation;
+    printf("Before: %d\n", fitnessScoreBefore);
+  }
+  
 	for( k = 0, i = sizeOfPopulation - populationToRemove ; i < sizeOfPopulation ; i++, k++){
 		j = i+1;
 		if( j >= sizeOfPopulation)
@@ -804,15 +810,13 @@ void solveTimeTabling(int timesOfCycle, int percentageToRemove) {
 		//EG, got 5 candidates, 0,1,2,3,4
 		//this logic will perform crossover with (0,1) (1,2) (2,3) (3,4) (4,0) to offspring[k]
 		performCrossover( populationOfClasses[i].class, populationOfClasses[j].class, offSpring[k].class);
-		performMutation(offSpring);
-		offSpring[k].violation = calculateFitnessScore(offSpring[k].class);
-		populationOfClasses[i] = copyPopulation(offSpring[k]);
+
+		// populationOfClasses[i] = copyPopulation(offSpring[k]);
 	}
-	
-  //Sam try to compare the whole population de average fitness before and after,
-	//see got improvement or not
-	//and add timesOfCycle that user want to do hw many times
-	//and test code, and double check my logic
-	//i go eat sin, lol
+	performMutation(offSpring);
+  for(fitnessCountingAfter; fitnessCountingAfter < 50; fitnessCountingAfter++) {
+    fitnessScoreAfter += populationOfClasses[fitnessCountingAfter].violation;
+    printf("After: %d\n", fitnessScoreBefore);
+  }
 		
 }

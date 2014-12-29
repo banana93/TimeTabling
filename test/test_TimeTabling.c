@@ -3,7 +3,7 @@
 #include "TimeTabling.h"
 #include "ErrorCode.h"
 #include "CException.h"
-#include "mock_Random.h"   
+#include "Random.h"  
     
 void setUp(void){
 	int venue = 0;
@@ -187,6 +187,7 @@ void test_addDetailsIntoChromosome_given_the_details_should_be_able_to_add_into_
 	TEST_ASSERT_EQUAL('t', class[0][0][1].typeOfClass);
 }
 
-void xtest_solveTimeTabling_test_number_1_should_be_able_to_produce_an_offspring_with_lesser_violation(void) {
-  // solveTimeTabling();
+void test_solveTimeTabling_test_number_1_should_be_able_to_produce_an_offspring_with_lesser_violation(void) {
+  int timesOfCycle = 5, percentageToRemove = 10;
+  solveTimeTabling(timesOfCycle, percentageToRemove);
 }
